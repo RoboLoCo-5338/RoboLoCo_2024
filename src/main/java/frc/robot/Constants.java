@@ -73,11 +73,11 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 7;
     public static final int kRearRightTurningCanId = 1;
 
-    // CHANGE CAN IDS effector and flywheel
-    public static final int kEffectorCanId = 9;
-    public static final int kArmCanId = 10;
-    public static final int kFlywheelCanId = 11;
-    public static final int kBunnyArmCanId = 12;
+    // CHANGE CAN IDS of the Subsystems pls
+    public static final int kArmCanId = -1;
+    public static final int kShooter1CanId = -1;
+    public static final int kShooter2CanId = -1;
+    public static final int kIntakeIndexCanId = -1;
 
     public static final boolean kGyroReversed = true;
   }
