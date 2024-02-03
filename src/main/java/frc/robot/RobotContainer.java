@@ -21,15 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d; //1/18/24
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.EffectorCommands;
-import frc.robot.commands.HookCommands;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Effector;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Hook;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -52,10 +44,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public static final Shooter m_shooter = new Shooter();
-  public static final Hook m_hook = new Hook();
-  public static final Intake intake = new Intake();
-  public static final Effector m_effector = new Effector();
 
 
   // The driver's controller
@@ -107,45 +95,9 @@ Field2d m_field = new Field2d();
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    Trigger shooterForward = new Trigger(() -> controller2.getRawAxis(3) > 0.4);
-    shooterForward.whileTrue(ShooterCommands.shooterForward());
-    shooterForward.onFalse(ShooterCommands.shooterStop());
-
-    
-    Trigger shooterReverse = new Trigger(() -> controller2.getRawAxis(2) > 0.4);
-    shooterReverse.whileTrue(ShooterCommands.shooterReverse());
-    shooterReverse.onFalse(ShooterCommands.shooterStop());
- 
-    
-    JoystickButton effectorForward = new JoystickButton(controller2, Constants.RBBUTTON);
-    effectorForward.whileTrue(EffectorCommands.effectorForward());
-    effectorForward.onFalse(EffectorCommands.effectorStop());
-
-    
-    JoystickButton effectorReverse = new JoystickButton(controller2, Constants.LBBUTTON);
-    effectorReverse.whileTrue(EffectorCommands.effectorReverse());
-    effectorReverse.onFalse(EffectorCommands.effectorStop());
     
 
       
-JoystickButton hookUp = new JoystickButton(controller2, Constants.BBUTTON);
-hookUp.whileTrue(HookCommands.moveUp());
-hookUp.onFalse(HookCommands.stopHook());
-
-
-JoystickButton hookDown = new JoystickButton(controller2, Constants.XBUTTON);
-hookDown.whileTrue(HookCommands.moveDown());
-hookDown.onFalse(HookCommands.stopHook());
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Trigger intakeUp = new Trigger(() -> controller2.getRawAxis(1) > 0.4);
-intakeUp.whileTrue(IntakeCommands.intake(0.3));
-intakeUp.onFalse(IntakeCommands.stopIntake());
-
-
-Trigger intakeDown = new Trigger(() -> controller2.getRawAxis(1) < -0.4);
-intakeDown.whileTrue(IntakeCommands.intake(-0.3));
-intakeDown.onFalse(IntakeCommands.stopIntake());
 
 
 
