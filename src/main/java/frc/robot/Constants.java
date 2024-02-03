@@ -35,6 +35,10 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9;
   public static final int RIGHTSTICKBUTTON = 10;
 
+  public static final int BUFFERSIZE = -1;
+  public static final int PWMPORT = -1;
+  public static final int numberOfLedActions = -1;
+
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
