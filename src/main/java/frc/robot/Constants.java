@@ -77,7 +77,8 @@ public final class Constants {
     public static final int kArmCanId = -1;
     public static final int kShooter1CanId = -1;
     public static final int kShooter2CanId = -1;
-    public static final int kIntakeIndexCanId = -1;
+    public static final int kIntakeIndexerCanId = -1;
+    public static final int kIntakeCanId = -1;
 
     public static final boolean kGyroReversed = true;
   }
