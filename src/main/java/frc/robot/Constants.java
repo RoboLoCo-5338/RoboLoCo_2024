@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -34,6 +36,7 @@ public final class Constants {
   public static final int STARTBUTTON = 8;
   public static final int LEFTSTICKBUTTON = 9;
   public static final int RIGHTSTICKBUTTON = 10;
+
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -80,6 +83,8 @@ public final class Constants {
     public static final int kIntakeIndexCanId = -1;
 
     public static final boolean kGyroReversed = true;
+
+    public static HashMap<Double,String> armHashMap;
   }
 
   public static final class ModuleConstants {
