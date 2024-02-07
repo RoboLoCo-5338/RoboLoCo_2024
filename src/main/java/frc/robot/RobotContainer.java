@@ -22,6 +22,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -48,9 +49,9 @@ public class RobotContainer {
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
- // XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+ XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
-private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+// private static Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
 
 ChoreoTrajectory traj; //1/18/24
 Field2d m_field = new Field2d();
@@ -94,8 +95,26 @@ Field2d m_field = new Field2d();
    * passing it to a
    * {@link JoystickButton}.
    */
+  public void turnToTag(){
+    if(!Vision.hasResults()){
+      return;
+    }
+    else{
+      double angle = Vision.getTargetPitch(false);
+      //Write code to turn towards the tag(need to figure out a way to turn while maintaining speed. Oh wait I got it.)
+      while(Math.abs(angle)>5){
+        m_robotDrive.drive(
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                true, true);
+      }
+    }
+  }
   private void configureButtonBindings() {
-    
+    if(m_operatorController.getAButtonPressed()){
+      turnToTag();
+    }
 
       
 
@@ -191,7 +210,7 @@ Field2d m_field = new Field2d();
             speeds.vxMetersPerSecond,
             speeds.vyMetersPerSecond,
             speeds.omegaRadiansPerSecond,
-            false, true),
+            true, true),
         () -> {
             return false;
           }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
@@ -201,7 +220,7 @@ Field2d m_field = new Field2d();
     return Commands.sequence(
       Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
       swerveCommand,
-      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
+      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, true, true))
   );
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   //   if (ally == DriverStation.Alliance.Red) {
@@ -232,5 +251,8 @@ Field2d m_field = new Field2d();
 
   public void periodic() { //FOR CHOREO 1/18/24
     m_field.setRobotPose(m_robotDrive.getPose());
+  }
+  public DriveSubsystem getDriveSubsystem(){
+    return m_robotDrive;
   }
 }
