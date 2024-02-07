@@ -96,19 +96,44 @@ Field2d m_field = new Field2d();
    * {@link JoystickButton}.
    */
   public void turnToTag(){
+    final double ANGULAR_P = 0.1;
+    final double ANGULAR_D = 0.0;
+    PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
     if(!Vision.hasResults()){
       return;
     }
     else{
       double angle = Vision.getTargetPitch(false);
       //Write code to turn towards the tag(need to figure out a way to turn while maintaining speed. Oh wait I got it.)
-      while(Math.abs(angle)>5){
-        m_robotDrive.drive(
+      m_robotDrive.drive(
+              -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+              -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+              -MathUtil.applyDeadband(turnController.calculate(Vision.getTargetYaw(false)), OIConstants.kDriveDeadband),
+                true, true);
+    }
+    m_robotDrive.drive(0,0,0,true,true);
+  }
+  public Command turnToTagCommand(){
+    final double ANGULAR_P = 0.1;
+    final double ANGULAR_D = 0.0;
+    if(!Vision.hasResults()){
+      return null;
+    }
+    else{
+      return Commands.sequence(
+        m_robotDrive.runOnce(() -> m_robotDrive.drive(
+          -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+          -MathUtil.applyDeadband(new PIDController(ANGULAR_P,0,ANGULAR_D).calculate(Vision.getTargetYaw(false)), OIConstants.kDriveDeadband),
+          true, true)
+        ),
+        m_robotDrive.runOnce(() -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true);
-      }
+                true, true)
+        )
+      );
     }
   }
   private void configureButtonBindings() {
