@@ -24,6 +24,7 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   public SparkAbsoluteEncoder armEncoder;
   public SparkPIDController armController;
+  public double[] armHeights = {0.51,0.85,-4,30,0,0.8};
 
   public static double armP=0.1;
   public static double armI=0.0;
