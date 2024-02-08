@@ -55,7 +55,7 @@ public class AimAngle {
     }
 
     private static double getOptimalAngle(double shooterVelocity, double xDistance, double yHeight) {
-        float gravity = 9.8;
+        float gravity = 9.8f;
         double velocitySquared = Math.pow(shooterVelocity, 2);
         double xDistanceSquared = Math.pow(xDistance, 2);
         double stub = (2 * velocitySquared) / (gravity * xDistance);
