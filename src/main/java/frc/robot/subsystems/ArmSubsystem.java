@@ -4,20 +4,25 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Type;
+
 import javax.swing.text.Position;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
 
   private CANSparkMax armMotor;
-  public RelativeEncoder armEncoder;
+  public SparkAbsoluteEncoder armEncoder;
   public SparkPIDController armController;
 
   public static double armP=0.1;
@@ -28,7 +33,7 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, MotorType.kBrushless);
-    armEncoder = armMotor.getEncoder();
+    armEncoder = armMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
     armController = armMotor.getPIDController();
     armMotor.setSmartCurrentLimit(40);
 
@@ -48,9 +53,9 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void resetArm(){
-    armEncoder.setPosition(0);
-  }
+  // public void resetArm(){
+  //   armEncoder.setPosition(0);
+  // }
 
   public double getArmPosition(){
     return armEncoder.getPosition();
