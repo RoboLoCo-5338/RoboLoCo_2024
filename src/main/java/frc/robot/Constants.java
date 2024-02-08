@@ -41,8 +41,15 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAngularSpeed = Math.PI * 1.5; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAngularSpeed = Math.PI * 1; // radians per second
+      // Constants such as camera and target height stored. Change per robot and goal!
+    public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
+    public static final double TARGET_HEIGHT_METERS = Units.feetToMeters(2.66);
+    // Angle between horizontal and the camera.
+    public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+    // How far from the target we want to be
+    public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
 
     public static final double kDirectionSlewRate = 10; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
@@ -58,8 +65,12 @@ public final class Constants {
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-
+    // public static final double speed_multi = 0.1;
+    // public static final double kp = 0.01;
+    // public static final double min_command = 0.001;
+    
     // Angular offsets of the modules relative to the chassis in radians
+    
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
@@ -150,8 +161,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
+    public static final double kPXController = 0.01;
+    public static final double kPYController = 0.01;
     public static final double kPThetaController = 1;
 
 
