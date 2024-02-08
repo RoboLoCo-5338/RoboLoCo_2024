@@ -138,7 +138,7 @@ Field2d m_field = new Field2d();
   }
   private void configureButtonBindings() {
     if(m_operatorController.getAButtonPressed()){
-      turnToTag();
+      turnToTagCommand().execute();
     }
 
       
