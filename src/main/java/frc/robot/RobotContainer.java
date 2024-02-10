@@ -4,233 +4,217 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+// import frc.robot.commands.ArmCommands;
+// import frc.robot.commands.AutoCommands;
+// import frc.robot.commands.EffectorCommands;
+// import frc.robot.commands.ElevatorCommands;
+//import frc.robot.commands.LimeLight;
+// import frc.robot.commands.SetArmAbsolute;
+// import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
+// import frc.robot.subsystems.Effector;
+// // import frc.robot.subsystems.Elevator;
+
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d; //1/18/24
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import java.util.List;
-
-import com.choreo.lib.Choreo; //1/18/24
-import com.choreo.lib.ChoreoTrajectory;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.Commands;
-
-/*
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
+
+
+
 public class RobotContainer {
-  // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  // The robot's subsystems and commands are defined here... + percent and coneOffset
+  // public static final Elevator m_Elevator = new Elevator();
+  // public static final Arm m_Arm = new Arm();
+  // public static ElevatorCommands m_ElevatorCommands;
+  public static final Drivetrain drivetrain = new Drivetrain();
+  //public static final LimeLight LimeLight = new LimeLight();
+  // public static final Effector effector = new Effector();
 
+  public static AHRS navX = new AHRS(SPI.Port.kMXP);
+  public static double percent = 0.3;
+  public static int coneOffset = 0;
 
-  // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
- // XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+  public static int reverseModifier=1;
+  private static double speedMod=0; //not sure what this should be?? 
 
-private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  // controllers
+  public static Joystick controller1 = new Joystick(0); //driver
+  public static Joystick controller2 = new Joystick(1); //operator
 
-ChoreoTrajectory traj; //1/18/24
-Field2d m_field = new Field2d();
+//   private static XboxController controller3 = new XboxController(0); potential driver controller stuff
+//   private static XboxController controller4 = new XboxController(1);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-
-    traj = Choreo.getTrajectory("Trajectory"); //1/18/24
-
-    m_field.getObject("traj").setPoses(
-      traj.getInitialPose(), traj.getFinalPose()
-    );
-    m_field.getObject("trajPoses").setPoses(
-      traj.getPoses()
-    );
-    // SmartDashboard.putData(m_field);
-
-    // Configure default commands
-    m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true),
-            m_robotDrive));
+    // Configure the trigger bindings
+    configureBindings();
+    configureDefaultCommands();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
-   * {@link JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    
 
-      
+// Drive using the joysticks
 
-
-
-   // effectorForward.whileFalse(EffectorCommands.effectorStop());
-    // if (m_operatorController.getRightBumperPressed()){
-    //     EffectorCommands.effectorForward();
-    // }
-    // if (m_operatorController.getLeftBumperPressed()){
-    //     EffectorCommands.effectorReverse();
-    // }
-    // if (m_operatorController.getBButtonPressed()){
-    //     HookCommands.moveUp();
-    // }
-    // if (m_operatorController.getXButtonPressed()){
-    //     HookCommands.moveDown();
-    // }
-    // if (m_operatorController.getRightTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterForward();
-    // }
-    // if (m_operatorController.getLeftTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterReverse();
-    // }
-    //IntakeCommands.intake(m_operatorController.getRightY());
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // // Create config for trajectory
-    // TrajectoryConfig config = new TrajectoryConfig(
-    //     AutoConstants.kMaxSpeedMetersPerSecond,
-    //     AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-    //     // Add kinematics to ensure max speed is actually obeyed
-    //     .setKinematics(DriveConstants.kDriveKinematics);
-
-    // // An example trajectory to follow. All units in meters.
-    // Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-    //     // Start at the origin facing the +X direction
-    //     new Pose2d(0, 0, new Rotation2d(0)),
-    //     // Pass through these two interior waypoints, making an 's' curve path
-    //     List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-    //     // End 3 meters straight ahead of where we started, facing forward
-    //     new Pose2d(3, 0, new Rotation2d(0)),
-    //     config);
-
-    // var thetaController = new ProfiledPIDController(
-    //     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    // SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-    //     exampleTrajectory,
-    //     m_robotDrive::getPose, // Functional interface to feed supplier
-    //     DriveConstants.kDriveKinematics,
-
-    //     // Position controllers
-    //     new PIDController(AutoConstants.kPXController, 0, 0),
-    //     new PIDController(AutoConstants.kPYController, 0, 0),
-    //     thetaController,
-    //     m_robotDrive::setModuleStates,
-    //     m_robotDrive);
-
-    // // Reset odometry to the starting pose of the trajectory.
-    // m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true, false));
-
-    //1/18/24 ---- CHOREO TESTING
-
-    var thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    m_robotDrive.resetOdometry(traj.getInitialPose());
-
-    Command swerveCommand = Choreo.choreoSwerveCommand(
-        traj, // Choreo trajectory from above
-        m_robotDrive::getPose, // A function that returns the current field-relative pose of the robot: your
-                               // wheel or vision odometry
-        new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // PIDController for field-relative X
-                                                                                   // translation (input: X error in meters,
-                                                                                   // output: m/s).
-        new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), // PIDController for field-relative Y
-                                                                                   // translation (input: Y error in meters,
-                                                                                   // output: m/s).
-        thetaController, // PID constants to correct for rotation
-                         // error
-        (ChassisSpeeds speeds) -> m_robotDrive.drive( // needs to be robot-relative
-            speeds.vxMetersPerSecond,
-            speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond,
-            false, true),
-        () -> {
-            return false;
-          }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
-        m_robotDrive // The subsystem(s) to require, typically your drive subsystem only
-    );
-
-    return Commands.sequence(
-      Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
-      swerveCommand,
-      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
+  public Command defaultDrive = new RunCommand(
+    () -> {
+      if(reverseModifier<0){
+        drivetrain.tankDrive(
+          // controller1.getRawAxis(1)*(percent+controller1.getRawAxis(3)*(1-percent)),
+          // controller1.getRawAxis(5)*(percent+controller1.getRawAxis(3)*(1-percent))
+          (controller1.getRawAxis(1)+Math.signum(controller1.getRawAxis(1))*speedMod) * 0.4*reverseModifier,
+          (controller1.getRawAxis(5)+Math.signum(controller1.getRawAxis(5))*speedMod) * 0.4*reverseModifier
+        );
+      }else{
+        drivetrain.tankDrive(
+          // controller1.getRawAxis(1)*(percent+controller1.getRawAxis(3)*(1-percent)),
+          // controller1.getRawAxis(5)*(percent+controller1.getRawAxis(3)*(1-percent))
+          (controller1.getRawAxis(5)+Math.signum(controller1.getRawAxis(5))*speedMod) * 0.4*reverseModifier,
+          (controller1.getRawAxis(1)+Math.signum(controller1.getRawAxis(1))*speedMod) * 0.4*reverseModifier
+        );
+      }
+     },
+    drivetrain
   );
-  // DriverStation.Alliance ally = DriverStation.getAlliance();
-  //   if (ally == DriverStation.Alliance.Red) {
-  //     switch (AutoConstants.autoNum){
-  //       case 1:
-  //         return AutoCommands.leftRed();
-  //       case 2:
-  //         return AutoCommands.midRed();
-  //       case 3:
-  //         return AutoCommands.rightRed();
-  //     }
-  //   }
-  //   else if (ally == DriverStation.Alliance.Blue) {
-  //     switch (AutoConstants.autoNum){
-  //       case 1:
-  //         return AutoCommands.leftBlue();
-  //       case 2:
-  //         return AutoCommands.midBlue();
-  //       case 3:
-  //         return AutoCommands.rightBlue();
-  //     }
-  //   }
-  //   else {
-  //       return null;
-  //   }
-  //   return null;
+
+    public Command coneSwitchCommand = new InstantCommand(//switches to the cone heights (indexes for the list)
+      () -> {coneOffset=2;}
+    );
+
+    public Command cubeSwitchCommand = new InstantCommand(//switches to the cube heights (indexes for the list)
+      () -> {coneOffset=0;}//starting value for cube indexing-ish?
+    );
+
+    //public Command runLimeLight = new InstantCommand(//runs limelight code
+    //  () -> LimeLight.execute());
+
+    //public Command swapPipeline = new InstantCommand(//changes Limelight
+    //() -> LimeLight.setPipeline());
+
+    
+    public Command reverse = new InstantCommand(
+      () -> { reverseModifier*=-1;}
+   );
+ 
+   public Command speedBoost = new RunCommand(
+     () -> {speedMod=controller1.getRawAxis(3)*1.0;}
+   );
+
+   public Command speedOff = new InstantCommand(
+     () -> {speedMod=0;}
+   );
+
+   public static ParallelCommandGroup moveMechanismPID(int preset){
+    return new ParallelCommandGroup(
+      // ElevatorCommands.setElevatorHeight(preset), 
+      // new SetArmAbsolute(preset)
+     );
+   }
+
+
+    /**
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  public static JoystickButton limeLight;
+  private void configureBindings() {
+    //variables 
+    JoystickButton forwardEffector = new JoystickButton(controller1, Constants.RBBUTTON);
+    JoystickButton backwardEffector = new JoystickButton(controller1, Constants.LBBUTTON);
+    limeLight = new JoystickButton(controller1, Constants.ABUTTON);
+    
+    //presets
+    JoystickButton intakeHeight = new JoystickButton(controller2, Constants.BBUTTON);
+    // JoystickButton bottomHeight = new JoystickButton(controller2, Constants.ABUTTON);
+    JoystickButton mediumHeight = new JoystickButton(controller2, Constants.XBUTTON);
+    JoystickButton highHeight = new JoystickButton(controller2, Constants.YBUTTON);
+
+    //stow buttons
+    JoystickButton stow = new JoystickButton(controller2, Constants.LBBUTTON);
+    JoystickButton unstow = new JoystickButton(controller2, Constants.RBBUTTON);
+
+    // JoystickButton cubeSwitch = new JoystickButton(controller2, Constants.RBBUTTON);
+    // JoystickButton coneSwitch = new JoystickButton(controller2, Constants.LBBUTTON);
+
+    Trigger forwardEffector2 = new Trigger(() -> controller2.getRawAxis(3)>0.5);
+    Trigger backwardEffector2 = new Trigger(() -> controller2.getRawAxis(2)>0.5);
+
+    Trigger moveElevatorUp = new Trigger(() -> controller2.getRawAxis(1) > 0.1);//checks whether joystick is either greater than 0.1 or less that -0.1
+    //Trigger moveArm = new Trigger(() -> Math.abs(controller2.getRawAxis(5)) > 0.1);
+    Trigger moveArmUp = new Trigger(() -> controller2.getRawAxis(5) > 0.1 );
+    Trigger moveArmDown = new Trigger(() ->  controller2.getRawAxis(5)< -0.1);
+
+   Trigger moveElevatorDown  = new Trigger(() ->  controller2.getRawAxis(1) < -0.1);
+   Trigger revTrigger = new  Trigger(() -> controller1.getRawAxis(2)>0.5);
+
+   Trigger speed = new Trigger(() -> controller1.getRawAxis(3)>0.1);
+
+    speed.whileTrue(speedBoost);
+
+
+    revTrigger.onTrue(reverse);
+    speed.onFalse(speedOff);
+   
+    //operator presets   
+    // bottomHeight.onTrue(moveMechanismPID(0));
+    mediumHeight.onTrue(moveMechanismPID(1));
+    //mediumHeight.onTrue(ArmCommands.setArmAbsolute(0.5));
+    highHeight.onTrue(moveMechanismPID(5)); //ADD PRESETS
+    // intakeHeight.onTrue(moveMechanismPID(6)); //ADD PRESETS
+
+    // unstow.onTrue(ElevatorCommands.unStowCommand());
+    // stow.onTrue(ElevatorCommands.stowCommand());
+
+    // moveElevatorUp.whileTrue(ElevatorCommands.moveElevator( 0.4 ));
+    // moveElevatorDown.whileTrue(ElevatorCommands.moveElevator(-0.4));
+    // moveElevatorDown.whileFalse(ElevatorCommands.stopElevator());
+    // moveElevatorUp.whileFalse(ElevatorCommands.stopElevator());
+    // moveArmUp.whileTrue(ArmCommands.moveArm(-0.4));
+    // moveArmDown.whileTrue(ArmCommands.moveArm(0.4));
+    // moveArmDown.whileFalse(ArmCommands.stopArm());
+    // moveArmUp.whileFalse(ArmCommands.stopArm());
+
+    // //operator
+    // forwardEffector2.whileTrue(EffectorCommands.effectorForward());
+    // backwardEffector2.whileTrue(EffectorCommands.effectorReverse());
+    // forwardEffector2.onFalse(EffectorCommands.effectorStop());
+    // backwardEffector2.onFalse(EffectorCommands.effectorStop());
+
+    // //driver
+    // forwardEffector.whileTrue(EffectorCommands.effectorForward());
+    // backwardEffector.whileTrue(EffectorCommands.effectorReverse());
+    // forwardEffector.onFalse(EffectorCommands.effectorStop());
+    // backwardEffector.onFalse(EffectorCommands.effectorStop());
   }
 
-  public void periodic() { //FOR CHOREO 1/18/24
-    m_field.setRobotPose(m_robotDrive.getPose());
+
+  private void configureDefaultCommands() {
+    drivetrain.setDefaultCommand(defaultDrive);
+  }
+
+  public Command getAutonomousCommand(){
+    return null;
+    // return AutoCommands.leftAuto();
+    //return AutoCommands.scoreAndMove();
+
+    //return AutoCommands.engageAndScore();
   }
 }
