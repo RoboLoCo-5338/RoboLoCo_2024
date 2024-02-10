@@ -37,6 +37,19 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9;
   public static final int RIGHTSTICKBUTTON = 10;
 
+  //field information
+  public static final double ampHeightBottom = .66; // in meters
+  public static final double ampHeightTop = 1.12; 
+  
+  public static final double speakerHeightBottom = 1.98;
+  public static final double speakerHeightTop = 2.11;
+  
+  public static final double xOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double yOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double armLength = 1.0; //TODO ALSO NOT MEASURED
+
+
+  public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
@@ -55,6 +68,7 @@ public final class Constants {
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
 
+  
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
     // Distance between centers of right and left wheels on robot
