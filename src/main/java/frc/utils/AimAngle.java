@@ -28,7 +28,7 @@ public class AimAngle {
 //        System.out.println("Distance\t\tVelocity\tAngle");
         for (double x = 0; x < 100; x += dx) {
             for (double v = 0; v < 20; v+= dv) {
-                double optimalAngle = getOptimalAngle(v, gravity, x, height);
+                double optimalAngle = getOptimalAngle(v, x, height);
                 if (optimalAngle > 0) {
 //                    System.out.println(formatDouble(x)+"\t\t\t"+formatDouble(v)+"\t\t"+formatDouble(optimalAngle));
                     distances.add(formatDouble(x));
