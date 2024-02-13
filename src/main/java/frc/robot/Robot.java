@@ -17,7 +17,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -27,7 +26,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 /**
@@ -39,7 +37,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private double rotationSpeed;
-  private double forwardSpeed;
+  // private double forwardSpeed;
   private RobotContainer m_robotContainer;
 
   // Constants such as camera and target height stored. Change per robot and goal!
