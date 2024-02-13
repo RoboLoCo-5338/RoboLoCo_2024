@@ -4,74 +4,79 @@
 
 package frc.robot;
 
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoTrajectory;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d; //1/18/24
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.DriveSubsystem;
 
-import java.util.List;
-
-import com.choreo.lib.Choreo; //1/18/24
-import com.choreo.lib.ChoreoTrajectory;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.Commands;
-
-/*
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
+
+
+
 public class RobotContainer {
-  // The robot's subsystems
+  // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public static AHRS navX = new AHRS(SPI.Port.kMXP);
+  public static double percent = 0.3;
+  public static int coneOffset = 0;
 
+  public static int reverseModifier=1;
+  private static double speedMod=0; //not sure what this should be?? 
 
-  // The driver's controller
+  // controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
 // private static Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
 
-ChoreoTrajectory traj; //1/18/24
-Field2d m_field = new Field2d();
+private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  // public static Joystick controller1 = new Joystick(0); //driver
+  // public static Joystick controller2 = new Joystick(1); //operator
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  //   private static XboxController controller3 = new XboxController(0); potential driver controller stuff
+  //   private static XboxController controller4 = new XboxController(1);
+
+  public static JoystickButton limeLight;
+
+  ChoreoTrajectory traj; //1/18/24
+  Field2d m_field = new Field2d();
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
+    // Configure the trigger bindings
     configureButtonBindings();
 
     traj = Choreo.getTrajectory("Trajectory"); //1/18/24
 
     m_field.getObject("traj").setPoses(
-      traj.getInitialPose(), traj.getFinalPose()
-    );
+    traj.getInitialPose(), traj.getFinalPose());
     m_field.getObject("trajPoses").setPoses(
-      traj.getPoses()
-    );
-    // SmartDashboard.putData(m_field);
+      traj.getPoses());
+
+        // SmartDashboard.putData(m_field);
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -167,7 +172,7 @@ Field2d m_field = new Field2d();
     //IntakeCommands.intake(m_operatorController.getRightY());
   }
 
-  /**
+    /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
@@ -190,7 +195,7 @@ Field2d m_field = new Field2d();
     //     new Pose2d(3, 0, new Rotation2d(0)),
     //     config);
 
-    // var thetaController = new ProfiledPIDController(
+    // ProfiledPIDController thetaController = new ProfiledPIDController(
     //     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     // thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -214,7 +219,7 @@ Field2d m_field = new Field2d();
 
     //1/18/24 ---- CHOREO TESTING
 
-    var thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+    PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     m_robotDrive.resetOdometry(traj.getInitialPose());
@@ -247,6 +252,7 @@ Field2d m_field = new Field2d();
       swerveCommand,
       m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, true, true))
   );
+  }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   //   if (ally == DriverStation.Alliance.Red) {
   //     switch (AutoConstants.autoNum){
@@ -272,7 +278,8 @@ Field2d m_field = new Field2d();
   //       return null;
   //   }
   //   return null;
-  }
+  
+  
 
   public void periodic() { //FOR CHOREO 1/18/24
     m_field.setRobotPose(m_robotDrive.getPose());
