@@ -4,38 +4,16 @@
 
 package frc.robot;
 
-import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
-import edu.wpi.first.wpilibj.event.EventLoop;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d; //1/18/24
-import frc.robot.Constants.AutoConstants;
-import frc.robot.commands.AutoCommands;
 import frc.robot.subsystems.Auto;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -51,11 +29,10 @@ public class RobotContainer {
   private static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   public static int reverseModifier=1;
-  private static double speedMod=0; //not sure what this should be?? 
 
   // controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  private static Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
   // public static Joystick controller1 = new Joystick(0); //driver
   // public static Joystick controller2 = new Joystick(1); //operator
 

@@ -24,7 +24,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -39,7 +38,6 @@ import frc.robot.subsystems.Auto;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private double rotationSpeed;
-  private double forwardSpeed;
   private RobotContainer m_robotContainer;
 
   // Constants such as camera and target height stored. Change per robot and goal!
