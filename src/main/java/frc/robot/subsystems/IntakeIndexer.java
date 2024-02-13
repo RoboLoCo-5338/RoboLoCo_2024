@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 
-import frc.robot.Constants;
+// import frc.robot.Constants;
 
 public class IntakeIndexer {
     private CANSparkMax intakeMotor;
@@ -14,7 +14,7 @@ public class IntakeIndexer {
     public RelativeEncoder intakeEncoder;
     public RelativeEncoder indexerEncoder;
 
-    public void IntakeIndexer() {
+    public IntakeIndexer() {
         intakeMotor = new CANSparkMax(0 /*Change Device ID*/, MotorType.kBrushless);
         indexerMotor = new CANSparkMax( 1 /*Change Device ID*/, MotorType.kBrushless);
         intakeEncoder = intakeMotor.getEncoder();
