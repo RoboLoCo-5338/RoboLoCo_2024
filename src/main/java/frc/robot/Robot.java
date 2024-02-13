@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.HashMap;
 
-import java.util.HashMap;
 
 import java.util.Optional;
 
@@ -42,7 +41,6 @@ import frc.robot.Constants.DriveConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private double rotationSpeed;
-  private double forwardSpeed;
   private RobotContainer m_robotContainer;
 
   // Constants such as camera and target height stored. Change per robot and goal!
