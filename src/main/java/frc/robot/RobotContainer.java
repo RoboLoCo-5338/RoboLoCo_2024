@@ -4,15 +4,15 @@
 
 package frc.robot;
 
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoTrajectory;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -26,43 +26,50 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.DriveSubsystem;
 
-import java.util.List;
-
-import com.choreo.lib.Choreo; //1/18/24
-import com.choreo.lib.ChoreoTrajectory;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.Commands;
-
-/*
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
+/**
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
+
+
+
 public class RobotContainer {
   // The robot's subsystems
   private static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
+  public static int reverseModifier=1;
+  private static double speedMod=0; //not sure what this should be?? 
 
-  // The driver's controller
+  // controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
- // XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+  private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  // public static Joystick controller1 = new Joystick(0); //driver
+  // public static Joystick controller2 = new Joystick(1); //operator
 
-private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  //   private static XboxController controller3 = new XboxController(0); potential driver controller stuff
+  //   private static XboxController controller4 = new XboxController(1);
 
-ChoreoTrajectory traj; //1/18/24
-Field2d m_field = new Field2d();
+  public static JoystickButton limeLight;
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  ChoreoTrajectory traj; //1/18/24
+  Field2d m_field = new Field2d();
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
+    // Configure the trigger bindings
     configureButtonBindings();
 
     // traj = Choreo.getTrajectory("Trajectory"); //1/18/24
@@ -88,45 +95,11 @@ Field2d m_field = new Field2d();
     //         m_robotDrive));
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
-   * {@link JoystickButton}.
-   */
   private void configureButtonBindings() {
-    
-
-      
-
-
-
-   // effectorForward.whileFalse(EffectorCommands.effectorStop());
-    // if (m_operatorController.getRightBumperPressed()){
-    //     EffectorCommands.effectorForward();
-    // }
-    // if (m_operatorController.getLeftBumperPressed()){
-    //     EffectorCommands.effectorReverse();
-    // }
-    // if (m_operatorController.getBButtonPressed()){
-    //     HookCommands.moveUp();
-    // }
-    // if (m_operatorController.getXButtonPressed()){
-    //     HookCommands.moveDown();
-    // }
-    // if (m_operatorController.getRightTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterForward();
-    // }
-    // if (m_operatorController.getLeftTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterReverse();
-    // }
-    //IntakeCommands.intake(m_operatorController.getRightY());
+    // TODO fix: limeLight = new JoystickButton(controller1, Constants.ABUTTON);
   }
 
-  /**
+    /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
@@ -149,7 +122,7 @@ Field2d m_field = new Field2d();
     //     new Pose2d(3, 0, new Rotation2d(0)),
     //     config);
 
-    // var thetaController = new ProfiledPIDController(
+    // ProfiledPIDController thetaController = new ProfiledPIDController(
     //     AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     // thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -232,11 +205,13 @@ Field2d m_field = new Field2d();
   //   }
   //   return null;
   return Auto.getAutonomousCommand();
-  }
 
-  public void periodic() { //FOR CHOREO 1/18/24
-    m_field.setRobotPose(m_robotDrive.getPose());
-  }
+   public static ParallelCommandGroup moveMechanismPID(int preset){
+    return new ParallelCommandGroup(
+      // ElevatorCommands.setElevatorHeight(preset), 
+      // new SetArmAbsolute(preset)
+     );
+   }
   public static DriveSubsystem getDriveSystem(){
     return m_robotDrive;
   }
