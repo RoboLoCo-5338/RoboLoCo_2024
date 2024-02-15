@@ -58,7 +58,13 @@ public final class Constants {
   public static final double xOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
   public static final double yOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
   public static final double armLength = 1.0; //TODO ALSO NOT MEASURED
-
+  // Constants such as camera and target height stored. Change per robot and goal!
+  public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
+  public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
+  // Angle between horizontal and the camera.
+  public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+  // How far from the target we want to be
+  // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
 
   public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
@@ -80,14 +86,6 @@ public final class Constants {
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAngularSpeed = Math.PI * 1; // radians per second
-      // Constants such as camera and target height stored. Change per robot and goal!
-    public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
-    public static final double TARGET_HEIGHT_METERS = Units.feetToMeters(2.66);
-    // Angle between horizontal and the camera.
-    public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-    // How far from the target we want to be
-    public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
-
     public static final double kDirectionSlewRate = 10; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)

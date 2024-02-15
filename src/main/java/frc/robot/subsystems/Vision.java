@@ -4,7 +4,7 @@ import org.photonvision.PhotonUtils;
 import edu.wpi.first.math.util.Units;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import frc.robot.Constants.DriveConstants;;
+import frc.robot.Constants;
 
 public class Vision {
     static PhotonCamera camera = new PhotonCamera("Captain Rivets"); //Change the name when needed or things will break
@@ -34,9 +34,9 @@ public class Vision {
         }
         return Double.POSITIVE_INFINITY;
     }
-    public static double distanceFromTarget(){
+    public static double distanceFromTarget(double targetHeight){
         if(hasResults()){
-            return PhotonUtils.calculateDistanceToTargetMeters(DriveConstants.CAMERA_HEIGHT_METERS, DriveConstants.TARGET_HEIGHT_METERS, DriveConstants.CAMERA_PITCH_RADIANS, getTargetPitch(true));
+            return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, targetHeight, Constants.CAMERA_PITCH_RADIANS, getTargetPitch(true));
         }
         else{
             return Double.POSITIVE_INFINITY;
