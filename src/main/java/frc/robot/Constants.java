@@ -52,8 +52,38 @@ public final class Constants {
   public static final double ampHeightBottom = .66; // in meters
   public static final double ampHeightTop = 1.12; 
   
-  public static final double speakerHeightBottom = 1.98;
-  public static final double speakerHeightTop = 2.11;
+  public static final double[] aprilTagHeights = { //These are to the bottom of the AprilTag
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Red Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+  };
+  public static final double[] aprilTagUniqueHeights = { //These are to the bottom of the AprilTag
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Amp
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Stage
+  };
+
+
+  public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
+  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10+7/8);
+  public static final double plasticTagLength = Units.inchesToMeters(10.5);
+  public static final double aluminumTagLength = Units.inchesToMeters(9);
+  public static final double aprilTagLength = Units.inchesToMeters(8+(1/8));
+  
   
   public static final double xOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
   public static final double yOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
