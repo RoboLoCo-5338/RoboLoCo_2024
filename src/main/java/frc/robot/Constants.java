@@ -96,7 +96,7 @@ public final class Constants {
   public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
   // How far from the target we want to be
   // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
-
+  
   public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
   // Height presets.

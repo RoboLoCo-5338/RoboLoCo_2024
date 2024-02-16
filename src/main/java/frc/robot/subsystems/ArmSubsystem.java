@@ -4,17 +4,19 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private CANSparkMax armMotor;
+  private CANSparkBase armMotor;
   public SparkAbsoluteEncoder armEncoder;
   public SparkPIDController armController;
   public double[] armHeights = {0.51,0.85,-4,30,0,0.8};
@@ -26,8 +28,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
-    armMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, MotorType.kBrushless);
-    armEncoder = armMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+    armMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, CANSparkLowLevel.MotorType.kBrushless);
+    armEncoder = armMotor.getAbsoluteEncoder(Type.kDutyCycle);
     armController = armMotor.getPIDController();
     armMotor.setSmartCurrentLimit(40);
 
@@ -60,7 +62,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setArm(double position){
-    armController.setReference(position, CANSparkMax.ControlType.kPosition);
+    armController.setReference(position, CANSparkBase.ControlType.kPosition);
   }
 
   public void moveArm(double speed){
