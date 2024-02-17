@@ -48,6 +48,11 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
 
+
+  public enum RobotTarget {
+    SPEAKER,
+    AMP
+  }
   //field information
   public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
   public static final double pocketHeight=Units.feetToMeters(1)+Units.inchesToMeters(6);

@@ -19,6 +19,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.Vision;
+import frc.utils.ShootingUtils;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -139,7 +140,10 @@ public class RobotContainer {
     if(m_operatorController.getAButtonPressed()){
       turnToTagCommand().execute();
     }
-    
+    if(m_operatorController.getAButtonPressed()){
+      m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
+    }
+   
 
       
 
@@ -282,4 +286,5 @@ public class RobotContainer {
   public DriveSubsystem getDriveSubsystem(){
     return m_robotDrive;
   }
+
 }

@@ -11,8 +11,16 @@ import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.RobotTarget;
+import frc.utils.ShootingUtils;
+// import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
 
@@ -62,12 +70,33 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setArm(double position){
-    armController.setReference(position, CANSparkBase.ControlType.kPosition);
+    armController.setReference(position, CANSparkMax.ControlType.kPosition); // the docs will say that this method is deprecated, but apparently the documentation is wrong
+    //idfk anymore
   }
 
   public void moveArm(double speed){
     armMotor.set(speed);
   }
-
+  public Command doAutoAim(double distance, RobotTarget target){
+    final double ANGULAR_P = 0.1;
+    final double ANGULAR_D = 0.0;
+    final double height;
+    if (target == RobotTarget.SPEAKER){
+      height = Constants.SPEAKER_HEIGHT_METERS;
+    } else {
+      height = Constants.ampHeightBottom;
+    }
+    final double distanceToTarget = Vision.distanceFromTarget(height);
+    final double angleToTag = Vision.getTargetPitch(false);
+    // armMotor.get
+    final double angleCurrent = armMotor.getEncoder().getPosition(); // TODO this could be a wrong way to get angle, we need absoluteEncoder most likely
+    final double angle = ShootingUtils.getOptimalAngle(distance, angleToTag, angleCurrent);
+    
+// ;
+//     return Commands.runOnce(() -> 
+//      armController.setReference() // TODO make it go to angle
+//     );
+      
+}
 
 }

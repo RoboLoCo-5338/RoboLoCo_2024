@@ -1,7 +1,13 @@
 package frc.utils;
 
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
+import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Vision;
 
 public class ShootingUtils {
 
@@ -21,5 +27,6 @@ public class ShootingUtils {
         resultDegree = offsetRadians - Math.atan(fraction);
         return Math.toDegrees(resultDegree);
     }
+  
 
 }
