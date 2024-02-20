@@ -48,6 +48,7 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
 
+<<<<<<< HEAD
 
   public enum RobotTarget {
     SPEAKER,
@@ -105,6 +106,8 @@ public final class Constants {
   
   public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
+=======
+>>>>>>> Arm
   // Height presets.
   public static final int Height = 3;
   public static final int height1 = 1;
@@ -117,6 +120,10 @@ public final class Constants {
   public static final double speed_multi = 0.1;
   public static final double kp = 0.01;
   public static final double min_command = 0.001;
+<<<<<<< HEAD
+=======
+
+>>>>>>> Arm
 
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of

@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+<<<<<<<<< Temporary merge branch 1
+import java.util.HashMap;
 import edu.wpi.first.math.controller.PIDController;
+=========
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -37,7 +40,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private double rotationSpeed;
-  // private double forwardSpeed;
   private RobotContainer m_robotContainer;
 
   // Constants such as camera and target height stored. Change per robot and goal!
@@ -76,8 +78,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // RobotContainer.m_Arm.resetArm();
-    // RobotContainer.m_Elevator.resetElevator();
+    DriveConstants.armHashMap = new HashMap<>(70);
+    
   }
 
   /**
