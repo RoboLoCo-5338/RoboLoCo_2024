@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -24,6 +23,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,7 +36,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  public static final ArmSubsystem m_Arm = new ArmSubsystem();  public static AHRS navX = new AHRS(SPI.Port.kMXP);
+  public static final ArmSubsystem m_Arm = new ArmSubsystem();
   public static double percent = 0.3;
   public static int coneOffset = 0;
 
@@ -44,7 +44,7 @@ public class RobotContainer {
 
   // controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private static Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
   // public static Joystick controller1 = new Joystick(0); //driver
   // public static Joystick controller2 = new Joystick(1); //operator
 
