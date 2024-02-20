@@ -33,6 +33,8 @@ public class ArmSubsystem extends SubsystemBase {
   public static double armI=0.0;
   public static double armD=0.0;
   public static double armFeed_Forward=0.0;
+  public static double angle_to_rotations = 0.159155;
+  public static double rotations_to_angle = 6.2832;
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
@@ -77,26 +79,37 @@ public class ArmSubsystem extends SubsystemBase {
   public void moveArm(double speed){
     armMotor.set(speed);
   }
-  public Command doAutoAim(double distance, RobotTarget target){
+  public Command doAutoAim(RobotTarget target){
+
+
+    // POSSIBLE PROBLEMS
+    // angle is being measured wrong, idk how getPitch() works. It needs to be measured from the horizontal for this to work, which im pretty sure getPitch isn't doing
+    // we have placeholder values rn
+    // im not sure if getAbosluteEncoder is doing things right
+    
+
     final double ANGULAR_P = 0.1;
-    final double ANGULAR_D = 0.0;
+    final double ANGULAR_D = 0.0; // i feel like these should be used somehow
     final double height;
+    final SparkAbsoluteEncoder m_encoder = armMotor.getAbsoluteEncoder();// TODO this could be a wrong way to get angle, idk if its getAbsoluteEncoder or getEncoder
     if (target == RobotTarget.SPEAKER){
       height = Constants.SPEAKER_HEIGHT_METERS;
     } else {
-      height = Constants.ampHeightBottom;
+      height = Constants.AMP_HEIGHT_CENTER; // although im not sure if we're using autoaim for amp so this should never happen
     }
     final double distanceToTarget = Vision.distanceFromTarget(height);
-    final double angleToTag = Vision.getTargetPitch(false);
+    final double angleToTag = Vision.getTargetPitch(true);
     // armMotor.get
-    final double angleCurrent = armMotor.getEncoder().getPosition(); // TODO this could be a wrong way to get angle, we need absoluteEncoder most likely
-    final double angle = ShootingUtils.getOptimalAngle(distance, angleToTag, angleCurrent);
+    final double rotationsCurrent = m_encoder.getPosition(); 
+    final double angleCurrent = rotationsCurrent * rotations_to_angle;
+    final double angle = ShootingUtils.getOptimalAngleRadians(distanceToTarget, angleToTag, angleCurrent);
+    final double rotations = angle * angle_to_rotations;
+    // final double rotations = 0.5;
+    return Commands.runOnce(() -> 
+     armController.setReference(rotations, CANSparkMax.ControlType.kPosition)
+     
+    );
     
-// ;
-//     return Commands.runOnce(() -> 
-//      armController.setReference() // TODO make it go to angle
-//     );
-      
 }
 
 }

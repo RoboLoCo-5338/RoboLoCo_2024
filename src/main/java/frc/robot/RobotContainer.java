@@ -140,7 +140,7 @@ public class RobotContainer {
     if(m_operatorController.getAButtonPressed()){
       turnToTagCommand().execute();
     }
-    if(m_operatorController.getAButtonPressed()){
+    if(m_operatorController.getBButtonPressed()){
       m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
     }
    

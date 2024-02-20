@@ -57,6 +57,7 @@ public final class Constants {
   public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
   public static final double pocketHeight=Units.feetToMeters(1)+Units.inchesToMeters(6);
   public static final double ampHeightTop = ampHeightBottom+pocketHeight; 
+  public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop)/2; 
   
   public static final double[] aprilTagHeights = { //These are to the bottom of the AprilTag
     Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
