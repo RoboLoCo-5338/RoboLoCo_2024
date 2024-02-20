@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAbsoluteEncoder;
@@ -27,7 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkBase armMotor;
   public SparkAbsoluteEncoder armEncoder;
   public SparkPIDController armController;
-  public double[] armHeights = {0.51,0.85,-4,30,0,0.8};
+
 
   public static double armP=0.1;
   public static double armI=0.0;
@@ -35,6 +36,8 @@ public class ArmSubsystem extends SubsystemBase {
   public static double armFeed_Forward=0.0;
   public static double angle_to_rotations = 0.159155;
   public static double rotations_to_angle = 6.2832;
+  public static double GEAR_RATIO = 200;
+
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
@@ -79,6 +82,9 @@ public class ArmSubsystem extends SubsystemBase {
   public void moveArm(double speed){
     armMotor.set(speed);
   }
+  public double getInitialAngle() {
+    return -10; //this is a placeholder
+  }
   public Command doAutoAim(RobotTarget target){
 
 
@@ -91,7 +97,7 @@ public class ArmSubsystem extends SubsystemBase {
     final double ANGULAR_P = 0.1;
     final double ANGULAR_D = 0.0; // i feel like these should be used somehow
     final double height;
-    final SparkAbsoluteEncoder m_encoder = armMotor.getAbsoluteEncoder();// TODO this could be a wrong way to get angle, idk if its getAbsoluteEncoder or getEncoder
+    final RelativeEncoder m_encoder = armMotor.getEncoder();// TODO this could be a wrong way to get angle, idk if its getAbsoluteEncoder or getEncoder
     if (target == RobotTarget.SPEAKER){
       height = Constants.SPEAKER_HEIGHT_METERS;
     } else {
@@ -105,10 +111,12 @@ public class ArmSubsystem extends SubsystemBase {
     final double angle = ShootingUtils.getOptimalAngleRadians(distanceToTarget, angleToTag, angleCurrent);
     final double rotations = angle * angle_to_rotations;
     // final double rotations = 0.5;
-    return Commands.runOnce(() -> 
-     armController.setReference(rotations, CANSparkMax.ControlType.kPosition)
+    return Commands.sequence(
+    Commands.runOnce(() -> 
+     armController.setReference((rotations+getInitialAngle())*GEAR_RATIO, CANSparkMax.ControlType.kPosition)
      
-    );
+    ));
+   
     
 }
 

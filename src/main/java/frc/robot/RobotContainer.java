@@ -136,39 +136,24 @@ public class RobotContainer {
       );
     }
   }
+  
   private void configureButtonBindings() {
-    if(m_operatorController.getAButtonPressed()){
-      turnToTagCommand().execute();
-    }
-    if(m_operatorController.getBButtonPressed()){
-      m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
+    if (Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband && !m_operatorController.getBButton()) {
+      m_Arm.stopArm();
+    } else if (Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband) {
+        m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
+    } else if (m_operatorController.getBButton()) {
+      // turnToTagCommand().execute();
+      // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute(); uncomment later
+      m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
     }
    
+   
+    // check if joystick and buttons are NOT being pressed
+    // if they aren't being pressed, set speed to zero
+    // elsewise, take input from joystick and buttons
 
-      
 
-
-
-   // effectorForward.whileFalse(EffectorCommands.effectorStop());
-    // if (m_operatorController.getRightBumperPressed()){
-    //     EffectorCommands.effectorForward();
-    // }
-    // if (m_operatorController.getLeftBumperPressed()){
-    //     EffectorCommands.effectorReverse();
-    // }
-    // if (m_operatorController.getBButtonPressed()){
-    //     HookCommands.moveUp();
-    // }
-    // if (m_operatorController.getXButtonPressed()){
-    //     HookCommands.moveDown();
-    // }
-    // if (m_operatorController.getRightTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterForward();
-    // }
-    // if (m_operatorController.getLeftTriggerAxis() > 0.1){
-    //     ShooterCommands.shooterReverse();
-    // }
-    //IntakeCommands.intake(m_operatorController.getRightY());
   }
 
     /**
