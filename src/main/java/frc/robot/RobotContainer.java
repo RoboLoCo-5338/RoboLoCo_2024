@@ -25,7 +25,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -49,8 +51,8 @@ public class RobotContainer {
   public static int reverseModifier=1;
 
   // controllers
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
- XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
 // private static Joystick m_operatorController = new Joystick(OIConstants.kOperatorControllerPort);
   // public static Joystick controller1 = new Joystick(0); //driver
@@ -143,15 +145,24 @@ public class RobotContainer {
   }
   
   private void configureButtonBindings() {
-    if (Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband && !m_operatorController.getBButton()) {
-      m_Arm.stopArm();
-    } else if (Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband) {
-        m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
-    } else if (m_operatorController.getBButton()) {
-      // turnToTagCommand().execute();
-      // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute(); uncomment later
-      m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
-    }
+    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
+    
+    stopArm.whileTrue(Commands.runOnce(() -> {
+       m_Arm.stopArm();
+    }));
+   
+    //TODO - make triggers properly work
+    // the code below is commeted out because it only runs once, on robot start up. You need command-based stuff for it to work all the time.
+
+    // if (Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband && !m_operatorController.getBButton()) {
+    //   m_Arm.stopArm();
+    // } else if (Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband) {
+    //     m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
+    // } else if (m_operatorController.getBButton()) {
+    //   // turnToTagCommand().execute();
+    //   // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute(); uncomment later
+    //   m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
+    // }
    
    
     // check if joystick and buttons are NOT being pressed
