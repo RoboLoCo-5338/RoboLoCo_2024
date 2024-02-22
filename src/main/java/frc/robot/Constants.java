@@ -92,9 +92,10 @@ public final class Constants {
   public static final double aprilTagLength = Units.inchesToMeters(8+(1/8));
   
   
-  public static final double xOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
-  public static final double yOffsetFromCameraToPivot = 1.0; //TODO THIS IS NOT MEASURED YET
-  public static final double armLength = 1.0; //TODO ALSO NOT MEASURED
+  public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double ARM_LENGTH = 1.0; //TODO ALSO NOT MEASURED
   // Constants such as camera and target height stored. Change per robot and goal!
   public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
   public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);

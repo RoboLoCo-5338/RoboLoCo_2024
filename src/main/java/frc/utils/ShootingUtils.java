@@ -19,9 +19,9 @@ public class ShootingUtils {
 
     public static double getOptimalAngleRadians(double distanceToTag, double angleToTag, double angleCurrent) {
         double resultDegree;
-        double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.armLength * Math.sin(angleCurrent)) + DISTANCE_TAG_TO_SPEAKER;
+        double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.ARM_LENGTH * Math.sin(angleCurrent)) + DISTANCE_TAG_TO_SPEAKER;
         double xDistance = distanceToTag*Math.cos(angleToTag);
-        double denominator = xDistance + Constants.xOffsetFromCameraToPivot + (Constants.armLength * angleCurrent);
+        double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT + (Constants.ARM_LENGTH * angleCurrent);
         double fraction = numerator/denominator;
         double offsetRadians = OFFSET_ANGLE_DEGREES;
         resultDegree = offsetRadians - Math.atan(fraction);
@@ -29,9 +29,9 @@ public class ShootingUtils {
     }
     public static double getOptimalAngleDegrees(double distanceToTag, double angleToTag, double angleCurrent) {
         double resultDegree;
-        double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.armLength * Math.sin( Math.toRadians(angleCurrent) )) + DISTANCE_TAG_TO_SPEAKER;
+        double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.ARM_LENGTH * Math.sin( Math.toRadians(angleCurrent) )) + DISTANCE_TAG_TO_SPEAKER;
         double xDistance = distanceToTag*Math.cos(Math.toRadians(angleToTag));
-        double denominator = xDistance + Constants.xOffsetFromCameraToPivot + (Constants.armLength * Math.cos( Math.toRadians(angleCurrent) ));
+        double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT + (Constants.ARM_LENGTH * Math.cos( Math.toRadians(angleCurrent) ));
         double fraction = numerator/denominator;
         double offsetRadians = OFFSET_ANGLE_DEGREES;
         resultDegree = offsetRadians - Math.atan(fraction);

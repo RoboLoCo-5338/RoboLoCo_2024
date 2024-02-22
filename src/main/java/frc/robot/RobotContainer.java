@@ -47,7 +47,7 @@ public class RobotContainer {
   public static final ArmSubsystem m_Arm = new ArmSubsystem();  public static AHRS navX = new AHRS(SPI.Port.kMXP);
   public static double percent = 0.3;
   public static int coneOffset = 0;
-
+  public static double ARM_SPEED = 0.5;
   public static int reverseModifier=1;
 
   // controllers
@@ -146,28 +146,26 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
-    
+    Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband); 
+    Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
     stopArm.whileTrue(Commands.runOnce(() -> {
        m_Arm.stopArm();
     }));
+    moveArm.whileTrue(Commands.runOnce(() -> {
+      m_Arm.moveArm(m_operatorController.getLeftY() * ARM_SPEED);
+    }));
+    autoAim.whileTrue(Commands.runOnce(() -> {
+      // turnToTagCommand().execute();
+      // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
+      m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
+    }));
    
-    //TODO - make triggers properly work
-    // the code below is commeted out because it only runs once, on robot start up. You need command-based stuff for it to work all the time.
-
-    // if (Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband && !m_operatorController.getBButton()) {
-    //   m_Arm.stopArm();
-    // } else if (Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband) {
-    //     m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
-    // } else if (m_operatorController.getBButton()) {
-    //   // turnToTagCommand().execute();
-    //   // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute(); uncomment later
-    //   m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
-    // }
    
    
     // check if joystick and buttons are NOT being pressed
     // if they aren't being pressed, set speed to zero
     // elsewise, take input from joystick and buttons
+    // joystick > buttons
 
 
   }
