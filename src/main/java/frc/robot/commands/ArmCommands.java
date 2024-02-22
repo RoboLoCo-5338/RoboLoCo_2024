@@ -11,6 +11,9 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 
 
+// I BELIEVE THIS CLASS IS ENTIRELY USELESS BUT I COULD BE WRONG
+// 2/22/2024
+
 public class ArmCommands  {
 
   /** Creates a new ArmCommands. */
@@ -19,14 +22,14 @@ public class ArmCommands  {
   }
 
   // Move arm to preset height and stop when the height is reached.
-  public static Command setArm(int preset){
-    return new FunctionalCommand(
-      () -> {},
-      () -> RobotContainer.m_Arm.setArm(preset),
-      (interrupt) -> RobotContainer.m_Arm.stopArm(),
-      () -> Math.abs(RobotContainer.m_Arm.armHeights[preset]-RobotContainer.m_Arm.getArmPosition()) <= 3,
-      RobotContainer.m_Arm);
-  }
+  // public static Command setArm(int preset){
+  //   return new FunctionalCommand(
+  //     () -> {},
+  //     () -> RobotContainer.m_Arm.setArm(preset),
+  //     (interrupt) -> RobotContainer.m_Arm.stopArm(),
+  //     () -> Math.abs(RobotContainer.m_Arm.armHeights[preset]-RobotContainer.m_Arm.getArmPosition()) <= 3,
+  //     RobotContainer.m_Arm);
+  // }
 
   // public static Command setArmAbsolute(double setpoint) {
   //   return new PIDCommand(

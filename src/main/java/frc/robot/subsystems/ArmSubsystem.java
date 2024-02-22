@@ -78,7 +78,12 @@ public class ArmSubsystem extends SubsystemBase {
     armController.setReference(position, CANSparkMax.ControlType.kPosition); // the docs will say that this method is deprecated, but apparently the documentation is wrong
     //idfk anymore
   }
+  public void intakeInward() {
 
+  }
+  public void intakeOutward() {
+    
+  }
   public void moveArm(double speed){
     armMotor.set(speed);
   }

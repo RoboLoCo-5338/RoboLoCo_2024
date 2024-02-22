@@ -147,6 +147,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
     Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband); 
+    Trigger intakeIn = new Trigger(m_operatorController.rightBumper()); 
+    Trigger intakeOut = new Trigger(m_operatorController.leftBumper()); 
     Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
     stopArm.whileTrue(Commands.runOnce(() -> {
        m_Arm.stopArm();
@@ -158,6 +160,12 @@ public class RobotContainer {
       // turnToTagCommand().execute();
       // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
       m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
+    }));
+    intakeIn.whileTrue(Commands.runOnce(() -> {
+      m_Arm.intakeInward();
+    }));
+    intakeOut.whileTrue(Commands.runOnce(() -> {
+      m_Arm.intakeOutward();
     }));
    
    
