@@ -86,9 +86,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public void moveArm(double speed){
     intakeMotor.set(speed);
   }
-  public double getInitialAngle() {
-    return -10; //this is a placeholder
-  }
- 
+
 
 }
