@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
@@ -29,6 +30,14 @@ public class ArmSubsystem extends SubsystemBase {
   public SparkAbsoluteEncoder armEncoder;
   public SparkPIDController armController;
 
+  private CANSparkBase feedMotor;
+  public SparkAbsoluteEncoder feedEncoder;
+  public SparkPIDController feedController;
+
+  private CANSparkBase shootMotor;
+  public SparkAbsoluteEncoder shootEncoder;
+  public SparkPIDController shootController;
+
 
   public static double armP=0.1;
   public static double armI=0.0;
@@ -45,6 +54,17 @@ public class ArmSubsystem extends SubsystemBase {
     armEncoder = armMotor.getAbsoluteEncoder(Type.kDutyCycle);
     armController = armMotor.getPIDController();
     armMotor.setSmartCurrentLimit(40);
+    
+    feedMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, CANSparkLowLevel.MotorType.kBrushless);
+    feedEncoder = feedMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    feedController = armMotor.getPIDController();
+    feedMotor.setSmartCurrentLimit(40);
+
+    shootMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, CANSparkLowLevel.MotorType.kBrushless);
+    shootMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); // TODO it could also be kForward
+    shootEncoder = armMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    shootController = armMotor.getPIDController();
+    shootMotor.setSmartCurrentLimit(40);
 
     configController();
   }
@@ -78,17 +98,20 @@ public class ArmSubsystem extends SubsystemBase {
     armController.setReference(position, CANSparkMax.ControlType.kPosition); // the docs will say that this method is deprecated, but apparently the documentation is wrong
     //idfk anymore
   }
-  public void intakeInward() {
 
+  public void shootOut() {
+    feedMotor.set(0.5);
+    shootMotor.set(0.5);
   }
-  public void intakeOutward() {
-    
+  public void shootIn() {
+    feedMotor.set(-0.5);
+    shootMotor.set(-0.5);
   }
   public void moveArm(double speed){
     armMotor.set(speed);
   }
   public double getInitialAngle() {
-    return -10; //this is a placeholder
+    return 0; //this is a placeholder
   }
   public Command doAutoAim(RobotTarget target){
 
@@ -99,8 +122,7 @@ public class ArmSubsystem extends SubsystemBase {
     // im not sure if getAbosluteEncoder is doing things right
     
 
-    final double ANGULAR_P = 0.1;
-    final double ANGULAR_D = 0.0; // i feel like these should be used somehow
+
     final double height;
     final RelativeEncoder m_encoder = armMotor.getEncoder();// TODO this could be a wrong way to get angle, idk if its getAbsoluteEncoder or getEncoder
     if (target == RobotTarget.SPEAKER){
@@ -114,15 +136,20 @@ public class ArmSubsystem extends SubsystemBase {
     final double rotationsCurrent = m_encoder.getPosition(); 
     final double angleCurrent = rotationsCurrent * rotations_to_angle;
     final double angle = ShootingUtils.getOptimalAngleRadians(distanceToTarget, angleToTag, angleCurrent);
-    final double rotations = angle * angle_to_rotations;
+    
+
     // final double rotations = 0.5;
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float) (Math.toRadians(135)*rotations_to_angle*GEAR_RATIO)); //SOFT LIMIT
     return Commands.sequence(
     Commands.runOnce(() -> 
-     armController.setReference((rotations+getInitialAngle())*GEAR_RATIO, CANSparkMax.ControlType.kPosition)
+     armController.setReference(getAngle(angle), CANSparkMax.ControlType.kPosition)
      
     ));
-   
-    
+  
 }
+  public double getAngle(double rotations) {
 
+      return (rotations)*GEAR_RATIO;
+  }
+    
 }

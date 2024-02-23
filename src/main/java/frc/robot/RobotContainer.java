@@ -17,6 +17,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.Vision;
 import frc.utils.ShootingUtils;
@@ -45,6 +46,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public static final ArmSubsystem m_Arm = new ArmSubsystem();  public static AHRS navX = new AHRS(SPI.Port.kMXP);
+  public static final IntakeSubsystem m_Intake = new IntakeSubsystem();
   public static double percent = 0.3;
   public static int coneOffset = 0;
   public static double ARM_SPEED = 0.5;
@@ -147,9 +149,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
     Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband); 
-    Trigger intakeIn = new Trigger(m_operatorController.rightBumper()); 
-    Trigger intakeOut = new Trigger(m_operatorController.leftBumper()); 
+    Trigger intakeIn = new Trigger(m_operatorController.rightTrigger()); 
+    Trigger intakeOut = new Trigger(m_operatorController.leftTrigger()); 
     Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
+    Trigger shootOut = new Trigger(m_operatorController.rightBumper());
+    Trigger shootIn = new Trigger(m_operatorController.leftBumper());
     stopArm.whileTrue(Commands.runOnce(() -> {
        m_Arm.stopArm();
     }));
@@ -162,10 +166,16 @@ public class RobotContainer {
       m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
     }));
     intakeIn.whileTrue(Commands.runOnce(() -> {
-      m_Arm.intakeInward();
+      m_Intake.intakeInward();
     }));
     intakeOut.whileTrue(Commands.runOnce(() -> {
-      m_Arm.intakeOutward();
+      m_Intake.intakeOutward();
+    }));
+    shootOut.whileTrue(Commands.runOnce(() -> {
+      m_Arm.shootOut();
+    }));
+    shootIn.whileTrue(Commands.runOnce(() -> {
+      m_Arm.shootIn();
     }));
    
    
