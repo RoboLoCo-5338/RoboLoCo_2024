@@ -40,10 +40,9 @@ public class Vision {
         return camera.getLatestResult().getBestTarget();
     }
     public static Optional<Pose3d> getPoseRelativeToAprilTag() {
-        if (hasResults()) { //im trying to find a way to get the 3d pose difference between the speaker april tag and the robot. the docs say
-            // its possible but ITS SO FRICKING VAGUE AHHHH
+        if (hasResults()) { 
             PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
-            if (target.getFiducialId() == 7 && target.getFiducialId() == 4) {
+            if (target.getFiducialId() == 7 || target.getFiducialId() == 4) {
                 Pose3d tagPose = aprilTagFieldLayout.getTagPose(target.getFiducialId()).get();
                 Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(), tagPose, robotToCam);
                 Pose3d difference = tagPose.relativeTo(robotPose);
