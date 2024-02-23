@@ -204,7 +204,8 @@ public class RobotContainer {
   //       return null;
   //   }
   //   return null;
-  return Auto.getAutonomousCommand();
+    return Auto.getAutonomousCommand();
+  }
 
    public static ParallelCommandGroup moveMechanismPID(int preset){
     return new ParallelCommandGroup(
