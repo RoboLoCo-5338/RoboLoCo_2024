@@ -162,11 +162,11 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 1;
 
     // CHANGE CAN IDS of the Subsystems pls
-    public static final int kArmCanId1 = -15;
+    public static final int kArmCanId1 = 15;
     public static final int kArmCanId2 = 14;
-    public static final int kShooter1CanId = -1;
-    public static final int kShooter2CanId = -1;
-    public static final int kIntakeIndexCanId = -1;
+    public static final int kShooter1CanId = 11;
+    public static final int kShooter2CanId = 12;
+    public static final int kIntakeIndexCanId = 16;
 
     public static final boolean kGyroReversed = true;
 
