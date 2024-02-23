@@ -109,12 +109,12 @@ public class RobotContainer {
     // intakeOut.whileTrue(Commands.runOnce(() -> {
     //   m_Intake.intakeOutward();
     // }));
-    // shootOut.whileTrue(Commands.runOnce(() -> {
-    //   m_Arm.shootOut();
-    // }));
-    // shootIn.whileTrue(Commands.runOnce(() -> {
-    //   m_Arm.shootIn();
-    // }));
+    shootOut.whileTrue(Commands.runOnce(() -> {
+      m_shooter.shooterForward();
+    }));
+    shootIn.whileTrue(Commands.runOnce(() -> {
+      m_shooter.shooterReverse();
+    }));
    
    
    
