@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -45,6 +47,64 @@ public final class Constants {
   public static final int STARTBUTTON = 8; 
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
+  public static final double SUBWOOFER_SHOT_ANGLE = -1; // TODO figure out
+
+  public enum RobotTarget {
+    SPEAKER,
+    AMP
+  }
+  //field information
+  public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
+  public static final double pocketHeight=Units.feetToMeters(1)+Units.inchesToMeters(6);
+  public static final double ampHeightTop = ampHeightBottom+pocketHeight; 
+  public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop)/2; 
+  
+  public static final double[] aprilTagHeights = { //These are to the bottom of the AprilTag
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Red Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+  };
+  public static final double[] aprilTagUniqueHeights = { //These are to the bottom of the AprilTag
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Amp
+    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Stage
+  };
+
+
+  public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
+  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10+7/8);
+  public static final double plasticTagLength = Units.inchesToMeters(10.5);
+  public static final double aluminumTagLength = Units.inchesToMeters(9);
+  public static final double aprilTagLength = Units.inchesToMeters(8+(1/8));
+  
+  
+  public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
+  public static final double ARM_LENGTH = 1.0; //TODO ALSO NOT MEASURED
+  // Constants such as camera and target height stored. Change per robot and goal!
+  public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
+  public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
+  // Angle between horizontal and the camera.
+  public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+  // How far from the target we want to be
+  // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
+  
+  public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
   // Height presets.
   public static final int Height = 3;
@@ -62,13 +122,13 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAngularSpeed = Math.PI * 1.5; // radians per second
-
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAngularSpeed = Math.PI * 1; // radians per second
     public static final double kDirectionSlewRate = 10; // radians per second
     public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
-
+    // public static final double kIntakeSpeed = 2.0;
+    
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
     // Distance between centers of right and left wheels on robot
@@ -79,8 +139,12 @@ public final class Constants {
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-
+    // public static final double speed_multi = 0.1;
+    // public static final double kp = 0.01;
+    // public static final double min_command = 0.001;
+    
     // Angular offsets of the modules relative to the chassis in radians
+    
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
@@ -98,12 +162,15 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 1;
 
     // CHANGE CAN IDS of the Subsystems pls
-    public static final int kArmCanId = -1;
+    public static final int kArmCanId1 = -15;
+    public static final int kArmCanId2 = 14;
     public static final int kShooter1CanId = -1;
     public static final int kShooter2CanId = -1;
     public static final int kIntakeIndexCanId = -1;
 
     public static final boolean kGyroReversed = true;
+
+    public static HashMap<Double,String> armHashMap;
   }
 
   public static final class ModuleConstants {
@@ -169,8 +236,8 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
+    public static final double kPXController = 0.01;
+    public static final double kPYController = 0.01;
     public static final double kPThetaController = 1;
 
 
