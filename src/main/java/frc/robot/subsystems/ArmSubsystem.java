@@ -14,32 +14,43 @@ import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private CANSparkMax armMotor;
-  public SparkAbsoluteEncoder armEncoder;
-  public SparkPIDController armController;
+  private CANSparkMax armMotor1;
+  private CANSparkMax armMotor2;
+  public SparkAbsoluteEncoder armEncoder1;
+  public SparkPIDController armController1;
+  public SparkAbsoluteEncoder armEncoder2;
+  public SparkPIDController armController2;
   public double[] armHeights = {0.51,0.85,-4,30,0,0.8};
 
-  public static double armP=0.1;
-  public static double armI=0.0;
-  public static double armD=0.0;
-  public static double armFeed_Forward=0.0;
+  public static double armP = 0.1;
+  public static double armI = 0.0;
+  public static double armD = 0.0;
+  public static double armFeed_Forward = 0.0;
 
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
-    armMotor = new CANSparkMax(Constants.DriveConstants.kArmCanId, MotorType.kBrushless);
-    armEncoder = armMotor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
-    armController = armMotor.getPIDController();
-    armMotor.setSmartCurrentLimit(40);
+    armMotor1 = new CANSparkMax(Constants.DriveConstants.kArmCanId1, MotorType.kBrushless);
+    armMotor2 = new CANSparkMax(Constants.DriveConstants.kArmCanId2, MotorType.kBrushless);
+    armEncoder1 = armMotor1.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+    armController1 = armMotor1.getPIDController();
+    armEncoder2 = armMotor2.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.kDutyCycle);
+    armController2 = armMotor2.getPIDController();
+    armMotor1.setSmartCurrentLimit(40);
+    armMotor2.setSmartCurrentLimit(40);
 
     configController();
   }
 
-  private void configController(){
+  private void configController() {
     // PID config for the arm
-    armController.setP(armP);
-    armController.setI(armI);
-    armController.setD(armD);
-    armController.setFF(armFeed_Forward);
+    armController1.setP(armP);
+    armController1.setI(armI);
+    armController1.setD(armD);
+    armController1.setFF(armFeed_Forward);
+    armController2.setP(armP);
+    armController2.setI(armI);
+    armController2.setD(armD);
+    armController2.setFF(armFeed_Forward);
   }
 
   @Override
@@ -51,20 +62,22 @@ public class ArmSubsystem extends SubsystemBase {
   //   armEncoder.setPosition(0);
   // }
 
-  public double getArmPosition(){
-    return armEncoder.getPosition();
+  public double getArmPosition() {
+    return armEncoder1.getPosition();
   }
 
-  public void stopArm(){
-    armMotor.set(0);
+  public void stopArm() {
+    armMotor1.set(0);
+    armMotor2.set(0);
   }
 
-  public void setArm(double position){
-    armController.setReference(position, CANSparkMax.ControlType.kPosition);
-  }
-
-  public void moveArm(double speed){
-    armMotor.set(speed);
+  public void setArm(double position) {
+    armController1.setReference(position, CANSparkMax.ControlType.kPosition);
+    armController2.setReference(-position, CANSparkMax.ControlType.kPosition); // TODO This may not work check the position
+ }
+  public void moveArm(double speed) {
+    armMotor1.set(speed);
+    armMotor2.set(-speed);
   }
 
 

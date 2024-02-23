@@ -101,7 +101,8 @@ public final class Constants {
     public static final int kRearRightTurningCanId = 1;
 
     // CHANGE CAN IDS of the Subsystems pls
-    public static final int kArmCanId = -1;
+    public static final int kArmCanId1 = -1;
+    public static final int kArmCanId2 = -1;
     public static final int kShooter1CanId = -1;
     public static final int kShooter2CanId = -1;
     public static final int kIntakeIndexCanId = -1;
