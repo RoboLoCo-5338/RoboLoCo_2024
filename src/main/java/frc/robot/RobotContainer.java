@@ -16,15 +16,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +34,8 @@ import frc.robot.subsystems.DriveSubsystem;
 
 
 public class RobotContainer {
+  public static ArmSubsystem m_Arm=new ArmSubsystem();
+  public static Shooter m_shooter = new Shooter();
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public static AHRS navX = new AHRS(SPI.Port.kMXP);
@@ -43,18 +43,16 @@ public class RobotContainer {
   public static int coneOffset = 0;
 
   public static int reverseModifier=1;
-  private static double speedMod=0; //not sure what this should be?? 
 
   // controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private static Joystick controller2 = new Joystick(OIConstants.kOperatorControllerPort);
+  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
   // public static Joystick controller1 = new Joystick(0); //driver
   // public static Joystick controller2 = new Joystick(1); //operator
 
   //   private static XboxController controller3 = new XboxController(0); potential driver controller stuff
   //   private static XboxController controller4 = new XboxController(1);
 
-  public static JoystickButton limeLight;
 
   ChoreoTrajectory traj; //1/18/24
   Field2d m_field = new Field2d();
@@ -86,9 +84,48 @@ public class RobotContainer {
             m_robotDrive));
   }
 
-  private void configureButtonBindings() {
-    // TODO fix: limeLight = new JoystickButton(controller1, Constants.ABUTTON);
+ private void configureButtonBindings() {
+    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
+    Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband); 
+    Trigger intakeIn = new Trigger(m_operatorController.rightTrigger()); 
+    Trigger intakeOut = new Trigger(m_operatorController.leftTrigger()); 
+    Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
+    Trigger shootOut = new Trigger(m_operatorController.rightBumper());
+    Trigger shootIn = new Trigger(m_operatorController.leftBumper());
+    stopArm.whileTrue(Commands.runOnce(() -> {
+       m_Arm.stopArm();
+    }));
+    moveArm.whileTrue(Commands.runOnce(() -> {
+      m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
+    }));
+    autoAim.whileTrue(Commands.runOnce(() -> {
+      // turnToTagCommand().execute();
+      // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
+      m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
+    }));
+    // intakeIn.whileTrue(Commands.runOnce(() -> {
+    //   m_Intake.intakeInward();
+    // }));
+    // intakeOut.whileTrue(Commands.runOnce(() -> {
+    //   m_Intake.intakeOutward();
+    // }));
+    shootOut.whileTrue(Commands.runOnce(() -> {
+      m_shooter.shooterForward();
+    }));
+    shootIn.whileTrue(Commands.runOnce(() -> {
+      m_shooter.shooterReverse();
+    }));
+   
+   
+   
+    // check if joystick and buttons are NOT being pressed
+    // if they aren't being pressed, set speed to zero
+    // elsewise, take input from joystick and buttons
+    // joystick > buttons
+
+
   }
+
 
     /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

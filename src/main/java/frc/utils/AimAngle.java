@@ -47,6 +47,7 @@ public class AimAngle {
             br.newLine();
             br.write(distances.get(i) + "," + velocities.get(i) + "," + angles.get(i));
         }
+        br.close();
         System.out.println("Done!");
     }
 
