@@ -96,6 +96,7 @@ public class RobotContainer {
     stopArm.whileTrue(Commands.runOnce(() -> {
        m_Arm.stopArm();
     }));
+    
     moveArm.whileTrue(Commands.runOnce(() -> {
       m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
     }));
