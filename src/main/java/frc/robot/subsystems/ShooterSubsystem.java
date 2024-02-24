@@ -6,11 +6,11 @@ import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Shooter extends SubsystemBase{
+public class ShooterSubsystem extends SubsystemBase{
     private CANSparkMax shootMotor1;
     private CANSparkMax shootMotor2;
 
-    public Shooter() {
+    public ShooterSubsystem() {
         shootMotor1 = new CANSparkMax(Constants.DriveConstants.kShooter1CanId,MotorType.kBrushless);
         shootMotor2 = new CANSparkMax(Constants.DriveConstants.kShooter2CanId,MotorType.kBrushless);
     }

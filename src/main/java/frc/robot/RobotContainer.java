@@ -25,6 +25,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,7 +38,7 @@ import frc.robot.subsystems.*;
 
 public class RobotContainer {
   public static ArmSubsystem m_Arm=new ArmSubsystem();
-  public static Shooter m_shooter = new Shooter();
+  public static ShooterSubsystem m_shooter = new ShooterSubsystem();
   public static IntakeSubsystem m_Intake = new IntakeSubsystem();
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
