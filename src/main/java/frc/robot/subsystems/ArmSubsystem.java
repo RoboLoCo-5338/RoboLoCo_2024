@@ -20,7 +20,6 @@ public class ArmSubsystem extends SubsystemBase {
   public SparkPIDController armController1;
   public SparkAbsoluteEncoder armEncoder2;
   public SparkPIDController armController2;
-  public double[] armHeights = {0.51,0.85,-4,30,0,0.8};
 
   public static double armP = 0.1;
   public static double armI = 0.0;
