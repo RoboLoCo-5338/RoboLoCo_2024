@@ -208,7 +208,7 @@ public class RobotContainer {
     //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
     //     swerveCommand,
     //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
-    return AutoCommands.runTrajectory("StraightLine");
+    return Auto.getAutonomousCommand();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {
