@@ -104,12 +104,12 @@ public class RobotContainer {
       // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
       m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
     }));
-    // intakeIn.whileTrue(Commands.runOnce(() -> {
-    //   m_Intake.intakeInward();
-    // }));
-    // intakeOut.whileTrue(Commands.runOnce(() -> {
-    //   m_Intake.intakeOutward();
-    // }));
+    intakeIn.whileTrue(Commands.runOnce(() -> {
+      m_Intake.intakeInward();
+    }));
+    intakeOut.whileTrue(Commands.runOnce(() -> {
+      m_Intake.intakeOutward();
+    }));
     shootOut.whileTrue(Commands.runOnce(() -> {
       m_shooter.shooterForward();
     }));
