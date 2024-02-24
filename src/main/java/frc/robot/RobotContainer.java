@@ -36,6 +36,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   public static ArmSubsystem m_Arm=new ArmSubsystem();
   public static Shooter m_shooter = new Shooter();
+  public static IntakeSubsystem m_Intake = new IntakeSubsystem();
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   public static AHRS navX = new AHRS(SPI.Port.kMXP);
