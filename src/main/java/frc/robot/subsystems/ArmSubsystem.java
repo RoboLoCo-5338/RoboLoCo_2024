@@ -78,6 +78,4 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor1.set(speed);
     armMotor2.set(-speed);
   }
-
-
 }
