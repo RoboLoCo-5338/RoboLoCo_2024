@@ -26,6 +26,10 @@ public class AutoCommands {
       return null;
       //Add code
     }
+    public static Command dumbAuto() {
+      return runTrajectory("DumbTraj");
+    }
+
     public static Command midRed(){
       return runTrajectory("NewPath");
     }

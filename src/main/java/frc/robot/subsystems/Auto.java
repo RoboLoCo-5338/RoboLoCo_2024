@@ -96,30 +96,31 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      Optional<Alliance> ally = DriverStation.getAlliance();
-        if (ally.get() == Alliance.Red) {
-          switch (autoNum){
-            case 1:
-              return AutoCommands.leftRed();
-            case 2:
-              return AutoCommands.midRed();
-            case 3:
-              return AutoCommands.rightRed();
-          }
-        }
-        else if (ally.get() == Alliance.Blue) {
-          switch (autoNum){
-            case 1:
-              return AutoCommands.leftBlue();
-            case 2:
-              return AutoCommands.midBlue();
-            case 3:
-              return AutoCommands.rightBlue();
-          }
-        }
-        else {
-            return null;
-        }
-        return null;
-      }
+      return AutoCommands.dumbAuto(); // just for week 0, gets out of spawn
+      // Optional<Alliance> ally = DriverStation.getAlliance();
+      //   if (ally.get() == Alliance.Red) {
+      //     switch (autoNum){
+      //       case 1:
+      //         return AutoCommands.leftRed();
+      //       case 2:
+      //         return AutoCommands.midRed();
+      //       case 3:
+      //         return AutoCommands.rightRed();
+      //     }
+      //   }
+      //   else if (ally.get() == Alliance.Blue) {
+      //     switch (autoNum){
+      //       case 1:
+      //         return AutoCommands.leftBlue();
+      //       case 2:
+      //         return AutoCommands.midBlue();
+      //       case 3:
+      //         return AutoCommlands.rightBlue();
+      //     }
+      //   }
+      //   else {
+      //       return null;
+      //   }
+      //   return null;
+      // }
 }
