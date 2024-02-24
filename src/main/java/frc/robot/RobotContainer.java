@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,7 +36,7 @@ import frc.robot.subsystems.*;
 
 public class RobotContainer {
   public static ArmSubsystem m_Arm=new ArmSubsystem();
-  public static Shooter m_shooter = new Shooter();
+  public static ShooterSubsystem m_shooter = new ShooterSubsystem();
   public static IntakeSubsystem m_Intake = new IntakeSubsystem();
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
@@ -105,17 +106,29 @@ public class RobotContainer {
       // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
       m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
     }));
+
     intakeIn.whileTrue(Commands.runOnce(() -> {
-      m_Intake.intakeInward();
+      IntakeCommands.moveIntakeIn();
     }));
+
     intakeOut.whileTrue(Commands.runOnce(() -> {
-      m_Intake.intakeOutward();
+      IntakeCommands.moveIntakeOut();
     }));
+
+    intakeIn.negate().and(intakeOut.negate()).whileTrue(Commands.runOnce(() -> {
+      IntakeCommands.moveIntakeOut();
+    }));
+
     shootOut.whileTrue(Commands.runOnce(() -> {
-      m_shooter.shooterForward();
+      ShooterCommands.shooterForward();
     }));
+
     shootIn.whileTrue(Commands.runOnce(() -> {
-      m_shooter.shooterReverse();
+      ShooterCommands.shooterReverse();
+    }));
+
+    shootOut.negate().and(shootIn.negate()).whileTrue(Commands.runOnce(() ->{
+      ShooterCommands.shooterStop();
     }));
    
    
