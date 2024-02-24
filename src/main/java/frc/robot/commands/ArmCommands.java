@@ -21,9 +21,9 @@ public class ArmCommands  {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public static Command moveArm() {
+  public static Command moveArm(double speed) {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.moveArm(0.2),
+      () -> RobotContainer.m_Arm.moveArm(speed),
       RobotContainer.m_Arm
     );
   }

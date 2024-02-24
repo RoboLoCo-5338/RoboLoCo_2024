@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ArmCommands;
+import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
 
 /**
@@ -87,36 +89,21 @@ public class RobotContainer {
 
  private void configureButtonBindings() {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kDriveDeadband).and(m_operatorController.b().negate());
-    Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband); 
+    stopArm.whileTrue(ArmCommands.stopArm());
+
+    Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kDriveDeadband);
+    moveArm.whileTrue(ArmCommands.moveArm(0.3));
+    
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger()); 
     Trigger intakeOut = new Trigger(m_operatorController.leftTrigger()); 
     Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
     Trigger shootOut = new Trigger(m_operatorController.rightBumper());
     Trigger shootIn = new Trigger(m_operatorController.leftBumper());
-    stopArm.whileTrue(Commands.runOnce(() -> {
-       m_Arm.stopArm();
-    }));
-    moveArm.whileTrue(Commands.runOnce(() -> {
-      m_Arm.moveArm(m_operatorController.getLeftY() * 0.5);
-    }));
-    autoAim.whileTrue(Commands.runOnce(() -> {
+
+
       // turnToTagCommand().execute();
       // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();
-      m_Arm.setArm(Constants.SUBWOOFER_SHOT_ANGLE);
-    }));
-    intakeIn.whileTrue(Commands.runOnce(() -> {
-      m_Intake.intakeInward();
-    }));
-    intakeOut.whileTrue(Commands.runOnce(() -> {
-      m_Intake.intakeOutward();
-    }));
-    shootOut.whileTrue(Commands.runOnce(() -> {
-      m_shooter.shooterForward();
-    }));
-    shootIn.whileTrue(Commands.runOnce(() -> {
-      m_shooter.shooterReverse();
-    }));
-   
+
    
    
     // check if joystick and buttons are NOT being pressed
