@@ -84,6 +84,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
+      m_Arm.setDefaultCommand(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
   }
 
   private void configureButtonBindings() {
@@ -91,9 +92,9 @@ public class RobotContainer {
     //     .and(m_operatorController.b().negate());
     // stopArm.whileTrue(ArmCommands.stopArm());
 
-    Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kArmDeadband);
-    moveArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
-    moveArm.onFalse(ArmCommands.stopArm());
+    // Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kArmDeadband);
+    // moveArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
+    // moveArm.onFalse(ArmCommands.stopArm());
 
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
     intakeIn.whileTrue(IntakeCommands.moveIntakeIn());
