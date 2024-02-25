@@ -54,7 +54,7 @@ public class RobotContainer {
   // driver controller stuff
   // private static XboxController controller4 = new XboxController(1);
 
-  ChoreoTrajectory traj; // 1/18/24
+  //ChoreoTrajectory traj; // 1/18/24
   Field2d m_field = new Field2d();
 
   /**
@@ -64,12 +64,12 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureButtonBindings();
 
-    traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
+    // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
 
-    m_field.getObject("traj").setPoses(
-        traj.getInitialPose(), traj.getFinalPose());
-    m_field.getObject("trajPoses").setPoses(
-        traj.getPoses());
+    // m_field.getObject("traj").setPoses(
+    //     traj.getInitialPose(), traj.getFinalPose());
+    // m_field.getObject("trajPoses").setPoses(
+    //     traj.getPoses());
 
     // SmartDashboard.putData(m_field);
 
