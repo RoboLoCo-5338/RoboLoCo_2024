@@ -28,11 +28,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void intakeOut() {
-        intakeMotor.set(0.3);
+        intakeMotor.set(0.6);
     }
 
     public void intakeIn() {
-        intakeMotor.set(-0.3);
+        intakeMotor.set(-0.7);
     }
 
     public void stopIndexer() {
@@ -40,11 +40,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void indexerIn() {
-        indexerMotor.set(0.3);
+        indexerMotor.set(-0.4);
     }
 
     public void indexerOut() {
-        indexerMotor.set(-0.3);
+        indexerMotor.set(0.3);
     }
 
     public void stopIntakeIndexer() {
