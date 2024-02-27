@@ -80,13 +80,13 @@ public class ArmSubsystem extends SubsystemBase {
  }
 
  public void moveArmUp(){
-    armMotor1.set(-0.2);
-    armMotor2.set(0.2);
+    armMotor1.set(-0.4);
+    armMotor2.set(0.4);
  }
 
   public void moveArmDown(){
-    armMotor1.set(0.2);
-    armMotor2.set(-0.2);
+    armMotor1.set(0.4);
+    armMotor2.set(-0.4);
  }
   
   
