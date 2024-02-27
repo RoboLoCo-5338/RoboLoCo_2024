@@ -1,11 +1,20 @@
 package frc.robot.commands;
 
 
+import java.sql.Driver;
+
+import org.ejml.equation.Function;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 
 public class ShooterCommands {
+
+  public static double startTime;
 
     public static Command shooterReverse() {
       return new InstantCommand(
@@ -29,5 +38,12 @@ public class ShooterCommands {
       );
     }
 
+    public static Command runShooterForwardTimed(double time){
+       //new FunctionalCommand()
+      return new FunctionalCommand(() -> {
+        RobotContainer.m_shooter.shooterStop();
+        startTime = DriverStation.getMatchTime();
+      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> DriverStation.getMatchTime()-time>startTime, RobotContainer.m_shooter);
+    }
 
 }
