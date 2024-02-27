@@ -9,6 +9,7 @@ import com.choreo.lib.ChoreoTrajectory;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -84,16 +85,24 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
-      m_Arm.setDefaultCommand(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
+      
   }
 
   private void configureButtonBindings() {
-    // Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband)
-    //     .and(m_operatorController.b().negate());
-    // stopArm.whileTrue(ArmCommands.stopArm());
+    // Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
+    // stopArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
+    //    // .and(m_operatorController.b().negate());
+    // stopArm.onFalse(ArmCommands.stopArm());
 
-    // Trigger moveArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) > OIConstants.kArmDeadband);
-    // moveArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
+    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
+    moveArmUp.whileTrue(ArmCommands.moveArmUp());
+    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY()< -OIConstants.kArmDeadband);
+    moveArmDown.whileTrue(ArmCommands.moveArmDown());
+    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
+    stopArm.whileTrue(ArmCommands.stopArm());
+
+    // Trigger moveArm = new Trigger( m_driverController.rightTrigger());
+    // moveArm.whileTrue(ArmCommands.moveArm());
     // moveArm.onFalse(ArmCommands.stopArm());
 
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
@@ -209,7 +218,7 @@ public class RobotContainer {
     //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
     //     swerveCommand,
     //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
-    return Auto.getAutonomousCommand();
+    return null;
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {

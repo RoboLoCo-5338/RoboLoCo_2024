@@ -27,7 +27,7 @@ public class IntakeCommands  {
   // }
 
 
-// command to set speed for arm
+//command to set speed for arm
   public static Command moveIntakeIn(){
     return new InstantCommand(
       () -> RobotContainer.m_Intake.inIntakeIndexer(),
@@ -49,6 +49,9 @@ public class IntakeCommands  {
       RobotContainer.m_Intake
     );
   }
+
+  
+
 
 
 

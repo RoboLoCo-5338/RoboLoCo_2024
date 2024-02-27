@@ -20,7 +20,7 @@ public class Auto {
         SmartDashboard.putData("Auto Choices", m_chooser);
     }
     public static void autoSelect(){
-        autoNum=m_chooser.getSelected();
+      //  autoNum=m_chooser.getSelected();
     }
     public static Command getAutonomousCommand() {
         // // Create config for trajectory

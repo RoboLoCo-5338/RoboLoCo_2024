@@ -15,7 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.hardware.Pigeon2;
+//import com.kauailabs.navx.frc.AHRS;
 
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
@@ -44,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  private final AHRS m_gyro = new AHRS();
+  private final Pigeon2 m_gyro = new Pigeon2(0);
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
