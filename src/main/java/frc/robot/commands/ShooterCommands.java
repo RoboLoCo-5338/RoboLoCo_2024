@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-
+//shresta made up errors
 public class ShooterCommands {
 
   public static long startTime;
@@ -38,12 +38,11 @@ public class ShooterCommands {
       );
     }
 
-    public static Command runShooterForwardTimed(long time){
+    public static Command runShooterForwardTimed(double d){
        //new FunctionalCommand()
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();
         startTime = System.currentTimeMillis();
-      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> System.currentTimeMillis()-time<startTime, RobotContainer.m_shooter);
+      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> System.currentTimeMillis()-d>startTime, RobotContainer.m_shooter);
     }
-
 }

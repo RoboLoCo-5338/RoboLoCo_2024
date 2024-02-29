@@ -7,11 +7,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
 
 public class IntakeCommands  {
+
+  public static double startTime;
 
   /** Creates a new ArmCommands. */
   // Move arm to preset height and stop when the height is reached.
@@ -50,9 +53,11 @@ public class IntakeCommands  {
     );
   }
 
-  
-
-
-
-
+  public static Command runIndexerInTime(double d){
+       //new FunctionalCommand()
+      return new FunctionalCommand(() -> {
+        RobotContainer.m_Intake.stopIntake();
+        startTime = System.currentTimeMillis();
+      },() -> RobotContainer.m_Intake.indexerIn(),interrupted -> RobotContainer.m_Intake.stopIndexer(), () -> System.currentTimeMillis()-d>startTime, RobotContainer.m_Intake);
+    }
 }

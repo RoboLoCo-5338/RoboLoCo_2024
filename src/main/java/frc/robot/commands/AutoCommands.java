@@ -15,6 +15,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.RobotContainer;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.choreo.lib.Choreo; //1/18/24
@@ -43,19 +44,20 @@ public class AutoCommands {
     //   //Add code
     // }
     public static Command left(){
-      return runTrajectory("top_blue_leave");
+      return runTrajectory("Blue_Pos1_Preloaded",0);
+
       //Add code
     }
     public static Command mid(){
-       return runTrajectory("middle_blue_leave");
+       return runTrajectory("Blue_Pos2_Preloaded",0);
       //Add code
     }
     public static Command right(){
-      return runTrajectory("bottom_blue_leave");
+      return runTrajectory("Blue_Pos3_Preloaded",0);
       //Add code
     }
-    public static Command runTrajectory(String name){
-      traj = Choreo.getTrajectory(name); //1/18/24
+    public static Command runTrajectory(String name, int trajNum){
+      traj = Choreo.getTrajectoryGroup(name).get(trajNum); //1/18/24
 
       m_field.getObject("traj").setPoses(
       traj.getInitialPose(), traj.getFinalPose()
@@ -103,8 +105,8 @@ public class AutoCommands {
     public static Command shootAuto(){
  
       return new InstantCommand(
-        () -> ShooterCommands.runShooterForwardTimed(1000),RobotContainer.m_shooter
+        () -> ShooterCommands.runShooterForwardTimed(2.0),RobotContainer.m_shooter
       );
       
-    }
+    }//no easter eggs
 }
