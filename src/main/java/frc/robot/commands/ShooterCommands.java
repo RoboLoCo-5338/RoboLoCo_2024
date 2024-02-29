@@ -38,7 +38,7 @@ public class ShooterCommands {
       );
     }
 
-    public static Command runShooterForwardTimed(double d){
+    public static Command runShooterForwardTimed(long d){
        //new FunctionalCommand()
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();

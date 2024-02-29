@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
-
 public class IntakeCommands  {
 
   public static double startTime;
@@ -53,7 +52,14 @@ public class IntakeCommands  {
     );
   }
 
-  public static Command runIndexerInTime(double d){
+  public static Command runIndexerInTime(long d){
+       //new FunctionalCommand()
+      return new FunctionalCommand(() -> {
+        RobotContainer.m_Intake.stopIntake();
+        startTime = System.currentTimeMillis();
+      },() -> RobotContainer.m_Intake.indexerIn(),interrupted -> RobotContainer.m_Intake.stopIndexer(), () -> System.currentTimeMillis()-d>startTime, RobotContainer.m_Intake);
+    }
+  public static Command runIntakeInTime(long d){
        //new FunctionalCommand()
       return new FunctionalCommand(() -> {
         RobotContainer.m_Intake.stopIntake();

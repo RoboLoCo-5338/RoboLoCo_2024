@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.Optional;
 
+import javax.swing.GroupLayout.ParallelGroup;
+
 import org.photonvision.EstimatedRobotPose;
 // import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -27,7 +29,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.Auto;
 
@@ -112,8 +119,17 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    Auto.autoSelect();
-    m_autonomousCommand = ShooterCommands.runShooterForwardTimed(1000);
+    //Auto.autoSelect();
+
+    m_autonomousCommand = new SequentialCommandGroup(new ParallelCommandGroup(
+      ShooterCommands.runShooterForwardTimed(3000),
+      new SequentialCommandGroup(
+        new WaitCommand(1.0),
+        IntakeCommands.runIndexerInTime(1000)
+      )
+    ), RobotContainer.getAutonomousCommand());
+
+   // m_autonomousCommand = ShooterCommands.runShooterForwardTimed(2000);
 
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

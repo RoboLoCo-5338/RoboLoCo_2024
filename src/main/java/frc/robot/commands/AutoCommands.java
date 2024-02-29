@@ -116,7 +116,7 @@ public class AutoCommands {
     public static Command shootAuto(){
  
       return new InstantCommand(
-        () -> ShooterCommands.runShooterForwardTimed(2.0),RobotContainer.m_shooter
+        () -> ShooterCommands.runShooterForwardTimed(2000),RobotContainer.m_shooter
       );
       
     }//no easter eggs
