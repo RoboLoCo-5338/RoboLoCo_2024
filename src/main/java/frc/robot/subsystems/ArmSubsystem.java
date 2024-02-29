@@ -23,6 +23,8 @@ public class ArmSubsystem extends SubsystemBase {
   public RelativeEncoder armEncoder1;
   //public SparkPIDController armController1;
   public RelativeEncoder armEncoder2;
+  private static final double radians_per_rotation = 2 * Math.PI;
+  private static final double rotations_per_radians = 1/radians_per_rotation;
   //public SparkPIDController armController2;
 
   // public static double armP = 0.1;
@@ -75,9 +77,12 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setArm(double position) {
-    //armController1.setReference(position, CANSparkMax.ControlType.kPosition);
-    //armController2.setReference(-position, CANSparkMax.ControlType.kPosition); // TODO This may not work check the position
- }
+    armMotor2.getPIDController().setReference(position, CANSparkMax.ControlType.kPosition);
+    armMotor2.getPIDController().setReference(-position, CANSparkMax.ControlType.kPosition); // TODO This may not work check the position
+  }
+  public void setArmRadians(double position) {
+    setArm(position * rotations_per_radians);
+  }
 
  public void moveArmUp(){
     armMotor1.set(-0.4);

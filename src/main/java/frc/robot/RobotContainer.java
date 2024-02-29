@@ -42,12 +42,13 @@ public class RobotContainer {
   public static ArmSubsystem m_Arm = new ArmSubsystem();
   public static ShooterSubsystem m_shooter = new ShooterSubsystem();
   public static IntakeSubsystem m_Intake = new IntakeSubsystem();
+  public static AutoAimSubsystem m_AutoAim = new AutoAimSubsystem();
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // controllers
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public static CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
   // public static Joystick controller1 = new Joystick(0); //driver
   // public static Joystick controller2 = new Joystick(1); //operator
 
@@ -87,7 +88,7 @@ public class RobotContainer {
             m_robotDrive));
       
   }
-
+  
   private void configureButtonBindings() {
     // Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
     // stopArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
@@ -113,8 +114,8 @@ public class RobotContainer {
     intakeOut.whileTrue(IntakeCommands.moveIntakeOut());
     intakeOut.onFalse(IntakeCommands.stopIntake());
 
-    // Trigger autoAim = new Trigger(m_operatorController.b()).and(moveArm.negate());
-    // autoAim.whileTrue(ArmCommands.setArm());
+    Trigger autoAim = new Trigger(m_operatorController.b());
+    autoAim.whileTrue(AutoAimCommands.autoAim());
 
     Trigger shootOut = new Trigger(m_operatorController.rightBumper());
     shootOut.whileTrue(ShooterCommands.shooterForward());

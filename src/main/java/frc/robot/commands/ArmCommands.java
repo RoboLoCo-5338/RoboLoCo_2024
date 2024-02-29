@@ -44,7 +44,7 @@ public class ArmCommands  {
       RobotContainer.m_Arm
     );
   }
-
+ 
     public static Command stopArm() {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.stopArm(),
