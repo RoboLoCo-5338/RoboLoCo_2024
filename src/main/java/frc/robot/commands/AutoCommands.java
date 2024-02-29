@@ -44,16 +44,27 @@ public class AutoCommands {
     //   //Add code
     // }
     public static Command left(){
-      return runTrajectory("Blue_Pos1_Preloaded",0);
-
+      // return runTrajectory("Blue_Pos1_Preloaded",0);
+      return Commands.sequence(
+        runTrajectory("Blue_Pos1_Preloaded",0), 
+        shootAuto()
+      );
       //Add code
     }
     public static Command mid(){
-       return runTrajectory("Blue_Pos2_Preloaded",0);
+      //  return runTrajectory("Blue_Pos2_Preloaded",0);
+      return Commands.sequence(
+        runTrajectory("Blue_Pos2_Preloaded",0), 
+        shootAuto()
+      );
       //Add code
     }
     public static Command right(){
-      return runTrajectory("Blue_Pos3_Preloaded",0);
+      // return runTrajectory("Blue_Pos3_Preloaded",0);
+      return Commands.sequence(
+        runTrajectory("Blue_Pos3_Preloaded",0), 
+        shootAuto()
+      );
       //Add code
     }
     public static Command runTrajectory(String name, int trajNum){
