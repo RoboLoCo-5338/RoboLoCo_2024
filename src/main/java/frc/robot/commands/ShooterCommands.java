@@ -14,7 +14,7 @@ import frc.robot.RobotContainer;
 
 public class ShooterCommands {
 
-  public static double startTime;
+  public static long startTime;
 
     public static Command shooterReverse() {
       return new InstantCommand(
@@ -38,12 +38,12 @@ public class ShooterCommands {
       );
     }
 
-    public static Command runShooterForwardTimed(double time){
+    public static Command runShooterForwardTimed(long time){
        //new FunctionalCommand()
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();
-        startTime = DriverStation.getMatchTime();
-      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> DriverStation.getMatchTime()-time>startTime, RobotContainer.m_shooter);
+        startTime = System.currentTimeMillis();
+      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> DriverStation.getMatchTime()-time<startTime, RobotContainer.m_shooter);
     }
 
 }
