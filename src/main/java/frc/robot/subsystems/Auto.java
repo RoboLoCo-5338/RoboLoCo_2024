@@ -20,7 +20,7 @@ public class Auto {
         SmartDashboard.putData("Auto Choices", m_chooser);
     }
     public static void autoSelect(){
-      //  autoNum=m_chooser.getSelected();
+       autoNum=m_chooser.getSelected();
     }
     public static Command getAutonomousCommand() {
         // // Create config for trajectory
@@ -97,30 +97,14 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      Optional<Alliance> ally = DriverStation.getAlliance();
-        if (ally.get() == Alliance.Red) {
-          switch (autoNum){
-            case 1:
-              return AutoCommands.leftRed();
-            case 2:
-              return AutoCommands.midRed();
-            case 3:
-              return AutoCommands.rightRed();
-          }
-        }
-        else if (ally.get() == Alliance.Blue) {
-          switch (autoNum){
-            case 1:
-              return AutoCommands.leftBlue();
-            case 2:
-              return AutoCommands.midBlue();
-            case 3:
-              return AutoCommands.rightBlue();
-          }
-        }
-        else {
-            return null;
-        }
-        return null;
+      switch (autoNum){
+        case 1:
+          return AutoCommands.left();
+        case 2:
+            return AutoCommands.mid();
+        case 3:
+            return AutoCommands.right();
       }
+      return null;
+    }
 }
