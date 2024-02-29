@@ -43,7 +43,7 @@ public class ShooterCommands {
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();
         startTime = System.currentTimeMillis();
-      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> DriverStation.getMatchTime()-time<startTime, RobotContainer.m_shooter);
+      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> System.currentTimeMillis()-time<startTime, RobotContainer.m_shooter);
     }
 
 }
