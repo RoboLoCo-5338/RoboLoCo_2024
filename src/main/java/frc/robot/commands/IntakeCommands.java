@@ -56,7 +56,7 @@ public class IntakeCommands  {
     return new FunctionalCommand(() -> {
       RobotContainer.m_Intake.stopIntakeIndexer();
       startTime = System.currentTimeMillis();
-    },() -> RobotContainer.m_Intake.inIntakeIndexer(),interrupted -> RobotContainer.m_Intake.inIntakeIndexer(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_Intake);
+    },() -> RobotContainer.m_Intake.inIntakeIndexer(),interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_Intake);
   }
 
 

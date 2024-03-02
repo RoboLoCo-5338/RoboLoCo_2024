@@ -117,7 +117,7 @@ public class AutoCommands {
       return new SequentialCommandGroup(
         shootAuto(),
           new ParallelCommandGroup(
-            runTrajectory("blue_middle_start"),
+            runTrajectory("blue_middle_start1"),
             IntakeCommands.runIntakeForwardTimed(1000)
           ),
         runTrajectory("blue_middle_end"),
