@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
@@ -102,9 +103,25 @@ public class AutoCommands {
 
     public static Command shootAuto(){
  
-      return new InstantCommand(
-        () -> ShooterCommands.runShooterForwardTimed(1000),RobotContainer.m_shooter
+
+      return new ParallelCommandGroup(
+        ShooterCommands.runShooterForwardTimed(1500),
+        new SequentialCommandGroup(new WaitCommand(0.75), 
+        IntakeCommands.runIntakeForwardTimed(750))
       );
+     
       
+    }
+    
+    public static Command blueMiddleTwoNoteAuto(){
+      return new SequentialCommandGroup(
+        shootAuto(),
+          new ParallelCommandGroup(
+            runTrajectory("blue_middle_start"),
+            IntakeCommands.runIntakeForwardTimed(1000)
+          ),
+        runTrajectory("blue_middle_end"),
+        shootAuto()
+      );
     }
 }
