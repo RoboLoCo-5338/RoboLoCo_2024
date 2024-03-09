@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Auto.autoSelect();
-    m_autonomousCommand = ShooterCommands.runShooterForwardTimed(1000);
+    m_autonomousCommand = Auto.returnChoreoCommand("straightline1.5m");
 
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

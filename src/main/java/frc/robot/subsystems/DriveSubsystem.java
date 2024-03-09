@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix6.hardware.Pigeon2;
 //import com.kauailabs.navx.frc.AHRS;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -178,9 +179,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed;
+    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.5:1.0);
+    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.5:1.0);
+    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed*(RobotContainer.slowMode?0.5:1.0);
 
     SmartDashboard.putNumber("XSpeedDelivered", xSpeedDelivered);
     SmartDashboard.putNumber("YSpeedDelivered", ySpeedDelivered);
