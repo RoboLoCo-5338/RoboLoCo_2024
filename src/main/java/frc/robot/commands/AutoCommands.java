@@ -113,16 +113,9 @@ public class AutoCommands {
       
     }
     
-    public static Command blueMiddleTwoNoteAuto(){
-
-     return new SequentialCommandGroup(
-         shootAuto(),
-          new ParallelCommandGroup(
-            runTrajectory("blue_middle_start")
-      // //       IntakeCommands.runIntakeForwardTimed(1000)
-      // //     ),
-      // //   runTrajectory("blue_middle_end"),
-      // //   shootAuto()
-        ));
+    public static Command straightlinetest(){
+      return new SequentialCommandGroup(
+        runTrajectory("straightline1.5m")
+      );
     }
 }

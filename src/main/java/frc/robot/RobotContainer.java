@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -46,6 +47,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
+  public static boolean slowMode = false;
+
   // controllers
   public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   public static CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -66,12 +69,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureButtonBindings();
 
-    // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
-
-    // m_field.getObject("traj").setPoses(
-    //     traj.getInitialPose(), traj.getFinalPose());
-    // m_field.getObject("trajPoses").setPoses(
-    //     traj.getPoses());
+    
 
     // SmartDashboard.putData(m_field);
 
@@ -81,12 +79,16 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY() , OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
       
+  }
+
+  public Command makeRobotSlow(){
+    return new InstantCommand(() -> { slowMode= !slowMode;});
   }
   
   private void configureButtonBindings() {
@@ -94,6 +96,11 @@ public class RobotContainer {
     // stopArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
     //    // .and(m_operatorController.b().negate());
     // stopArm.onFalse(ArmCommands.stopArm());
+
+
+    Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
+    makeRobotSlow.onTrue(makeRobotSlow());
+    makeRobotSlow.onFalse(makeRobotSlow());
 
     Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
@@ -219,7 +226,7 @@ public class RobotContainer {
     //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
     //     swerveCommand,
     //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
-    return null;
+    return AutoCommands.straightlinetest();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {
