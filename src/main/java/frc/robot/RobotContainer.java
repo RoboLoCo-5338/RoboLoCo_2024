@@ -109,6 +109,10 @@ public class RobotContainer {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
+    Trigger ampArm = new Trigger(m_operatorController.y());
+    ampArm.onTrue(ArmCommands.setArm(0.75));
+    Trigger climbArm = new Trigger(m_operatorController.b());
+    climbArm.onTrue(ArmCommands.setArm(0.25));
     // Trigger moveArm = new Trigger( m_driverController.rightTrigger());
     // moveArm.whileTrue(ArmCommands.moveArm());
     // moveArm.onFalse(ArmCommands.stopArm());
