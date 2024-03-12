@@ -98,6 +98,9 @@ public class RobotContainer {
     // stopArm.onFalse(ArmCommands.stopArm());
 
 
+    Trigger logitechCamera = new Trigger(m_operatorController.a()); // Change operatorcontroller to drivercontroller if needed and change the button if needed
+    logitechCamera.whileTrue(CameraSubsystem.turnToNote());
+
     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
     makeRobotSlow.onTrue(makeRobotSlow());
     makeRobotSlow.onFalse(makeRobotSlow());
