@@ -127,9 +127,6 @@ public class RobotContainer {
     Trigger autoAim = new Trigger(m_operatorController.b());
     autoAim.whileTrue(AutoAimCommands.autoAim());
 
-    // Trigger turnToNote = new Trigger(m_operatorController.x()); //untested turn to note stuff
-    // turnToNote.whileTrue(CameraSubsystem.turnToNote());
-
 
     Trigger shootOut = new Trigger(m_operatorController.rightBumper());
     shootOut.whileTrue(ShooterCommands.shooterForward());
