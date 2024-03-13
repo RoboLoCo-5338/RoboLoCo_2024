@@ -32,6 +32,7 @@ import frc.robot.commands.AutoCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.Auto;
+import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Auto.autoSelect();
-    m_autonomousCommand = Auto.returnChoreoCommand("straightline1.5m");
+    m_autonomousCommand = AutoCommands.straightlinetest();
 
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -142,7 +143,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
+
+
   public void teleopPeriodic() {
+
+    SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
+    SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
+    
+    
+   //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
     // SmartDashboard.putString("Dino Rivets ftw","HELLO");
     
     // SmartDashboard.putNumber("Elevator Position Periodic", RobotContainer.m_Elevator.getElevatorPosition());

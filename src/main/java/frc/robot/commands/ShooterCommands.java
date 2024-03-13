@@ -25,6 +25,13 @@ public class ShooterCommands {
       );
     }
 
+      public static Command shooterReverseSlow() {
+      return new InstantCommand(
+        () -> RobotContainer.m_shooter.shooterReverseSlow(),
+        RobotContainer.m_shooter
+      );
+    }
+
     public static Command shooterForward() {
       return new InstantCommand(
         () -> RobotContainer.m_shooter.shooterForward(),

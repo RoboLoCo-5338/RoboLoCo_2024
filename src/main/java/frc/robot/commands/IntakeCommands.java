@@ -36,6 +36,12 @@ public class IntakeCommands  {
       );
   }
 
+  public static Command moveIndexerInFast(){
+    return new InstantCommand(
+      () -> RobotContainer.m_Intake.indexerInFast(),
+      RobotContainer.m_Intake);
+  }
+
   // Command bindings for arm and elevator methods.
   public static Command moveIntakeOut(){
     return new InstantCommand(

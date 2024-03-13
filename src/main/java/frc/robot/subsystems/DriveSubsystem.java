@@ -25,22 +25,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
-  private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
+  public final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
       DriveConstants.kFrontLeftChassisAngularOffset);
 
-  private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
+  public final MAXSwerveModule m_frontRight = new MAXSwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
       DriveConstants.kFrontRightChassisAngularOffset);
 
-  private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
+  public final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
       DriveConstants.kRearLeftDrivingCanId,
       DriveConstants.kRearLeftTurningCanId,
       DriveConstants.kBackLeftChassisAngularOffset);
 
-  private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
+  public final MAXSwerveModule m_rearRight = new MAXSwerveModule(
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
@@ -129,6 +129,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("XSpeed", xSpeed);
     SmartDashboard.putNumber("YSpeed", ySpeed);
+    SmartDashboard.putNumber("rotation rate", rot);
 
     if (rateLimit) {
       // Convert XY to polar for rate limiting
@@ -179,9 +180,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     // Convert the commanded speeds into the correct units for the drivetrain
-    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.5:1.0);
-    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.5:1.0);
-    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed*(RobotContainer.slowMode?0.5:1.0);
+    double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.6:1.0);
+    double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.6:1.0);
+    double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed*(RobotContainer.slowMode?0.6:1.0);
 
     SmartDashboard.putNumber("XSpeedDelivered", xSpeedDelivered);
     SmartDashboard.putNumber("YSpeedDelivered", ySpeedDelivered);

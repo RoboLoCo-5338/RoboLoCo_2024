@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -28,6 +30,7 @@ import frc.robot.commands.ArmCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -69,7 +72,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureButtonBindings();
 
-    
+    DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
 
     // SmartDashboard.putData(m_field);
 
@@ -100,7 +104,6 @@ public class RobotContainer {
 
     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
     makeRobotSlow.onTrue(makeRobotSlow());
-    makeRobotSlow.onFalse(makeRobotSlow());
 
     Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
@@ -109,6 +112,10 @@ public class RobotContainer {
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
+    Trigger moveIndexerFast = new Trigger(() -> m_operatorController.getRightY()<-OIConstants.kArmDeadband);
+    moveIndexerFast.onTrue(IntakeCommands.moveIndexerInFast());
+    moveIndexerFast.onFalse(IntakeCommands.stopIntake());
+
     // Trigger moveArm = new Trigger( m_driverController.rightTrigger());
     // moveArm.whileTrue(ArmCommands.moveArm());
     // moveArm.onFalse(ArmCommands.stopArm());
@@ -116,6 +123,7 @@ public class RobotContainer {
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
     intakeIn.whileTrue(IntakeCommands.moveIntakeIn());
     intakeIn.onFalse(IntakeCommands.stopIntake());
+   
 
     Trigger intakeOut = new Trigger(m_operatorController.leftTrigger());
     intakeOut.whileTrue(IntakeCommands.moveIntakeOut());
