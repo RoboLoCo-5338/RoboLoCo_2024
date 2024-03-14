@@ -13,11 +13,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 
+/**
+ * class for shooter commands
+ */
 public class ShooterCommands {
 
   private static long startTime;
 
   
+    /**
+     * @return Returns a command to spin the shooter backwards
+     */
     public static Command shooterReverse() {
       return new InstantCommand(
         () -> RobotContainer.m_shooter.shooterReverse(),
@@ -25,6 +31,9 @@ public class ShooterCommands {
       );
     }
 
+    /**
+     * @return Returns a command to spin the shooter forwards
+     */
     public static Command shooterForward() {
       return new InstantCommand(
         () -> RobotContainer.m_shooter.shooterForward(),
@@ -33,6 +42,9 @@ public class ShooterCommands {
 
     }
 
+    /**
+     * @return Returns a command to stop the shooter
+     */
     public static Command shooterStop() {
       return new InstantCommand(
         () -> RobotContainer.m_shooter.shooterStop(),
@@ -40,6 +52,10 @@ public class ShooterCommands {
       );
     }
 
+    /**
+     * @param time time to spin in milliseconds
+     * @return Command to run the shooter forward for a given duration
+     */
     public static Command runShooterForwardTimed(long time){
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();

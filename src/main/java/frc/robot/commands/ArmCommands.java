@@ -15,14 +15,20 @@ public class ArmCommands  {
   public ArmCommands() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  /**
+   * Moves the arm up
+   * @return A command to move the arm up
+   */
   public static Command moveArmUp() {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.moveArmUp(),
       RobotContainer.m_Arm
     );
   }
-
+  /**
+   * Moves the arm down
+   * @return A command to move the arm down
+   */
     public static Command moveArmDown() {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.moveArmDown(),
@@ -30,21 +36,31 @@ public class ArmCommands  {
     );
   }
 
-
+  /**
+   * Gets the arm position in rotations
+   * @return Position of arm in rotations
+   */
   public static Command getArmPosition() {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.getArmPosition(),
       RobotContainer.m_Arm
     );
   }
-  
+  /**
+   * Moves the position of the arm in rotations
+   * @param position Position of the arm in rotations
+   * @return Command to move the position of the arm
+   */  
   public static Command setArm(double position) {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.setArm(position),
       RobotContainer.m_Arm
     );
   }
- 
+  /**
+   * Stops the arm
+   * @return A command to stop the arm
+   */
     public static Command stopArm() {
     return new InstantCommand(
       () -> RobotContainer.m_Arm.stopArm(),

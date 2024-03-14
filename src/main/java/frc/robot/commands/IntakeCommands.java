@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
-
+/**
+ * Creates a new IntakeCommands
+ */
 public class IntakeCommands  {
 
   /** Creates a new ArmCommands. */
@@ -29,21 +31,30 @@ public class IntakeCommands  {
 
   private static long startTime;
 //command to set speed for arm
+/**
+ * Spin intake and indexer in
+ * @return Returns command to spin intake and indexer in
+ */
   public static Command moveIntakeIn(){
     return new InstantCommand(
       () -> RobotContainer.m_Intake.inIntakeIndexer(),
       RobotContainer.m_Intake
       );
   }
-
-  // Command bindings for arm and elevator methods.
+  /**
+  * Command to spin the intake and indexer
+  * @return Command to spin intake and indexer out
+  */
   public static Command moveIntakeOut(){
     return new InstantCommand(
       () -> RobotContainer.m_Intake.outIntakeIndexer(),
       RobotContainer.m_Intake
     );
   }
-
+  /**
+   * Stops the intake
+   * @return
+   */
   public static Command stopIntake(){
     return new InstantCommand(
       () -> RobotContainer.m_Intake.stopIntakeIndexer(),
@@ -51,7 +62,11 @@ public class IntakeCommands  {
     );
   }
 
-  
+  /**
+   * Runs intake and indexer forward for a certain amount of time
+   * @param time Time to run this command
+   * @return Command to run intake and indexer forward for a certain amount of time
+   */
   public static Command runIntakeForwardTimed(long time){
     return new FunctionalCommand(() -> {
       RobotContainer.m_Intake.stopIntakeIndexer();

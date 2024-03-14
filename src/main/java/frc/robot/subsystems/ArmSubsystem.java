@@ -67,28 +67,46 @@ public class ArmSubsystem extends SubsystemBase {
   //   armEncoder.setPosition(0);
   // }
 
+  /**
+   * @return returns arm encoder position
+   */
   public double getArmPosition() {
     return armEncoder1.getPosition();
   }
-
+  /**
+   * stops the arm
+   */
   public void stopArm() {
     armMotor1.set(0);
     armMotor2.set(0);
   }
-
+  /**
+   * sets the arm to a given position
+   * @param position the position to set arm to in rotations perhaps
+   */
   public void setArm(double position) {
     armMotor2.getPIDController().setReference(position, CANSparkMax.ControlType.kPosition);
     armMotor2.getPIDController().setReference(-position, CANSparkMax.ControlType.kPosition); // TODO This may not work check the position
   }
+  /**
+   * sets arm but in radians
+   * @param position
+   */
   public void setArmRadians(double position) {
     setArm(position * rotations_per_radians);
   }
 
- public void moveArmUp(){
-    armMotor1.set(-0.4);
-    armMotor2.set(0.4);
- }
+  /**
+   * moves the arm up
+   */
+  public void moveArmUp(){
+      armMotor1.set(-0.4);
+      armMotor2.set(0.4);
+  }
 
+  /**
+   * moves arm down
+   */
   public void moveArmDown(){
     armMotor1.set(0.4);
     armMotor2.set(-0.4);

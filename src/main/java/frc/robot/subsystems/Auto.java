@@ -20,20 +20,32 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+/**
+ * Class for auto
+ */
 public class Auto {
     private static int autoNum;
     private static SendableChooser<Integer> m_chooser = new SendableChooser<>();
+    /**
+     * adds auto path choices to smart dashboards
+     */
     public static void autoChooser(){
         m_chooser.setDefaultOption("Left", 1);
         m_chooser.addOption("Middle", 2);
         m_chooser.addOption("Right", 3);
         SmartDashboard.putData("Auto Choices", m_chooser);
     }
+    
+    /**
+     * chooses auto path using the chooser choice
+     */
     public static void autoSelect(){
     //   autoNum=m_chooser.getSelected();
     }
 
-
+    /**
+     * @return returns a choreo path command for the chosen path
+     */
     public static Command returnChoreoCommand(String name){
 
       PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
@@ -72,6 +84,10 @@ public class Auto {
         swerveCommand,
         RobotContainer.m_robotDrive.run(() -> RobotContainer.m_robotDrive.drive(0, 0, 0, false, true)));
     }
+
+    /**
+     * @return Selects which auto to run based on auto chooser selection
+     */
     public static Command getAutonomousCommand() {
         // // Create config for trajectory
         // TrajectoryConfig config = new TrajectoryConfig(

@@ -25,7 +25,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
-
+/**
+ * Commands for Auto.
+ */
 public class AutoCommands {
   static ChoreoTrajectory traj; //1/18/24
   static Field2d m_field = new Field2d();
@@ -43,18 +45,35 @@ public class AutoCommands {
     //   return runTrajectory("top_red_leave");
     //   //Add code
     // }
+    /**
+     * Runs the left trajectory(left is from blue perspective).
+     * @return Command to run that trajectory.
+     */
     public static Command left(){
       return runTrajectory("top_blue_leave");
       //Add code
     }
+    /**
+     * Runs the middle trajectory(middle is from blue perspective).
+     * @return Command to run that trajectory.
+     */
     public static Command mid(){
        return runTrajectory("middle_blue_leave");
       //Add code
     }
+    /**
+     * Runs the right trajectory(right is from blue perspective)
+     * @return Command to run that trajectory.
+     */
     public static Command right(){
       return runTrajectory("bottom_blue_leave");
       //Add code
     }
+    /**
+     * Runs a choreo trajectory. Can be called multiple times to incorporate subsystems.
+     * @param name Name of trajectory file
+     * @return Command form of trajectory
+     */
     public static Command runTrajectory(String name){
       traj = Choreo.getTrajectory(name); //1/18/24
 
@@ -100,7 +119,10 @@ public class AutoCommands {
      );
     // return null;
     }
-
+    /**
+     * Spins the shooter to shoot for auto. Can be implemented in Choreo
+     * @return Command to shoot in auto
+     */
     public static Command shootAuto(){
  
 
@@ -112,7 +134,10 @@ public class AutoCommands {
      
       
     }
-    
+    /**
+     * Test for straightline
+     * @return Command to drive straight line
+     */
     public static Command straightlinetest(){
       return new SequentialCommandGroup(
         runTrajectory("straightline1.5m")

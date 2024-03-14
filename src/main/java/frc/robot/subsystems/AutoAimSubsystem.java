@@ -5,14 +5,23 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class AutoAimSubsystem {
-
+    /**
+     * Subsystem to control Arm and automatically shoot, with various methods to aid in this process
+     * 
+     */
     private static final double OFFSET_ANGLE_DEGREES = Math.toRadians(40); // radians
     private static final double SPEAKER_TAG_HEIGHT = Constants.aprilTagUniqueHeights[1]+Constants.plasticTagLength/2; // meters
     private static final double DISTANCE_TAG_TO_SPEAKER = Constants.SPEAKER_HEIGHT_METERS - SPEAKER_TAG_HEIGHT; // meters
     private static final double radians_per_rotation = 2 * Math.PI;
     private static final double rotations_per_radians = 1/radians_per_rotation;
     private static final double DISTANCE_CAMERA_TO_TAG_Y = SPEAKER_TAG_HEIGHT - Constants.CAMERA_HEIGHT_METERS;
-
+    /**
+     * Method to calculate the optimal angle for shooting in radians
+     * @param distanceToTag Distance from robot to apriltag, found using Vision.distanceFromTarget
+     * @param angleToTag Angle difference between robot and tag
+     * @param angleCurrent Current angle of robot arm
+     * @return The optimal angle in radians
+     */
     public static double getOptimalAngleRadians(double distanceToTag, double angleToTag, double angleCurrent) {
         double resultDegree;
         double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.ARM_LENGTH * Math.sin(angleCurrent)) + DISTANCE_TAG_TO_SPEAKER;
@@ -23,6 +32,13 @@ public class AutoAimSubsystem {
         resultDegree = offsetRadians - Math.atan(fraction);
         return resultDegree;
     }
+    /**
+     * Method to calculate the optimal angle for shooting in degrees
+     * @param distanceToTag Distance from robot to apriltag, found using Vision.distanceFromTarget
+     * @param angleToTag Angle difference between robot and tag
+     * @param angleCurrent Current angle of robot
+     * @return
+     */
     public static double getOptimalAngleDegrees(double distanceToTag, double angleToTag, double angleCurrent) {
         double resultDegree;
         double numerator = DISTANCE_CAMERA_TO_TAG_Y - (Constants.ARM_LENGTH * Math.sin( Math.toRadians(angleCurrent) )) + DISTANCE_TAG_TO_SPEAKER;
@@ -33,12 +49,19 @@ public class AutoAimSubsystem {
         resultDegree = offsetRadians - Math.atan(fraction);
         return Math.toDegrees(resultDegree);
     }
+    /**
+     * Method to find the current arm angle (in radians?)
+     * @return
+     */
     public static double getCurrentAngle() {
         double rotations = RobotContainer.m_Arm.getArmPosition(); // only gets motor 1 but it doesnt matter
         double angle_bad_offset = rotations * radians_per_rotation;
         double angle_offset_good = angle_bad_offset + Constants.ARM_ANGLE_HORIZONTAL_OFFSET;
         return angle_offset_good;
     }
+    /**
+     * Automatically aims the robot. NOTE:Does not move the robot towards the amp
+     */
     public static void autoAim() {
         //red 4  blue 7
         Vision.turnToTagCommand();

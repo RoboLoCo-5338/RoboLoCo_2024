@@ -16,6 +16,10 @@ public class ShooterSubsystem extends SubsystemBase{
     private SparkPIDController shootController1;
     private SparkPIDController shootController2;
 
+
+    /**
+     * makes a subsystem of shooter
+     */
     public ShooterSubsystem() {
         shootMotor1 = new CANSparkMax(Constants.DriveConstants.kShooter1CanId,MotorType.kBrushless);
         shootMotor2 = new CANSparkMax(Constants.DriveConstants.kShooter2CanId,MotorType.kBrushless);
@@ -25,21 +29,32 @@ public class ShooterSubsystem extends SubsystemBase{
         shootController2 = shootMotor2.getPIDController();
     }
 
+    /**
+     * spins the shooter forward
+     */
     public void shooterForward() {
         shootMotor1.set(0.85);
         shootMotor2.set(0.85);
     }
 
+    /**
+     * spins the shooter backwards
+     */
     public void shooterReverse() {
         shootMotor1.set(-0.3);
         shootMotor2.set(-0.3);
     }
 
+    /**
+     * stops shooter
+     */
     public void shooterStop() {
         shootMotor1.set(0);
         shootMotor2.set(0);
     }
-
+    /**
+     * @return gives the encoder position
+     */
     public double getEncoderPosition(){
         return (Math.abs(shootEncoder1.getPosition())+Math.abs(shootEncoder2.getPosition())/2);
     }

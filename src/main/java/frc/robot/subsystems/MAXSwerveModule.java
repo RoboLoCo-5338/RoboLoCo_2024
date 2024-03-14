@@ -16,7 +16,9 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants.ModuleConstants;
-
+/**
+ * Used to do swerve drive
+ */
 public class MAXSwerveModule {
   private final CANSparkMax m_drivingSparkMax;
   private final CANSparkMax m_turningSparkMax;
@@ -35,6 +37,9 @@ public class MAXSwerveModule {
    * encoder, and PID controller. This configuration is specific to the REV
    * MAXSwerve Module built with NEOs, SPARKS MAX, and a Through Bore
    * Encoder.
+   * @param drivingCanId ID of the driving CAN Controller
+   * @param turningCANId ID of the turning CAN Controller
+   * @param chassisAngularOffset Offset of the chassis' angular motion
    */
   public MAXSwerveModule(int drivingCANId, int turningCANId, double chassisAngularOffset) {
     m_drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);

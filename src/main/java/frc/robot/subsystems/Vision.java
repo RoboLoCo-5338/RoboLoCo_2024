@@ -25,6 +25,9 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 // Speaker id's are 4 (red) 7 (blue)
 import frc.robot.Constants.OIConstants;
+/**
+ * Uses Limelight to aim the arm and turn towards the AprilTag
+ */
 public class Vision {
     static final double ANGULAR_P = 0.1;
     static final double ANGULAR_D = 0.0;
@@ -40,14 +43,25 @@ public class Vision {
     //https://docs.photonvision.org/en/latest/docs/programming/photonlib/robot-pose-estimator.html
     // apparently it improves performance but needs some setup and im not about doing setup rn
     private static PIDController turnController=new PIDController(ANGULAR_P, 0, ANGULAR_D);
-
+    /**
+     * Creates a Vision object
+     */
     public Vision(){}
+    /**
+     * @return Boolean if camera sees targets(april tags)
+     */
     public static boolean hasResults(){
         return camera.getLatestResult().hasTargets();
     }
+    /**
+     * @return Returns the best target PhotonVision to track
+     */
     public static PhotonTrackedTarget getBestTarget(){
         return camera.getLatestResult().getBestTarget();
     }
+    /**
+     * @return Pose3d of the robot relative to an april tag that it scans
+     */
     public static Optional<Pose3d> getPoseRelativeToAprilTag() {
         if (hasResults()) { //im trying to find a way to get the 3d pose difference between the speaker april tag and the robot. the docs say
             // its possible but ITS SO FRICKING VAGUE AHHHH
@@ -62,6 +76,10 @@ public class Vision {
         return Optional.empty();
        
     }
+    /**
+     * Turns to an april tag
+     * @return Command to turn to april tag
+     */
     public static Command turnToTagCommand(){ //untested
         if(!Vision.hasResults()){return null;}
         else{
@@ -75,7 +93,12 @@ public class Vision {
         );
         }
   }
-    public static double getTargetPitch(boolean radians){ //The boolean is if you want or don't want radians
+  /**
+   * Gets the pitch(up and down) of an AprilTag relative to the camera
+   * @param radians If you want radians or not
+   * @return The pitch of a target
+   */
+    public static double getTargetPitch(boolean radians){ 
         if(hasResults()){
             double output=getBestTarget().getPitch();
             if(radians){
@@ -84,7 +107,13 @@ public class Vision {
             return output;
         }
         return Double.POSITIVE_INFINITY;
-    }public static double getTargetYaw(boolean radians){ //The boolean is if you want or don't want radians
+    }
+    /**
+     * Gets the yaw(left and right) of an AprilTag relative to the camera
+     * @param radians If you want radians
+     * @return The yaw of a target
+     */
+    public static double getTargetYaw(boolean radians){ 
         if(hasResults()){
             double output=getBestTarget().getYaw();
             if(radians){
@@ -94,6 +123,11 @@ public class Vision {
         }
         return Double.POSITIVE_INFINITY;
     }
+    /**
+     * Gets the distance from the camera to the AprilTag(includes x and y component, so use sine and cosine)
+     * @param targetHeight Height of the target in METERS
+     * @return Distance from target(REMEMBER TO USE TRIG)
+     */
     public static double distanceFromTarget(double targetHeight){
         if(hasResults()){
             return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, targetHeight, Constants.CAMERA_PITCH_RADIANS, getTargetPitch(true));
