@@ -38,9 +38,9 @@ public class ArmCommands  {
     );
   }
   
-  public static Command setArm() {
+  public static Command setArm(double position) {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.setArm(0.2),
+      () -> RobotContainer.m_Arm.setArm(position),
       RobotContainer.m_Arm
     );
   }

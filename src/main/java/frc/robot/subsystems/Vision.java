@@ -25,8 +25,9 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 // Speaker id's are 4 (red) 7 (blue)
 import frc.robot.Constants.OIConstants;
-
 public class Vision {
+    static final double ANGULAR_P = 0.1;
+    static final double ANGULAR_D = 0.0;
     static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // this is the coolest method ever
     static PhotonCamera camera = new PhotonCamera("Rock'n Rivets"); //Change the name when needed or things will break
     // notes about robotToCam
@@ -38,7 +39,7 @@ public class Vision {
     //TODO change PoseStrategy from LOWEST_AMBIGUITY to MULTI_TAG_PNP_ON_COPROCESSOR
     //https://docs.photonvision.org/en/latest/docs/programming/photonlib/robot-pose-estimator.html
     // apparently it improves performance but needs some setup and im not about doing setup rn
-
+    private static PIDController turnController=new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
     public Vision(){}
     public static boolean hasResults(){
@@ -62,17 +63,13 @@ public class Vision {
        
     }
     public static Command turnToTagCommand(){ //untested
-        final double ANGULAR_P = 0.1;
-        final double ANGULAR_D = 0.0;
-        if(!Vision.hasResults()){
-        return null;
-        }
+        if(!Vision.hasResults()){return null;}
         else{
         return Commands.sequence(
             RobotContainer.m_robotDrive.runOnce(() -> RobotContainer.m_robotDrive.drive(
             -MathUtil.applyDeadband(RobotContainer.m_driverController.getLeftY(), OIConstants.kDriveDeadband),
             -MathUtil.applyDeadband(RobotContainer.m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-            -MathUtil.applyDeadband(new PIDController(ANGULAR_P,0,ANGULAR_D).calculate(Vision.getTargetYaw(false)), OIConstants.kDriveDeadband),
+            -MathUtil.applyDeadband(turnController.calculate(Vision.getTargetYaw(false)), OIConstants.kDriveDeadband),
             true, true)
             )
         );
