@@ -122,6 +122,10 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     moveIndexerFast.onTrue(IntakeCommands.moveIndexerInFast());
     moveIndexerFast.onFalse(IntakeCommands.stopIntake());
 
+    Trigger ampArm = new Trigger(m_operatorController.y());
+    ampArm.onTrue(ArmCommands.setArm(0.75));
+    Trigger climbArm = new Trigger(m_operatorController.b());
+    climbArm.onTrue(ArmCommands.setArm(0.25));
     // Trigger moveArm = new Trigger( m_driverController.rightTrigger());
     // moveArm.whileTrue(ArmCommands.moveArm());
     // moveArm.onFalse(ArmCommands.stopArm());
