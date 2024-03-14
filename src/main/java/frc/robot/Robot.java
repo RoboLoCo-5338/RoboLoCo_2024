@@ -139,6 +139,10 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    RobotContainer.m_Arm.resetArm();
+
+
   }
 
   /** This function is called periodically during operator control. */
@@ -150,7 +154,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
     SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
     
-    
+    SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
    //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
     // SmartDashboard.putString("Dino Rivets ftw","HELLO");
     

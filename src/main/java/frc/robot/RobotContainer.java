@@ -101,6 +101,12 @@ public class RobotContainer {
     //    // .and(m_operatorController.b().negate());
     // stopArm.onFalse(ArmCommands.stopArm());
 
+    Trigger ampPreset = new Trigger(m_operatorController.y());
+    ampPreset.onTrue(ArmCommands.setArm(65));
+Trigger climbPreset = new Trigger(m_operatorController.b());
+    climbPreset.onTrue(ArmCommands.setArm(60));
+    Trigger restPreset = new Trigger(m_operatorController.y());
+    restPreset.onTrue(ArmCommands.setArm(0));
 
     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
     makeRobotSlow.onTrue(makeRobotSlow());

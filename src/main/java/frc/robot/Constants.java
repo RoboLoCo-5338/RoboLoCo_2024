@@ -48,7 +48,7 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
   public static final double SUBWOOFER_SHOT_ANGLE = -1; // TODO figure out
-
+  
   public enum RobotTarget {
     SPEAKER,
     AMP

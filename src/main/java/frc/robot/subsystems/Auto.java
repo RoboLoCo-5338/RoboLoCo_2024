@@ -70,7 +70,7 @@ public class Auto {
      return Commands.sequence(
         Commands.runOnce(() -> RobotContainer.m_robotDrive.resetOdometry(traj.getInitialPose())),
         swerveCommand,
-        RobotContainer.m_robotDrive.run(() -> RobotContainer.m_robotDrive.drive(0, 0, 0, false, true)));
+        RobotContainer.m_robotDrive.run(() -> RobotContainer.m_robotDrive.drive(0, 0, 0, true, true)));
     }
     public static Command getAutonomousCommand() {
         // // Create config for trajectory
