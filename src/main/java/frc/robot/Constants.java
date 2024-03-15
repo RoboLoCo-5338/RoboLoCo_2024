@@ -48,7 +48,7 @@ public final class Constants {
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
   public static final double SUBWOOFER_SHOT_ANGLE = -1; // TODO figure out
-  
+
   public enum RobotTarget {
     SPEAKER,
     AMP
@@ -235,12 +235,12 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 1;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     public static final double kPXController = 0.015; //changed this from 0.01 to 0.03
-    public static final double kPYController = 0.015; 
+    public static final double kPYController = 0.03; 
     public static final double kPThetaController = 1;
 
 

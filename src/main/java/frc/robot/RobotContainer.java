@@ -105,7 +105,7 @@ public class RobotContainer {
     ampPreset.onTrue(ArmCommands.setArm(65));
 Trigger climbPreset = new Trigger(m_operatorController.b());
     climbPreset.onTrue(ArmCommands.setArm(60));
-    Trigger restPreset = new Trigger(m_operatorController.y());
+    Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 
     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
