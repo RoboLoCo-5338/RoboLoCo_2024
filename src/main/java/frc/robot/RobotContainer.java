@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -95,10 +96,9 @@ public class RobotContainer {
   }
   
   private void configureButtonBindings() {
-   
 
-    Trigger ampPreset = new Trigger(m_operatorController.y());
-    ampPreset.onTrue(ArmCommands.setArm(65));
+   Trigger ampPreset = new Trigger(m_operatorController.y());
+    ampPreset.onTrue(ArmCommands.setArm(48));
 Trigger climbPreset = new Trigger(m_operatorController.b());
    // climbPreset.onTrue(ArmCommands.setArm(55));
     Trigger restPreset = new Trigger(m_operatorController.a());
