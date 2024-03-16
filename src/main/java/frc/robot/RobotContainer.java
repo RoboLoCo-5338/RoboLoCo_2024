@@ -17,14 +17,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.ArmCommands;
-import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 
@@ -49,6 +48,8 @@ public class RobotContainer {
   // controllers
   public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   public static CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+
+   public static boolean slowMode = false;
   // public static Joystick controller1 = new Joystick(0); //driver
   // public static Joystick controller2 = new Joystick(1); //operator
 
@@ -88,17 +89,18 @@ public class RobotContainer {
             m_robotDrive));
       
   }
+
+  public Command makeRobotSlow(){
+    return new InstantCommand(() -> { slowMode= !slowMode;});
+  }
   
   private void configureButtonBindings() {
-    // Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
-    // stopArm.whileTrue(ArmCommands.moveArm(MathUtil.applyDeadband(m_operatorController.getLeftY(), OIConstants.kArmDeadband)));
-    //    // .and(m_operatorController.b().negate());
-    // stopArm.onFalse(ArmCommands.stopArm());
+   
 
     Trigger ampPreset = new Trigger(m_operatorController.y());
     ampPreset.onTrue(ArmCommands.setArm(65));
 Trigger climbPreset = new Trigger(m_operatorController.b());
-    climbPreset.onTrue(ArmCommands.setArm(60));
+   // climbPreset.onTrue(ArmCommands.setArm(55));
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 

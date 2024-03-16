@@ -29,7 +29,7 @@ public class ArmSubsystem extends SubsystemBase {
   private static final double rotations_per_radians = 1/radians_per_rotation;
   public SparkPIDController armController2;
 
-  public static double armP = 0.01;
+  public static double armP = 0.03;
   public static double armI = 0.0;
   public static double armD = 0.0;
   public static double armFeed_Forward = 0.0;

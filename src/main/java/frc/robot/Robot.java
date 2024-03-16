@@ -140,7 +140,10 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+
+
     RobotContainer.m_Arm.resetArm();
+    RobotContainer.m_Arm.stopArm();
 
 
   }
