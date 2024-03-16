@@ -14,12 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,7 +27,6 @@ import frc.robot.commands.ArmCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -49,8 +45,6 @@ public class RobotContainer {
   public static AutoAimSubsystem m_AutoAim = new AutoAimSubsystem();
   // The robot's subsystems and commands are defined here...
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
-  public static boolean slowMode = false;
 
   // controllers
   public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -72,8 +66,12 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureButtonBindings();
 
-    DataLogManager.start();
-    DriverStation.startDataLog(DataLogManager.getLog());
+    // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
+
+    // m_field.getObject("traj").setPoses(
+    //     traj.getInitialPose(), traj.getFinalPose());
+    // m_field.getObject("trajPoses").setPoses(
+    //     traj.getPoses());
 
     // SmartDashboard.putData(m_field);
 
@@ -83,16 +81,12 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY() , OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
             m_robotDrive));
       
-  }
-
-  public Command makeRobotSlow(){
-    return new InstantCommand(() -> { slowMode= !slowMode;});
   }
   
   private void configureButtonBindings() {
@@ -118,14 +112,10 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
-    Trigger moveIndexerFast = new Trigger(() -> m_operatorController.getRightY()<-OIConstants.kArmDeadband);
-    moveIndexerFast.onTrue(IntakeCommands.moveIndexerInFast());
-    moveIndexerFast.onFalse(IntakeCommands.stopIntake());
-
     Trigger ampArm = new Trigger(m_operatorController.y());
-    ampArm.onTrue(ArmCommands.setArm(0.75));
+   // ampArm.onTrue(ArmCommands.setArm(0.75));
     Trigger climbArm = new Trigger(m_operatorController.b());
-    climbArm.onTrue(ArmCommands.setArm(0.25));
+    //climbArm.onTrue(ArmCommands.setArm(0.25));
     // Trigger moveArm = new Trigger( m_driverController.rightTrigger());
     // moveArm.whileTrue(ArmCommands.moveArm());
     // moveArm.onFalse(ArmCommands.stopArm());
@@ -133,7 +123,6 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
     intakeIn.whileTrue(IntakeCommands.moveIntakeIn());
     intakeIn.onFalse(IntakeCommands.stopIntake());
-   
 
     Trigger intakeOut = new Trigger(m_operatorController.leftTrigger());
     intakeOut.whileTrue(IntakeCommands.moveIntakeOut());
