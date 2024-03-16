@@ -110,6 +110,8 @@ public class MAXSwerveModule {
     m_drivingEncoder.setPosition(0);
   }
 
+
+
   /**
    * Returns the current state of the module.
    *
@@ -160,5 +162,10 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
+  }
+
+
+  public void moveMotor(double speed){
+    m_drivingSparkMax.set(speed);
   }
 }

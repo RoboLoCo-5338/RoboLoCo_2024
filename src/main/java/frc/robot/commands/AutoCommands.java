@@ -90,11 +90,11 @@ public class AutoCommands {
                                                                                    // output: m/s).
         thetaController, // PID constants to correct for rotation
                          // error
-        (ChassisSpeeds speeds) -> m_robotDrive.drive( // needs to be robot-relative
+        (ChassisSpeeds speeds) -> m_robotDrive.autoDrive( // needs to be robot-relative
             speeds.vxMetersPerSecond,
             speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond,
-            false, true),
+            speeds.omegaRadiansPerSecond
+          ),
         () -> {
             return red;
           }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
@@ -104,7 +104,7 @@ public class AutoCommands {
     return Commands.sequence(
       Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
       swerveCommand,
-      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
+      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0,false,false))
       
      );
     // return null;
@@ -123,20 +123,26 @@ public class AutoCommands {
       
     }
 
-    // YALL PLEASE USE THIS AUTO 
+    // YALL PLEASE USE THIS AUTO FOR COMP 
     public static Command realauto(){
       return new SequentialCommandGroup(
-        shootAuto()
-        // driveForward()
+        shootAuto(),
+        new WaitCommand(5)
+        
       );
+      
+    }
+
+    public static Command driveForwardAutoComp(){
+      return DriveCommands.driveForwardTimed(2000, 0.4);
     }
 
 
     public static Command driveForward(){
 
-      shootAuto();
+      // shootAuto();
 
-      TrajectoryConfig config = new TrajectoryConfig(
+    TrajectoryConfig config = new TrajectoryConfig(
     AutoConstants.kMaxSpeedMetersPerSecond,
     AutoConstants.kMaxAccelerationMetersPerSecondSquared)
     // Add kinematics to ensure max speed is actually obeyed
@@ -147,7 +153,7 @@ public class AutoCommands {
     // Start at the origin facing the +X direction
     new Pose2d(0, 0, new Rotation2d(0)),
     // Pass through these two interior waypoints, making an 's' curve path
-    List.of(new Translation2d(0.5, 0)),
+    List.of(new Translation2d(1.5, 0)),
     // End 3 meters straight ahead of where we started, facing forward
     new Pose2d(3, 0, new Rotation2d(0)),
     config);

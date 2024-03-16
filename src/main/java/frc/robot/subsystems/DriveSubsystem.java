@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix6.hardware.Pigeon2;
 //import com.kauailabs.navx.frc.AHRS;
 
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
@@ -46,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  private final Pigeon2 m_gyro = new Pigeon2(0);
+  public final Pigeon2 m_gyro = new Pigeon2(0);
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -110,6 +111,9 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+
+
+
 
   /**
    * Method to drive the robot using joystick info.
@@ -242,6 +246,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
+
+    
    
     return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
   }
@@ -253,5 +259,16 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void driveSpeed(double speed){
+    m_frontLeft.moveMotor(speed);
+    m_frontRight.moveMotor(speed);
+    m_rearLeft.moveMotor(speed);
+    m_rearRight.moveMotor(speed);
+  }
+
+  public void autoDrive(double xSpeed, double ySpeed, double rot){
+    drive(Math.min(1.0,xSpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,ySpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), rot , true, true);
   }
 }
