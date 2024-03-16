@@ -90,10 +90,10 @@ public class AutoCommands {
                                                                                    // output: m/s).
         thetaController, // PID constants to correct for rotation
                          // error
-        (ChassisSpeeds speeds) -> m_robotDrive.autoDrive( // needs to be robot-relative
+        (ChassisSpeeds speeds) -> m_robotDrive.drive( // needs to be robot-relative
             speeds.vxMetersPerSecond,
             speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond
+            speeds.omegaRadiansPerSecond, false, true
           ),
         () -> {
             return red;
@@ -104,7 +104,7 @@ public class AutoCommands {
     return Commands.sequence(
       Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
       swerveCommand,
-      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0,false,false))
+      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0,false, true))
       
      );
     // return null;
@@ -127,7 +127,8 @@ public class AutoCommands {
     public static Command realauto(){
       return new SequentialCommandGroup(
         shootAuto(),
-        new WaitCommand(5)
+        new WaitCommand(4)
+        //straightlinetest()
         
       );
       
@@ -186,7 +187,7 @@ public class AutoCommands {
     
     public static Command straightlinetest(){
       return new SequentialCommandGroup(
-        runTrajectory("straightlinetestreal")
+        runTrajectory("hello")
       );
     }
 
