@@ -126,16 +126,40 @@ public class AutoCommands {
     // YALL PLEASE USE THIS AUTO FOR COMP 
     public static Command realauto(){
       return new SequentialCommandGroup(
+        new InstantCommand(
+          ()-> RobotContainer.m_robotDrive.drive(0,0,0,false, true)
+        ),
         shootAuto(),
-        new WaitCommand(4)
-        //straightlinetest()
+        new WaitCommand(4), 
+        driveForwardAutoComp()
         
       );
-      
+    }
+
+    public static Command startLeft(){
+       return new SequentialCommandGroup(
+        new InstantCommand(
+          ()-> RobotContainer.m_robotDrive.drive(0,0,Math.PI/3 ,false, true)
+        ),
+        shootAuto(),
+        new WaitCommand(4), 
+        driveForwardAutoComp()
+       );
+    }
+
+    public static Command startRight(){
+       return new SequentialCommandGroup(
+        new InstantCommand(
+          ()-> RobotContainer.m_robotDrive.drive(0,0,-Math.PI/3 ,false, true)
+        ),
+        shootAuto(),
+        new WaitCommand(4), 
+        driveForwardAutoComp()
+       );
     }
 
     public static Command driveForwardAutoComp(){
-      return DriveCommands.driveForwardTimed(2000, 0.4);
+      return DriveCommands.driveForwardTimed(2000, 0.2);
     }
 
 
@@ -187,7 +211,7 @@ public class AutoCommands {
     
     public static Command straightlinetest(){
       return new SequentialCommandGroup(
-        runTrajectory("hello")
+        runTrajectory("CenterForward")
       );
     }
 
