@@ -117,7 +117,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Auto.autoSelect();
-    m_autonomousCommand = AutoCommands.realauto();
+    m_autonomousCommand = AutoCommands.pathPlannerTest();
    // m_autonomousCommand = AutoCommands.runTrajectory("straightlinetestreal");
 
    // schedule the autonomous command (example)

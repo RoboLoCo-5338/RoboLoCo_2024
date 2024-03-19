@@ -7,6 +7,8 @@ package frc.robot;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -66,6 +68,9 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
+    NamedCommands.registerCommand("intake", IntakeCommands.moveIntakeIn());
+   
+
     configureButtonBindings();
 
     // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
@@ -198,7 +203,9 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     // Run path following command, then stop at the end.
     // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
     // true, false));
-
+    public static DriveSubsystem getDriveSystem(){
+      return m_robotDrive;
+    }
   public Command getAutonomousCommand() {
     // 1/18/24 ---- CHOREO TESTING
 
@@ -235,7 +242,7 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
     //     swerveCommand,
     //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
-    return AutoCommands.realauto();
+    return Auto.getAutonomousCommand();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {
