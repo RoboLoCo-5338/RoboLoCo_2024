@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -12,28 +11,24 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils.*;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.subsystems.Drivetrain;
 
+import frc.robot.subsystems.Auto;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -43,9 +38,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private double rotationSpeed;
-  private double forwardSpeed;
   private RobotContainer m_robotContainer;
-
 
   // Constants such as camera and target height stored. Change per robot and goal!
   final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
@@ -83,8 +76,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // RobotContainer.m_Arm.resetArm();
-    // RobotContainer.m_Elevator.resetElevator();
+    Auto.autoChooser();
   }
 
   /**
@@ -101,8 +93,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Pitch", RobotContainer.navX.getPitch());
-    SmartDashboard.putNumber("Roll", RobotContainer.navX.getRoll());
+    // SmartDashboard.putNumber("Pitch", RobotContainer.navX.getPitch());
+    // SmartDashboard.putNumber("Roll", RobotContainer.navX.getRoll());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -115,8 +107,16 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    Auto.autoSelect();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    RobotContainer.drivetrain.resetPosition();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector",
+     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+     * = new MyAutoCommand(); break; case "Default Auto": default:
+     * autonomousCommand = new ExampleCommand(); break; }
+     */
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -127,10 +127,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // SmartDashboard.putNumber("Drive train position" , RobotContainer.drivetrain.getPosition());
-    SmartDashboard.putNumber("Drive train left velocity", RobotContainer.drivetrain.leftEncoder.getVelocity());
-    SmartDashboard.putNumber("Drive train right velocity", RobotContainer.drivetrain.rightEncoder.getVelocity());
-    // SmartDashboard.putNumber("Autonomous Effector Encoder Position", RobotContainer.effector.armAbsEncoder.getPosition());
+    
   }
 
   @Override
@@ -154,10 +151,10 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("effector Encoder position", RobotContainer.effector.armAbsEncoder.getPosition());
     SmartDashboard.putBoolean("direction", (RobotContainer.reverseModifier > 0));
 
-    forwardSpeed = -RobotContainer.controller1.getRawAxis(3);
+    // TODO fix: forwardSpeed = -RobotContainer.controller1.getRawAxis(3);
     SmartDashboard.putString("Test Before Test", "Working tho");
     
-    RobotContainer.limeLight.whileTrue(turnToTarg());
+    // TODO fix: RobotContainer.limeLight.whileTrue(turnToTarg());
     // Use our forward/turn speeds to control the drivetrain
   }
 
@@ -170,7 +167,7 @@ public class Robot extends TimedRobot {
   public void turnToTarg2() {
     // Vision-alignment mode
     // Query the latest result from PhotonVision
-    var result = camera.getLatestResult();
+    PhotonPipelineResult result = camera.getLatestResult();
     PhotonTrackedTarget best_result = null;
     if (result.hasTargets()) {
       best_result = result.getBestTarget();
@@ -180,7 +177,7 @@ public class Robot extends TimedRobot {
                       TARGET_HEIGHT_METERS, 
                       CAMERA_PITCH_RADIANS, 
                       Units.degreesToRadians(best_result.getPitch()));
-      forwardSpeed = -RobotContainer.controller1.getY();
+      // TODO fix: forwardSpeed = -RobotContainer.controller1.getY();
       // Calculate angular turn power
       // -1.0 required to ensure positive PID controller effort _increases_ yaw
       rotationSpeed = -turnController.calculate(best_result.getYaw(), 0);
@@ -198,10 +195,12 @@ public class Robot extends TimedRobot {
     // turns based on yaw
     if (best_result != null && result.hasTargets() && best_result.getYaw() < 1) {
       SmartDashboard.putString("RotationSpeed", Double.toString(rotationSpeed));
-      RobotContainer.drivetrain.tankDrive(rotationSpeed - Constants.min_command, -rotationSpeed + Constants.min_command);
+      // TODO Move using swerve
+      // RobotContainer.drivetrain.tankDrive(rotationSpeed - Constants.min_command, -rotationSpeed + Constants.min_command);
     } else if (best_result != null && result.hasTargets() && best_result.getYaw() > 1) {
       SmartDashboard.putString("-RotationSpeed", Double.toString(rotationSpeed));
-      RobotContainer.drivetrain.tankDrive(rotationSpeed + Constants.min_command, -rotationSpeed - Constants.min_command);
+      // TODO Move using swerve
+      // RobotContainer.drivetrain.tankDrive(rotationSpeed + Constants.min_command, -rotationSpeed - Constants.min_command);
     }
     }
 
