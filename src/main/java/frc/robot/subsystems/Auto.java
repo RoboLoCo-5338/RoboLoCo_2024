@@ -96,7 +96,8 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      return AutoCommands.dumbAuto(); // just for week 0, gets out of spawn
+      // return AutoCommands.dumbAuto(); // just for week 0, gets out of spawn
+      return AutoCommands.pathPlannerTest();
       // Optional<Alliance> ally = DriverStation.getAlliance();
       //   if (ally.get() == Alliance.Red) {
       //     switch (autoNum){

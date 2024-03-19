@@ -15,6 +15,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.RobotContainer;
 import com.choreo.lib.Choreo; //1/18/24
 import com.choreo.lib.ChoreoTrajectory;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 
@@ -22,6 +24,9 @@ public class AutoCommands {
   static ChoreoTrajectory traj; //1/18/24
   static Field2d m_field = new Field2d();
   static DriveSubsystem m_robotDrive = RobotContainer.getDriveSystem();
+    public static Command pathPlannerTest(){
+      return new PathPlannerAuto("AUTO Name");
+    }
     public static Command leftRed(){
       return null;
       //Add code
