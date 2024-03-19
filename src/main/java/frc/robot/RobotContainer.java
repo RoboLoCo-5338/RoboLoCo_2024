@@ -27,6 +27,10 @@ import frc.robot.commands.ArmCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+
+// Starts recording to data log
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -65,7 +69,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureButtonBindings();
+    DataLogManager.start();
 
+  // Record both DS control and joystick data
+  DriverStation.startDataLog(DataLogManager.getLog());
+
+  // (alternatively) Record only DS control data
+  // DriverStation.startDataLog(DataLogManager.getLog(), false);
     // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
 
     // m_field.getObject("traj").setPoses(
