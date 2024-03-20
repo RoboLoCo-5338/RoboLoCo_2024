@@ -40,6 +40,9 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void indexerIn() {
+        indexerMotor.set(-0.2);
+    }
+      public void indexerInFast() {
         indexerMotor.set(-0.4);
     }
 

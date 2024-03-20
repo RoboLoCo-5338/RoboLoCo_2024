@@ -7,6 +7,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
@@ -26,13 +27,19 @@ public class IntakeCommands  {
   //     RobotContainer.m_Arm);
   // }
 
-
+  private static long startTime;
 //command to set speed for arm
   public static Command moveIntakeIn(){
     return new InstantCommand(
       () -> RobotContainer.m_Intake.inIntakeIndexer(),
       RobotContainer.m_Intake
       );
+  }
+
+  public static Command moveIndexerInFast(){
+    return new InstantCommand(
+      () -> RobotContainer.m_Intake.indexerInFast(),
+      RobotContainer.m_Intake);
   }
 
   // Command bindings for arm and elevator methods.
@@ -51,6 +58,12 @@ public class IntakeCommands  {
   }
 
   
+  public static Command runIntakeForwardTimed(long time){
+    return new FunctionalCommand(() -> {
+      RobotContainer.m_Intake.stopIntakeIndexer();
+      startTime = System.currentTimeMillis();
+    },() -> RobotContainer.m_Intake.inIntakeIndexer(),interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_Intake);
+  }
 
 
 

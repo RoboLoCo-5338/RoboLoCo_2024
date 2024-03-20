@@ -6,6 +6,7 @@ import java.sql.Driver;
 import org.ejml.equation.Function;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -14,11 +15,19 @@ import frc.robot.RobotContainer;
 
 public class ShooterCommands {
 
-  public static double startTime;
+  private static long startTime;
 
+  
     public static Command shooterReverse() {
       return new InstantCommand(
         () -> RobotContainer.m_shooter.shooterReverse(),
+        RobotContainer.m_shooter
+      );
+    }
+
+      public static Command shooterReverseSlow() {
+      return new InstantCommand(
+        () -> RobotContainer.m_shooter.shooterReverseSlow(),
         RobotContainer.m_shooter
       );
     }
@@ -38,12 +47,11 @@ public class ShooterCommands {
       );
     }
 
-    public static Command runShooterForwardTimed(double time){
-       //new FunctionalCommand()
+    public static Command runShooterForwardTimed(long time){
       return new FunctionalCommand(() -> {
         RobotContainer.m_shooter.shooterStop();
-        startTime = DriverStation.getMatchTime();
-      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> DriverStation.getMatchTime()-time>startTime, RobotContainer.m_shooter);
+        startTime = System.currentTimeMillis();
+      },() -> RobotContainer.m_shooter.shooterForward(),interrupted -> RobotContainer.m_shooter.shooterStop(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_shooter);
     }
 
 }

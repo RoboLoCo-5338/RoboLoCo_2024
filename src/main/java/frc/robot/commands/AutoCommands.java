@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -14,44 +13,49 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.RobotContainer;
-
-import java.util.Optional;
-
 import com.choreo.lib.Choreo; //1/18/24
 import com.choreo.lib.ChoreoTrajectory;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 
 public class AutoCommands {
   static ChoreoTrajectory traj; //1/18/24
   static Field2d m_field = new Field2d();
-  
-  static boolean red=(DriverStation.getAlliance().get() == Alliance.Red);
-  static DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
-    // public static Command leftRed(){
-    //    return runTrajectory("bottom_red_leave");
-    //   //Add code
-    // }
-    // public static Command midRed(){
-    //   return runTrajectory("middle_red_leave");
-    // }
-    // public static Command rightRed(){
-    //   return runTrajectory("top_red_leave");
-    //   //Add code
-    // }
-    public static Command left(){
-      return runTrajectory("top_blue_leave");
+  static DriveSubsystem m_robotDrive = RobotContainer.getDriveSystem();
+    public static Command pathPlannerTest(){
+      // return new PathPlannerAuto("AUTO Name");
+      PathPlannerPath path = PathPlannerPath.fromPathFile("Straight_Line");
+      return AutoBuilder.followPath(path);
+    }
+    public static Command leftRed(){
+      return null;
       //Add code
     }
-    public static Command mid(){
-       return runTrajectory("middle_blue_leave");
+    public static Command dumbAuto() {
+      return runTrajectory("DumbTraj");
+    }
+
+    public static Command midRed(){
+      return runTrajectory("NewPath");
+    }
+    public static Command rightRed(){
+      return null;
       //Add code
     }
-    public static Command right(){
-      return runTrajectory("bottom_blue_leave");
+    public static Command leftBlue(){
+      return null;
+      //Add code
+    }
+    public static Command midBlue(){
+      return null;
+      //Add code
+    }
+    public static Command rightBlue(){
+      return null;
       //Add code
     }
     public static Command runTrajectory(String name){
@@ -86,7 +90,7 @@ public class AutoCommands {
             speeds.omegaRadiansPerSecond,
             false, true),
         () -> {
-            return red;
+            return false;
           }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
         m_robotDrive // The subsystem(s) to require, typically your drive subsystem only
     );
@@ -95,16 +99,6 @@ public class AutoCommands {
       Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
       swerveCommand,
       m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
-      
      );
-    // return null;
-    }
-
-    public static Command shootAuto(){
- 
-      return new InstantCommand(
-        () -> ShooterCommands.runShooterForwardTimed(2.0),RobotContainer.m_shooter
-      );
-      
     }
 }

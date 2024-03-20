@@ -1,0 +1,98 @@
+{
+    "version": "v0.2.1",
+    "robotConfiguration": {
+        "mass": 51.86010214262429,
+        "rotationalInertia": 6.000000000000001,
+        "motorMaxTorque": 1.087,
+        "motorMaxVelocity": 4800,
+        "gearing": 6.75,
+        "wheelbase": 0.5778496879611685,
+        "trackWidth": 0.5778496879611685,
+        "bumperLength": 0.812799561088237,
+        "bumperWidth": 0.8762995267982555,
+        "wheelRadius": 0.03809997942601111
+    },
+    "paths": {
+        "NewPath": {
+            "waypoints": [
+                {
+                    "x": 1.5,
+                    "y": 5.6,
+                    "heading": 0,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 2
+                },
+                {
+                    "x": 2.7,
+                    "y": 5.6,
+                    "heading": 0,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                }
+            ],
+            "trajectory": [
+                {
+                    "x": 1.5,
+                    "y": 5.6,
+                    "heading": -1.6083129338471823e-42,
+                    "angularVelocity": 8.598175875388228e-40,
+                    "velocityX": 5.585781303440065e-39,
+                    "velocityY": 4.052883493576662e-41,
+                    "timestamp": 0
+                },
+                {
+                    "x": 1.6,
+                    "y": 5.6,
+                    "heading": 1.0769043659808762e-41,
+                    "angularVelocity": 1.5084982670088607e-40,
+                    "velocityX": 1.218758189215434,
+                    "velocityY": 2.178274074890209e-32,
+                    "timestamp": 0.08205073072319143
+                },
+                {
+                    "x": 1.6,
+                    "y": 5.6,
+                    "heading": 0,
+                    "angularVelocity": 2.016413456194052e-40,
+                    "velocityX": 7.45467435390442e-39,
+                    "velocityY": -1.791954508035492e-40,
+                    "timestamp": 0.16410146144638285
+                }
+            ],
+            "constraints": [
+                {
+                    "scope": [
+                        "first"
+                    ],
+                    "type": "StopPoint",
+                    "uuid": "608cf208-676e-425c-9a59-bce5d9534ac5"
+                },
+                {
+                    "scope": [
+                        "last"
+                    ],
+                    "type": "StopPoint",
+                    "uuid": "49fab537-3f17-4143-b9c0-b0ff0b1dd19a"
+                },
+                {
+                    "scope": [
+                        0,
+                        1
+                    ],
+                    "type": "MaxVelocity",
+                    "uuid": "33f2ac17-ec4e-4cfa-8d72-f3cda138ceba",
+                    "velocity": 1.5
+                }
+            ],
+            "usesControlIntervalGuessing": true,
+            "defaultControlIntervalCount": 40,
+            "usesDefaultFieldObstacles": true,
+            "circleObstacles": []
+        }
+    },
+    "splitTrajectoriesAtStopPoints": false
+}
