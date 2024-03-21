@@ -119,6 +119,9 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 
+    Trigger logitechCamera = new Trigger(m_operatorController.a()); // Change operatorcontroller to drivercontroller if needed and change the button if needed
+    logitechCamera.whileTrue(CameraSubsystem.turnToNote());
+
     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
     makeRobotSlow.onTrue(makeRobotSlow());
 
@@ -147,6 +150,7 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
 
     Trigger autoAim = new Trigger(m_operatorController.b());
     autoAim.whileTrue(AutoAimCommands.autoAim());
+
 
     Trigger shootOut = new Trigger(m_operatorController.rightBumper());
     shootOut.whileTrue(ShooterCommands.shooterForward());
