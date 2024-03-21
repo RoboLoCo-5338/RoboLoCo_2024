@@ -126,9 +126,9 @@ public class AutoCommands {
     // YALL PLEASE USE THIS AUTO FOR COMP 
     public static Command realauto(){
       return new SequentialCommandGroup(
-        shootAuto(),
-        new WaitCommand(4)
-        //straightlinetest()
+        //shootAuto(),
+        new WaitCommand(4),
+        straightlinetest()
         
       );
       
@@ -187,7 +187,7 @@ public class AutoCommands {
     
     public static Command straightlinetest(){
       return new SequentialCommandGroup(
-        runTrajectory("hello")
+        runTrajectory("straightline1m")
       );
     }
 
