@@ -147,14 +147,15 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      switch (autoNum){
-        case 1:
-          return AutoCommands.left();
-        case 2:
-            return AutoCommands.mid();
-        case 3:
-            return AutoCommands.right();
-      }
-      return null;
+      return AutoCommands.pathPlannerTest();
+      // switch (autoNum){
+      //   case 1:
+      //     return AutoCommands.left();
+      //   case 2:
+      //       return AutoCommands.mid();
+      //   case 3:
+      //       return AutoCommands.right();
+      // }
+      // return null;
     }
 }

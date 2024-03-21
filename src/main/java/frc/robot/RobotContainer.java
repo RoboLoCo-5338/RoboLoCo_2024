@@ -7,6 +7,8 @@ package frc.robot;
 import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -27,6 +29,10 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+
+// Starts recording to data log
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -66,8 +72,17 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureButtonBindings();
+    NamedCommands.registerCommand("intake", IntakeCommands.moveIntakeIn());
+   
 
+    configureButtonBindings();
+    DataLogManager.start();
+
+  // Record both DS control and joystick data
+  DriverStation.startDataLog(DataLogManager.getLog());
+
+  // (alternatively) Record only DS control data
+  // DriverStation.startDataLog(DataLogManager.getLog(), false);
     // traj = Choreo.getTrajectory("StraightLine"); // 1/18/24
 
     // m_field.getObject("traj").setPoses(
@@ -198,7 +213,9 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     // Run path following command, then stop at the end.
     // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0,
     // true, false));
-
+    public static DriveSubsystem getDriveSystem(){
+      return m_robotDrive;
+    }
   public Command getAutonomousCommand() {
     // 1/18/24 ---- CHOREO TESTING
 
@@ -235,7 +252,7 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
     //     swerveCommand,
     //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
-    return AutoCommands.straightlinetest();
+    return Auto.getAutonomousCommand();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {

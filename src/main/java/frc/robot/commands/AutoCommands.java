@@ -8,15 +8,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.*;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants;
@@ -25,43 +24,52 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.RobotContainer;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.choreo.lib.Choreo; //1/18/24
 import com.choreo.lib.ChoreoTrajectory;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 
 public class AutoCommands {
   static ChoreoTrajectory traj; //1/18/24
   static Field2d m_field = new Field2d();
-  
-  static boolean red=(DriverStation.getAlliance().get() == Alliance.Red);
-  static DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
-    // public static Command leftRed(){
-    //    return runTrajectory("bottom_red_leave");
-    //   //Add code
-    // }
-    // public static Command midRed(){
-    //   return runTrajectory("middle_red_leave");
-    // }
-    // public static Command rightRed(){
-    //   return runTrajectory("top_red_leave");
-    //   //Add code
-    // }
-    public static Command left(){
-      return runTrajectory("top_blue_leave");
+  static DriveSubsystem m_robotDrive = RobotContainer.getDriveSystem();
+
+    public static Command pathPlannerTest(){
+      // return new PathPlannerAuto("AUTO Name");
+      PathPlannerPath path = PathPlannerPath.fromPathFile("Straight_Line");
+      return AutoBuilder.followPath(path);
+    }
+    
+    public static Command leftRed(){
+      return null;
       //Add code
     }
-    public static Command mid(){
-       return runTrajectory("middle_blue_leave");
+    public static Command dumbAuto() {
+      return runTrajectory("DumbTraj");
+    }
+
+    public static Command midRed(){
+      return runTrajectory("NewPath");
+    }
+    public static Command rightRed(){
+      return null;
       //Add code
     }
-    public static Command right(){
-      return runTrajectory("bottom_blue_leave");
+    public static Command leftBlue(){
+      return null;
+      //Add code
+    }
+    public static Command midBlue(){
+      return null;
+      //Add code
+    }
+    public static Command rightBlue(){
+      return null;
       //Add code
     }
     public static Command runTrajectory(String name){
@@ -93,10 +101,10 @@ public class AutoCommands {
         (ChassisSpeeds speeds) -> m_robotDrive.drive( // needs to be robot-relative
             speeds.vxMetersPerSecond,
             speeds.vyMetersPerSecond,
-            speeds.omegaRadiansPerSecond, false, true
-          ),
+            speeds.omegaRadiansPerSecond,
+            false, true),
         () -> {
-            return red;
+            return false;
           }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
         m_robotDrive // The subsystem(s) to require, typically your drive subsystem only
     );
@@ -104,10 +112,8 @@ public class AutoCommands {
     return Commands.sequence(
       Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
       swerveCommand,
-      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0,false, true))
-      
+      m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
      );
-    // return null;
     }
 
     public static Command shootAuto(){
