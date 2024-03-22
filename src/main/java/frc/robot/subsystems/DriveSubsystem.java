@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +31,12 @@ import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+  //   // feedforward
+
+  // public static final double kS = 0.01; 
+  // public static final double kV = 0.01; 
+  // public static final double kA = 0.01; 
+
   // Create MAXSwerveModules
   public final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -76,15 +83,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    drive(0, 0, 0, false, false);
+    zeroHeading();
+    
     AutoBuilder.configureHolonomic(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.8, // Max module speed, in m/s
+                    new PIDConstants(0.5, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(0.3, 0.0, 0.0), // Rotation PID constants
+                    1, // Max module speed, in m/s
                     0.394, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             ),
@@ -109,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
                                                            m_rearRight.getState());
   }
   public void driveRobotRelative(ChassisSpeeds chassisSpeeds){
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false, true);
+    drive(Math.min(1.0,chassisSpeeds.vxMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,chassisSpeeds.vyMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond), /*chassisSpeeds.omegaRadiansPerSecond/Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecond*/ 0 , false, true);
   }
   @Override
   public void periodic() {
@@ -309,4 +319,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void autoDrive(double xSpeed, double ySpeed, double rot){
     drive(Math.min(1.0,xSpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,ySpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), rot , true, true);
   }
+
+  // feedforward.calculate(10, 20);
+
 }

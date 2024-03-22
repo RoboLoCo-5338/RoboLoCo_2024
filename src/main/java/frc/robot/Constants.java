@@ -25,7 +25,6 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     
-    
   }
 
   public static final int RIGHTREAR_MOTOR = 1;
@@ -170,7 +169,7 @@ public final class Constants {
     public static final int kIntakeIndexCanId = 16;
     public static final int kIntakeMotorCanId = 13;
 
-    public static final boolean kGyroReversed = true;
+    public static final boolean kGyroReversed = false;
 
     public static HashMap<Double,String> armHashMap;
   }
@@ -253,6 +252,8 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  public static Object feedforwardConstants;
 
    //public static final int HOOK_MOTOR = 9; // placeholder
   // public static final int EFFECTOR_MOTOR = 10;
