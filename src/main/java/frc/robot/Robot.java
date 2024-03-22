@@ -122,7 +122,7 @@ public class Robot extends TimedRobot {
     SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
 
     Auto.autoSelect();
-    m_autonomousCommand = AutoCommands.straightlinetest();
+    m_autonomousCommand = AutoCommands.pathPlannerTest();
    // m_autonomousCommand = AutoCommands.runTrajectory("straightlinetestreal");
 
    // schedule the autonomous command (example)
@@ -134,7 +134,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    
+    SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
+    SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
+    SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle()* (DriveConstants.kGyroReversed ? -1.0 : 1.0));
+    SmartDashboard.putNumber("Front left speed", RobotContainer.m_robotDrive.m_frontLeft.getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Front right speed", RobotContainer.m_robotDrive.m_frontRight.getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Rear left speed", RobotContainer.m_robotDrive.m_rearLeft.getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("Rear right speed", RobotContainer.m_robotDrive.m_rearRight.getState().speedMetersPerSecond);
+
   }
 
   @Override
