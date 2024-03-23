@@ -123,14 +123,15 @@ public class Robot extends TimedRobot {
     //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
 
    // Auto.autoSelect();
+    //m_autonomousCommand = AutoCommands.shootAuto();
     m_autonomousCommand = AutoCommands.pathPlannerTest();
-   // m_autonomousCommand = AutoCommands.runTrajectory("straightlinetestreal");
-
+    
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
   }
+
 
   /** This function is called periodically during autonomous. */
   @Override
@@ -142,6 +143,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Front right speed", RobotContainer.m_robotDrive.m_frontRight.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Rear left speed", RobotContainer.m_robotDrive.m_rearLeft.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Rear right speed", RobotContainer.m_robotDrive.m_rearRight.getState().speedMetersPerSecond);
+
+    SmartDashboard.putNumber("Encoder ticks", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
 
     // SmartDashboard.putNumber("Pitch", RobotContainer.m_robotDrive.m_gyro.getPitch());
     // SmartDashboard.putNumber("Yaw", RobotContainer.m_robotDrive.m_gyro.getYaw());
