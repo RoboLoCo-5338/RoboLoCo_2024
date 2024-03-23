@@ -83,6 +83,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+   // m_robotContainer.m_robotDrive.m_gyro.reset();
     // CameraServer.startAutomaticCapture();
    // Auto.autoChooser();
     // RobotContainer.m_Arm.resetArm();
@@ -119,9 +120,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
 
-    SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
+    //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
 
-    Auto.autoSelect();
+   // Auto.autoSelect();
     m_autonomousCommand = AutoCommands.pathPlannerTest();
    // m_autonomousCommand = AutoCommands.runTrajectory("straightlinetestreal");
 
@@ -136,11 +137,15 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
     SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
-    SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle()* (DriveConstants.kGyroReversed ? -1.0 : 1.0));
+    SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle());
     SmartDashboard.putNumber("Front left speed", RobotContainer.m_robotDrive.m_frontLeft.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Front right speed", RobotContainer.m_robotDrive.m_frontRight.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Rear left speed", RobotContainer.m_robotDrive.m_rearLeft.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Rear right speed", RobotContainer.m_robotDrive.m_rearRight.getState().speedMetersPerSecond);
+
+    // SmartDashboard.putNumber("Pitch", RobotContainer.m_robotDrive.m_gyro.getPitch());
+    // SmartDashboard.putNumber("Yaw", RobotContainer.m_robotDrive.m_gyro.getYaw());
+    // SmartDashboard.putNumber("Roll", RobotContainer.m_robotDrive.m_gyro.getRoll());
 
   }
 
@@ -153,8 +158,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-
 
     RobotContainer.m_Arm.resetArm();
     RobotContainer.m_Arm.stopArm();
@@ -172,7 +175,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
     
     SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
-    SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle()* (DriveConstants.kGyroReversed ? -1.0 : 1.0));
+    SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle());
    //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
     // SmartDashboard.putString("Dino Rivets ftw","HELLO");
     

@@ -122,11 +122,11 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 5.1;
+    public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = Math.PI * 2 *0.85 ; // radians per second
-    public static final double kDirectionSlewRate = 1.2; // radians per second
-    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
-    public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
+    public static final double kDirectionSlewRate = 4; // radians per second
+    public static final double kMagnitudeSlewRate = 4; // percent per second (1 = 100%)
+    public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
     // public static final double kIntakeSpeed = 2.0;
     
     // Chassis configuration
@@ -221,7 +221,7 @@ public final class Constants {
     public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
-    public static final int kDrivingMotorCurrentLimit = 50; // amps
+    public static final int kDrivingMotorCurrentLimit = 40; // amps
     public static final int kTurningMotorCurrentLimit = 20; // amps
   }
 
@@ -238,9 +238,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 0.015; //changed this from 0.01 to 0.03
-    public static final double kPYController = 0.03; 
-    public static final double kPThetaController = 1;
+    public static final double kPXController = 5; //changed this from 0.01 to 6.0 (might be wrong??)
+    public static final double kPYController = 5; 
+    public static final double kPThetaController = 5;
 
 
 

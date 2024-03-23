@@ -109,6 +109,10 @@ public class RobotContainer {
   public Command makeRobotSlow(){
     return new InstantCommand(() -> { slowMode= !slowMode;});
   }
+
+  public Command resetGyroTeleop(){
+    return new InstantCommand(() -> {RobotContainer.m_robotDrive.m_gyro.reset();});
+  }
   
   private void configureButtonBindings() {
 
@@ -119,8 +123,8 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 
-    Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
-    makeRobotSlow.onTrue(makeRobotSlow());
+    // Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
+    // makeRobotSlow.onTrue(makeRobotSlow());
 
     Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
@@ -155,6 +159,10 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger shootIn = new Trigger(m_operatorController.leftBumper());
     shootIn.whileTrue(ShooterCommands.shooterReverse());
     shootIn.onFalse(ShooterCommands.shooterStop());
+
+    // reset gyro button binding 
+    Trigger resetGyro = new Trigger(m_driverController.x());
+    resetGyro.onTrue(resetGyroTeleop());
 
     // turnToTagCommand().execute();
     // m_Arm.doAutoAim(Constants.RobotTarget.SPEAKER).execute();

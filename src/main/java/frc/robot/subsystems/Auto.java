@@ -147,7 +147,7 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      return AutoCommands.pathPlannerTest();
+      return AutoCommands.realauto();
       // switch (autoNum){
       //   case 1:
       //     return AutoCommands.left();

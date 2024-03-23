@@ -72,7 +72,9 @@ public class AutoCommands {
       return null;
       //Add code
     }
-    public static Command runTrajectory(String name){
+    public static Command 
+    
+    runTrajectory(String name){
       traj = Choreo.getTrajectory(name); //1/18/24
 
       m_field.getObject("traj").setPoses(
@@ -132,9 +134,9 @@ public class AutoCommands {
     // YALL PLEASE USE THIS AUTO FOR COMP 
     public static Command realauto(){
       return new SequentialCommandGroup(
-        //shootAuto(),
+        shootAuto(),
         new WaitCommand(4),
-        straightlinetest()
+        pathPlannerTest()
         
       );
       
