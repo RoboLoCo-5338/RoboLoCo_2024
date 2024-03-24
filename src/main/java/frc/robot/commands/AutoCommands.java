@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.RobotContainer;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.choreo.lib.Choreo; //1/18/24
 import com.choreo.lib.ChoreoTrajectory;
@@ -31,6 +33,8 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 
@@ -42,7 +46,17 @@ public class AutoCommands {
     public static Command pathPlannerTest(){
       // return new PathPlannerAuto("AUTO Name");
       PathPlannerPath path = PathPlannerPath.fromPathFile("Straight_Line");
-      return AutoBuilder.followPath(path);
+      return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
+        .andThen(new WaitCommand(.1))
+        .andThen(AutoBuilder.followPath(path));
+    }
+
+    public static Pose2d getPathPose(PathPlannerPath pPath) {
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        return pPath.flipPath().getPreviewStartingHolonomicPose();
+      }
+      return pPath.getPreviewStartingHolonomicPose();
     }
     
     public static Command leftRed(){
