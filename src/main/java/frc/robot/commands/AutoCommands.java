@@ -36,8 +36,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-
-
 public class AutoCommands {
   static ChoreoTrajectory traj; //1/18/24
   static Field2d m_field = new Field2d();
