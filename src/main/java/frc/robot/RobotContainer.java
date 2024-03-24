@@ -133,6 +133,9 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
+  Trigger indexFast = new Trigger(()-> m_operatorController.getRightY()>OIConstants.kArmDeadband);
+ 
+
     Trigger ampArm = new Trigger(m_operatorController.y());
    // ampArm.onTrue(ArmCommands.setArm(0.75));
     Trigger climbArm = new Trigger(m_operatorController.b());
