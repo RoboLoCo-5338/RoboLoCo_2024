@@ -124,7 +124,8 @@ public class Robot extends TimedRobot {
 
    // Auto.autoSelect();
     //m_autonomousCommand = AutoCommands.shootAuto();
-    m_autonomousCommand = AutoCommands.pathPlannerTest();
+   // RobotContainer.m_robotDrive.setOdometry();
+    m_autonomousCommand = AutoCommands.realauto();
     
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -137,7 +138,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
-    SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
+    SmartDashboard.putNumber("X Pose", RobotContainer.m_robotDrive.getPose().getX());
+    SmartDashboard.putNumber("Y Pose", RobotContainer.m_robotDrive.getPose().getY());
     SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle());
     SmartDashboard.putNumber("Front left speed", RobotContainer.m_robotDrive.m_frontLeft.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Front right speed", RobotContainer.m_robotDrive.m_frontRight.getState().speedMetersPerSecond);
@@ -145,6 +147,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Rear right speed", RobotContainer.m_robotDrive.m_rearRight.getState().speedMetersPerSecond);
 
     SmartDashboard.putNumber("Encoder ticks", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("Direction", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
 
     // SmartDashboard.putNumber("Pitch", RobotContainer.m_robotDrive.m_gyro.getPitch());
     // SmartDashboard.putNumber("Yaw", RobotContainer.m_robotDrive.m_gyro.getYaw());

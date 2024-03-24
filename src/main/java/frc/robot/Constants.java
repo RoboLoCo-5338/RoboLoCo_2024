@@ -123,7 +123,7 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeed = Math.PI * 2 *0.85 ; // radians per second
+    public static final double kMaxAngularSpeed = Math.PI * 2 *0.75 ; // radians per second
     public static final double kDirectionSlewRate = 4; // radians per second
     public static final double kMagnitudeSlewRate = 4; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
@@ -223,6 +223,12 @@ public final class Constants {
 
     public static final int kDrivingMotorCurrentLimit = 40; // amps
     public static final int kTurningMotorCurrentLimit = 20; // amps
+
+    public static final int kEncoderCPR = 42;
+
+    //Odometry for Autonomous
+    public static final double kDriveEncoderDistancePerPulse = (kWheelDiameterMeters*Math.PI) / (double) kEncoderCPR;
+
   }
 
   public static final class OIConstants {
@@ -238,9 +244,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 4.5; //changed this from 0.01 to 6.0 (might be wrong??)
-    public static final double kPYController = 4.5; 
-    public static final double kPThetaController = 4.5;
+    public static final double kPXController = 4; //changed this from 0.01 to 6.0 (might be wrong??)
+    public static final double kPYController = 4; 
+    public static final double kPThetaController = 4;
 
 
 

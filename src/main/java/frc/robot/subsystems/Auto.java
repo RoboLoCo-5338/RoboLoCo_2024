@@ -36,8 +36,8 @@ public class Auto {
 
     public static Command returnChoreoCommand(String name){
 
-      PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
-     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     ChoreoTrajectory traj = Choreo.getTrajectory(name); // 1/18/24
     Field2d m_field = new Field2d();
@@ -147,7 +147,7 @@ public class Auto {
       //     swerveCommand,
       //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true))
       // );
-      return AutoCommands.shootAuto();
+      return AutoCommands.realauto();
       // switch (autoNum){
       //   case 1:
       //     return AutoCommands.left();

@@ -25,7 +25,9 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.MAXSwerveModule;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -85,12 +87,11 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     drive(0, 0, 0, false, false);
     
-    
     AutoBuilder.configureHolonomic(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeed
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                     new PIDConstants(0.5, 0.0, 0.0), // Translation PID constants
                     new PIDConstants(0.3, 0.0, 0.0), // Rotation PID constants
@@ -118,6 +119,11 @@ public class DriveSubsystem extends SubsystemBase {
                                                            m_rearLeft.getState(),
                                                            m_rearRight.getState());
   }
+  //maybe the conversion was wrong so use this instead for meters 
+  public void driveRobotRelativeMeters(ChassisSpeeds chassisSpeeds){
+    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, 0, false, true);
+  }
+
   public void driveRobotRelative(ChassisSpeeds chassisSpeeds){
     drive(Math.min(1.0,chassisSpeeds.vxMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,chassisSpeeds.vyMetersPerSecond/Constants.DriveConstants.kMaxSpeedMetersPerSecond), /*chassisSpeeds.omegaRadiansPerSecond/Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecond*/ 0 , false, true);
   }
@@ -142,6 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
+ 
 
   /**
    * Resets the odometry to the specified pose.
@@ -260,6 +267,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
+
+  // public void setOdometry(){
+  //    m_frontLeft.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
+  //     m_frontRight.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
+  //      m_rearLeft.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
+  //    m_rearRight.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
+  // }
 
   /**
    * Sets the swerve ModuleStates.

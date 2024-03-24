@@ -32,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void intakeIn() {
-        intakeMotor.set(-0.7);
+        intakeMotor.set(-0.8);
     }
 
     public void stopIndexer() {
@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void indexerIn() {
-        indexerMotor.set(-0.2);
+        indexerMotor.set(-0.18);
     }
       public void indexerInFast() {
         indexerMotor.set(-0.4);
