@@ -229,7 +229,7 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     }
   public Command getAutonomousCommand() {
   
-    return Auto.getAutonomousCommand();
+    return AutoCommands.getAutonomousCommand();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
   // if (ally == DriverStation.Alliance.Red) {

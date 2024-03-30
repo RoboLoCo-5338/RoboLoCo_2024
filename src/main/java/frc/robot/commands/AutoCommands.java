@@ -41,6 +41,8 @@ public class AutoCommands {
   static Field2d m_field = new Field2d();
   static DriveSubsystem m_robotDrive = RobotContainer.getDriveSystem();
 
+  public static PathPlannerAuto path;
+
     public static Command pathPlannerTest(){
       // return new PathPlannerAuto("AUTO Name");
       PathPlannerPath path = PathPlannerPath.fromPathFile("week 4 playoff 3");
@@ -220,6 +222,16 @@ public class AutoCommands {
       return new SequentialCommandGroup(
         runTrajectory("straightline1m")
       );
+    }
+
+    public static Command getAutonomousCommand(){
+
+      path = new PathPlannerAuto("null");
+      PathPlannerPath posePath =  PathPlannerPath.fromPathFile("week 4 playoff 3");
+      m_robotDrive.resetOdometry(getPathPose(posePath));
+
+      return AutoBuilder.followPath(posePath);
+
     }
 
 }
