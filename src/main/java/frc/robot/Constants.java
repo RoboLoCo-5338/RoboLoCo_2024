@@ -98,8 +98,10 @@ public final class Constants {
   // Constants such as camera and target height stored. Change per robot and goal!
   public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
   public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
+  public static final double LOGITECH_CAMERA_HEIGHT_METERS = Units.inchesToMeters(42); //TODO CHANGE THIS TO ACCURATE VALUE
   // Angle between horizontal and the camera.
   public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+  public static final double LOGTECH_CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);//TODO CHANGE THIS TOO
   public static final double ARM_ANGLE_HORIZONTAL_OFFSET = Math.toRadians(21);
   // How far from the target we want to be
   // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
