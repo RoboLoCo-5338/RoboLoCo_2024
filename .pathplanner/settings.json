@@ -3,6 +3,8 @@
   "robotLength": 0.963,
   "holonomicMode": true,
   "pathFolders": [
+    "center_4_note",
+    "center_3_note",
     "test folder"
   ],
   "autoFolders": [],

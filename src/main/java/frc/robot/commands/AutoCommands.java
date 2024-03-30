@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants;
@@ -45,7 +46,7 @@ public class AutoCommands {
 
     public static Command pathPlannerTest(){
       // return new PathPlannerAuto("AUTO Name");
-      PathPlannerPath path = PathPlannerPath.fromPathFile("week 4 playoff 3");
+      PathPlannerPath path = PathPlannerPath.fromPathFile("straight_line_3m_middle");
       return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
         .andThen(new WaitCommand(.1))
         .andThen(AutoBuilder.followPath(path));
@@ -224,13 +225,38 @@ public class AutoCommands {
       );
     }
 
+    public static Command getPath(String name){
+      PathPlannerPath path = PathPlannerPath.fromPathFile(name);
+      return AutoBuilder.followPath(path) ;
+      }
+
+    public static Command center3NoteAuto(){
+      PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
+         return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
+        .andThen(shootAuto())
+        .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeOnlyTimed(6000)))
+        .andThen(new ParallelRaceGroup(
+          new SequentialCommandGroup(getPath("2_center_straight"),IntakeCommands.runIntakeForwardTimed(1000)),
+          ShooterCommands.runShooterForwardTimed(9000))
+        // .andThen(new ParallelRaceGroup(getPath("3_center_straight"),IntakeCommands.runIntakeOnlyTimed(6000)))
+        );
+
+    }
+
+    public static Command center4NoteAuto(){
+      PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
+         return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
+        .andThen(shootAuto())
+        .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeOnlyTimed(6000)))
+        .andThen(new ParallelRaceGroup(
+          new SequentialCommandGroup(getPath("2_center_straight"),IntakeCommands.runIntakeForwardTimed(1000)),
+          ShooterCommands.runShooterForwardTimed(9000))
+        );
+
+    }
+
     public static Command getAutonomousCommand(){
-
-      path = new PathPlannerAuto("null");
-      PathPlannerPath posePath =  PathPlannerPath.fromPathFile("week 4 playoff 3");
-      m_robotDrive.resetOdometry(getPathPose(posePath));
-
-      return AutoBuilder.followPath(posePath);
+      return center3NoteAuto();
 
     }
 

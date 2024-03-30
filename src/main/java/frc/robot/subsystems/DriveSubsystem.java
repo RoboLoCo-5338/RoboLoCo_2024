@@ -13,10 +13,18 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Voltage;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static edu.wpi.first.units.MutableMeasure.mutable;
+
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 //import com.kauailabs.navx.frc.AHRS;
@@ -31,7 +39,39 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.MAXSwerveModule;
 import frc.robot.Constants.DriveConstants;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
+
+//SysID Imports
+import java.util.function.Supplier;
+
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Voltage;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Util.ModifiedSignalLogger;
+import frc.robot.Util.SwerveVoltageRequest;
+import frc.robot.generated.TunerConstants;
+
+import static edu.wpi.first.units.Units.*;
 
 public class DriveSubsystem extends SubsystemBase {
   //   // feedforward
@@ -338,6 +378,55 @@ public class DriveSubsystem extends SubsystemBase {
     drive(Math.min(1.0,xSpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,ySpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), rot , true, true);
   }
 
-  // feedforward.calculate(10, 20);
+  private SwerveVoltageRequest driveVoltageRequest = new SwerveVoltageRequest(true);
+
+    private SysIdRoutine m_driveSysIdRoutine =
+    new SysIdRoutine(
+        new SysIdRoutine.Config(null, null, null, ModifiedSignalLogger.logState()),
+        new SysIdRoutine.Mechanism(
+            (Measure<Voltage> volts) -> setControl(driveVoltageRequest.withVoltage(volts.in(Volts))),
+            null,
+            this));
+
+    private SwerveVoltageRequest steerVoltageRequest = new SwerveVoltageRequest(false);
+
+    private SysIdRoutine m_steerSysIdRoutine =
+    new SysIdRoutine(
+        new SysIdRoutine.Config(null, null, null, ModifiedSignalLogger.logState()),
+        new SysIdRoutine.Mechanism(
+            (Measure<Voltage> volts) -> setControl(steerVoltageRequest.withVoltage(volts.in(Volts))),
+            null,
+            this));
+
+    private SysIdRoutine m_slipSysIdRoutine =
+    new SysIdRoutine(
+        new SysIdRoutine.Config(Volts.of(0.25).per(Seconds.of(1)), null, null, ModifiedSignalLogger.logState()),
+        new SysIdRoutine.Mechanism(
+            (Measure<Voltage> volts) -> setControl(driveVoltageRequest.withVoltage(volts.in(Volts))),
+            null,
+            this));
+    
+    public Command runDriveQuasiTest(Direction direction)
+    {
+        return m_driveSysIdRoutine.quasistatic(direction);
+    }
+
+    public Command runDriveDynamTest(SysIdRoutine.Direction direction) {
+        return m_driveSysIdRoutine.dynamic(direction);
+    }
+
+    public Command runSteerQuasiTest(Direction direction)
+    {
+        return m_steerSysIdRoutine.quasistatic(direction);
+    }
+
+    public Command runSteerDynamTest(SysIdRoutine.Direction direction) {
+        return m_steerSysIdRoutine.dynamic(direction);
+    }
+
+    public Command runDriveSlipTest()
+    {
+        return m_slipSysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward);
+    }
 
 }

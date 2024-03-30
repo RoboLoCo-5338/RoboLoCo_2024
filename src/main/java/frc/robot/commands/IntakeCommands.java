@@ -28,6 +28,8 @@ public class IntakeCommands  {
   // }
 
   private static long startTime;
+  private static long intakestartTime;
+  private static long indexerstartTime;
 //command to set speed for arm
   public static Command moveIntakeIn(){
     return new InstantCommand(
@@ -63,6 +65,22 @@ public class IntakeCommands  {
       RobotContainer.m_Intake.stopIntakeIndexer();
       startTime = System.currentTimeMillis();
     },() -> RobotContainer.m_Intake.inIntakeIndexer(),interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_Intake);
+  }
+
+  public static Command runIntakeOnlyTimed(long time){
+
+   return new FunctionalCommand(() -> {
+      RobotContainer.m_Intake.stopIntake();
+      intakestartTime = System.currentTimeMillis();
+    },() -> RobotContainer.m_Intake.intakeIn(),interrupted -> RobotContainer.m_Intake.stopIntake(), () -> System.currentTimeMillis()-time>intakestartTime, RobotContainer.m_Intake);
+  }
+
+    public static Command runIndexerOnlyTimed(long time){
+
+   return new FunctionalCommand(() -> {
+      RobotContainer.m_Intake.stopIndexer();
+      indexerstartTime = System.currentTimeMillis();
+    },() -> RobotContainer.m_Intake.indexerInFast(),interrupted -> RobotContainer.m_Intake.stopIndexer(), () -> System.currentTimeMillis()-time>indexerstartTime, RobotContainer.m_Intake);
   }
 
 

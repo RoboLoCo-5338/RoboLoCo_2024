@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
    // Auto.autoSelect();
     //m_autonomousCommand = AutoCommands.shootAuto();
    // RobotContainer.m_robotDrive.setOdometry();
-    m_autonomousCommand = new PathPlannerAuto("Straight_Line");
+    m_autonomousCommand = AutoCommands.getAutonomousCommand();
     
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
