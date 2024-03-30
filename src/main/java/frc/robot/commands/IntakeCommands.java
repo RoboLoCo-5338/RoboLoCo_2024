@@ -64,7 +64,12 @@ public class IntakeCommands  {
       startTime = System.currentTimeMillis();
     },() -> RobotContainer.m_Intake.inIntakeIndexer(),interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> System.currentTimeMillis()-time>startTime, RobotContainer.m_Intake);
   }
-
+  
+  public static Command runIntakeUntilNote(){
+    return new FunctionalCommand(() -> {
+      RobotContainer.m_Intake.stopIntakeIndexer(); }, 
+      () -> RobotContainer.m_Intake.inIntakeIndexer(), interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> RobotContainer.m_Intake.isNote(), RobotContainer.m_Intake);
+  }
 
 
 

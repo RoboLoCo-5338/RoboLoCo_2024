@@ -188,7 +188,7 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
     SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle());
-    SmartDashboard.putNumber("LaserCAN Measurment", RobotContainer.m_Intake.getLaserCanMeasurement().distance_mm/1000);
+    SmartDashboard.putNumber("LaserCAN Measurment(Meters)", RobotContainer.m_Intake.getLaserCanMeasurement().distance_mm/1000);
 
    //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
     // SmartDashboard.putString("Dino Rivets ftw","HELLO");

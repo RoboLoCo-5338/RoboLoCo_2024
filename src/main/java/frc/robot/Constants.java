@@ -250,7 +250,7 @@ public final class Constants {
     public static final double kPThetaController = 4;
 
     // TODO the constant for LaserCAN's normal measurement (without a note)
-
+    public static final double normalLaserCAN = 0.4;
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
