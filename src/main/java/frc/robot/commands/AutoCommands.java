@@ -43,7 +43,7 @@ public class AutoCommands {
 
     public static Command pathPlannerTest(){
       // return new PathPlannerAuto("AUTO Name");
-      PathPlannerPath path = PathPlannerPath.fromPathFile("Straight_Line");
+      PathPlannerPath path = PathPlannerPath.fromPathFile("week 4 playoff 3");
       return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
         .andThen(new WaitCommand(.1))
         .andThen(AutoBuilder.followPath(path));
@@ -143,12 +143,23 @@ public class AutoCommands {
       
     }
 
+     public static Command intakeInAuto(){
+ 
+
+      return new ParallelCommandGroup(
+        IntakeCommands.runIntakeForwardTimed(1000)
+
+      );
+     
+      
+    }
+
     // YALL PLEASE USE THIS AUTO FOR COMP 
     public static Command realauto(){
       return new SequentialCommandGroup(
         shootAuto(),
-        new WaitCommand(4),
-        pathPlannerTest()
+        new WaitCommand(6),
+        new ParallelCommandGroup(pathPlannerTest(), IntakeCommands.runIntakeForwardTimed(6000))
         
       );
       

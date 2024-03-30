@@ -14,6 +14,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -125,7 +127,7 @@ public class Robot extends TimedRobot {
    // Auto.autoSelect();
     //m_autonomousCommand = AutoCommands.shootAuto();
    // RobotContainer.m_robotDrive.setOdometry();
-    m_autonomousCommand = AutoCommands.realauto();
+    m_autonomousCommand = new PathPlannerAuto("Straight_Line");
     
    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -191,7 +193,6 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putBoolean("direction", (RobotContainer.reverseModifier > 0));
 
     // TODO fix: forwardSpeed = -RobotContainer.controller1.getRawAxis(3);
-    SmartDashboard.putString("Test Before Test", "Working tho");
     
     // TODO fix: RobotContainer.limeLight.whileTrue(turnToTarg());
     // Use our forward/turn speeds to control the drivetrain

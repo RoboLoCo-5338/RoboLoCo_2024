@@ -117,7 +117,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
    Trigger ampPreset = new Trigger(m_operatorController.y());
-    ampPreset.onTrue(ArmCommands.setArm(48));
+    ampPreset.onTrue(ArmCommands.setArm(51   ));
 Trigger climbPreset = new Trigger(m_operatorController.b());
    // climbPreset.onTrue(ArmCommands.setArm(55));
     Trigger restPreset = new Trigger(m_operatorController.a());
@@ -228,41 +228,7 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
       return m_robotDrive;
     }
   public Command getAutonomousCommand() {
-    // 1/18/24 ---- CHOREO TESTING
-
-    // PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
-    // thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    // m_robotDrive.resetOdometry(traj.getInitialPose());
-
-    // Command swerveCommand = Choreo.choreoSwerveCommand(
-    //     traj, // Choreo trajectory from above
-    //     m_robotDrive::getPose, // A function that returns the current field-relative pose of the robot: your
-    //                            // wheel or vision odometry
-    //     new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // PIDController for field-relative X
-    //                                                                         // translation (input: X error in meters,
-    //                                                                         // output: m/s).
-    //     new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), // PIDController for field-relative Y
-    //                                                                         // translation (input: Y error in meters,
-    //                                                                         // output: m/s).
-    //     thetaController, // PID constants to correct for rotation
-    //                      // error
-    //     (ChassisSpeeds speeds) -> m_robotDrive.drive( // needs to be robot-relative
-    //         speeds.vxMetersPerSecond,
-    //         speeds.vyMetersPerSecond,
-    //         speeds.omegaRadiansPerSecond,
-    //         false, true),
-    //     () -> {
-    //       return false;
-    //     }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS
-    //        // AUTOMATICALLY)
-    //     m_robotDrive // The subsystem(s) to require, typically your drive subsystem only
-    // );
-
-    // return Commands.sequence(
-    //     Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
-    //     swerveCommand,
-    //     m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
+  
     return Auto.getAutonomousCommand();
   }
   // DriverStation.Alliance ally = DriverStation.getAlliance();
