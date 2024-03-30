@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConstants;
@@ -233,24 +234,50 @@ public class AutoCommands {
     public static Command center3NoteAuto(){
       PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
          return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
+        .andThen(new WaitCommand(0.1))
         .andThen(shootAuto())
-        .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeOnlyTimed(6000)))
-        .andThen(new ParallelRaceGroup(
-          new SequentialCommandGroup(getPath("2_center_straight"),IntakeCommands.runIntakeForwardTimed(1000)),
+        .andThen(new ParallelDeadlineGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeOnlyTimed(6000)))
+        .andThen(new ParallelCommandGroup(
+          new SequentialCommandGroup(getPath("2_center_straight"),IntakeCommands.runIntakeForwardTimed(1500),new WaitCommand(0.5)),
           ShooterCommands.runShooterForwardTimed(9000))
-        // .andThen(new ParallelRaceGroup(getPath("3_center_straight"),IntakeCommands.runIntakeOnlyTimed(6000)))
+        // .andThen(
+        //   new ParallelDeadlineGroup(getPath("3_center_straight"), IntakeCommands.runIntakeOnlyTimed(6000))
+        // )
+        // .andThen(
+        //   new ParallelRaceGroup(
+        //     new SequentialCommandGroup(getPath("4_center_straight"), IntakeCommands.runIntakeForwardTimed(1500),new WaitCommand(0.5)),
+        //     ShooterCommands.runShooterForwardTimed(9000)
+        //   )
+        // )
         );
-
     }
 
     public static Command center4NoteAuto(){
       PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
          return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
         .andThen(shootAuto())
-        .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeOnlyTimed(6000)))
+        .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path),IntakeCommands.runIntakeUntilNote()))
         .andThen(new ParallelRaceGroup(
           new SequentialCommandGroup(getPath("2_center_straight"),IntakeCommands.runIntakeForwardTimed(1000)),
           ShooterCommands.runShooterForwardTimed(9000))
+        .andThen(
+          new ParallelRaceGroup(getPath("3_center_straight"), IntakeCommands.runIntakeUntilNote())
+        )
+        .andThen(
+          new ParallelRaceGroup(
+            new SequentialCommandGroup(getPath("4_center_straight"), IntakeCommands.runIntakeForwardTimed(1000)),
+            ShooterCommands.runShooterForwardTimed(9000)
+          )
+        )
+        .andThen(
+          new ParallelRaceGroup(getPath("5_center_straight"),IntakeCommands.runIntakeUntilNote())
+        )
+        .andThen(new ParallelRaceGroup(
+          new SequentialCommandGroup(getPath("6_center_straight"), IntakeCommands.runIntakeForwardTimed(1000)),
+          ShooterCommands.runShooterForwardTimed(9000)
+        )
+
+        )
         );
 
     }

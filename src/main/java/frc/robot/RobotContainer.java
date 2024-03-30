@@ -134,7 +134,9 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     stopArm.whileTrue(ArmCommands.stopArm());
 
   Trigger indexFast = new Trigger(()-> m_operatorController.getRightY()>OIConstants.kArmDeadband);
- 
+  Trigger smallerDistance = new Trigger(() -> m_Intake.getLaserCanMeasurement().distance_mm/1000<5);
+  indexFast.and(smallerDistance.negate()).whileTrue(IntakeCommands.moveIndexerInFast());
+
 
     Trigger ampArm = new Trigger(m_operatorController.y());
    // ampArm.onTrue(ArmCommands.setArm(0.75));

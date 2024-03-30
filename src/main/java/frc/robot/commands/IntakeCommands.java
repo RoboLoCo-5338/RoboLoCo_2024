@@ -75,7 +75,7 @@ public class IntakeCommands  {
     },() -> RobotContainer.m_Intake.intakeIn(),interrupted -> RobotContainer.m_Intake.stopIntake(), () -> System.currentTimeMillis()-time>intakestartTime, RobotContainer.m_Intake);
   }
 
-    public static Command runIndexerOnlyTimed(long time){
+  public static Command runIndexerOnlyTimed(long time){
 
    return new FunctionalCommand(() -> {
       RobotContainer.m_Intake.stopIndexer();
@@ -83,7 +83,11 @@ public class IntakeCommands  {
     },() -> RobotContainer.m_Intake.indexerInFast(),interrupted -> RobotContainer.m_Intake.stopIndexer(), () -> System.currentTimeMillis()-time>indexerstartTime, RobotContainer.m_Intake);
   }
 
-
+  public static Command runIntakeUntilNote(){
+    return new FunctionalCommand(() -> {
+      RobotContainer.m_Intake.stopIntakeIndexer(); }, 
+      () -> RobotContainer.m_Intake.inIntakeIndexer(), interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(), () -> RobotContainer.m_Intake.isNote(), RobotContainer.m_Intake);
+  }
 
 
 }
