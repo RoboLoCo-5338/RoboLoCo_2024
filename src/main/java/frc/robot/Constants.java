@@ -168,6 +168,7 @@ public final class Constants {
     public static final int kShooter2CanId = 12;
     public static final int kIntakeIndexCanId = 16;
     public static final int kIntakeMotorCanId = 13;
+    public static final int kLaserCanID = 17; //TODO Change this to the correct value
 
     public static final boolean kGyroReversed = false;
 
@@ -248,12 +249,14 @@ public final class Constants {
     public static final double kPYController = 4; 
     public static final double kPThetaController = 4;
 
+    // TODO the constant for LaserCAN's normal measurement (without a note)
 
 
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
