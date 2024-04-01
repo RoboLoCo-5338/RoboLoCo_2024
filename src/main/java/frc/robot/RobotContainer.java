@@ -119,7 +119,7 @@ public class RobotContainer {
    Trigger ampPreset = new Trigger(m_operatorController.y());
     ampPreset.onTrue(ArmCommands.setArm(51   ));
 Trigger climbPreset = new Trigger(m_operatorController.b());
-   // climbPreset.onTrue(ArmCommands.setArm(55));
+    climbPreset.onTrue(ArmCommands.setArm(16));
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 
@@ -154,8 +154,8 @@ Trigger climbPreset = new Trigger(m_operatorController.b());
     intakeOut.whileTrue(IntakeCommands.moveIntakeOut());
     intakeOut.onFalse(IntakeCommands.stopIntake());
 
-    Trigger autoAim = new Trigger(m_operatorController.b());
-    autoAim.whileTrue(AutoAimCommands.autoAim());
+    // Trigger autoAim = new Trigger(m_operatorController.b());
+    // autoAim.whileTrue(AutoAimCommands.autoAim());
 
     Trigger shootOut = new Trigger(m_operatorController.rightBumper());
     shootOut.whileTrue(ShooterCommands.shooterForward());
