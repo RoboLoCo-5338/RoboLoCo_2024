@@ -302,9 +302,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setVoltageDrive(double volts){
     m_frontLeft.m_drivingSparkMax.setVoltage(volts);
-    m_frontRight.m_drivingSparkMax.setVoltage(volts);
+    m_frontRight.m_drivingSparkMax.setVoltage(-volts);
     m_rearLeft.m_drivingSparkMax.setVoltage(volts);
-    m_rearRight.m_drivingSparkMax.setVoltage(volts);
+    m_rearRight.m_drivingSparkMax.setVoltage(-volts);
   }
 
    public void setVoltageSteer(double volts){
