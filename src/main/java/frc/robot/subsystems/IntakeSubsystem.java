@@ -34,8 +34,8 @@ public class IntakeSubsystem extends SubsystemBase {
             } catch (ConfigurationFailedException e) {
            System.out.println("Configuration failed! " + e);
         }
-        intakeMotor = new CANSparkMax(Constants.DriveConstants.kIntakeMotorCanId /*Change Device ID*/, MotorType.kBrushless);
-        indexerMotor = new CANSparkMax( Constants.DriveConstants.kIntakeIndexCanId /*Change Device ID*/, MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(Constants.DriveConstants.kIntakeMotorCanId, MotorType.kBrushless);
+        indexerMotor = new CANSparkMax( Constants.DriveConstants.kIntakeIndexCanId, MotorType.kBrushless);
         indexerMotor.setIdleMode(IdleMode.kBrake);
         intakeEncoder = intakeMotor.getEncoder();
     }
@@ -60,10 +60,7 @@ public class IntakeSubsystem extends SubsystemBase {
         indexerMotor.set(-0.18);
     }
 
-    public void indexerInSlow(){
-        indexerMotor.set(-0.01);
-    }
-      public void indexerInFast() {
+    public void indexerInFast() {
         indexerMotor.set(-0.4);
     }
 

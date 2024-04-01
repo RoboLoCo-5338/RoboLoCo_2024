@@ -4,7 +4,13 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,77 +19,25 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import static edu.wpi.first.units.Units.Volts;
-import static edu.wpi.first.units.MutableMeasure.mutable;
-
-import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.hardware.Pigeon2;
-//import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.MAXSwerveModule;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.RobotContainer;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-// sysID imports
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import org.photonvision.EstimatedRobotPose;
-
-import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.units.*;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog.State;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.*;
-// import frc.robot.generated.TunerConstants;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.Velocity;
 
 public class DriveSubsystem extends SubsystemBase {
-  //   // feedforward
-
-  // public static final double kS = 0.01; 
-  // public static final double kV = 0.01; 
-  // public static final double kA = 0.01; 
-
   // Create MAXSwerveModules
   public final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
@@ -116,7 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
-  private final Field2d m_field2d = new Field2d();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -131,26 +84,20 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    drive(0, 0, 0, false, false);
-    
-    AutoBuilder.configureHolonomic(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeed
-            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(2.8, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(1, 0.0, 0.0), // Rotation PID constants
-                    Constants.DriveConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-                    0.394, // Drive base radius in meters. Distance from robot center to furthest module.
-                    new ReplanningConfig() // Default path replanning config. See the API for the options here
-            ),
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetOdometry,
+      this::getRobotRelativeSpeeds,
+      this::driveRobotRelative,
+      new HolonomicPathFollowerConfig(
+        new PIDConstants(5.0, 0.0, 0.0), 
+        new PIDConstants(5.0, 0.0, 0.0), 
+        Constants.AutoConstants.kMaxSpeedMetersPerSecond, 
+        0.394, 
+        new ReplanningConfig()),
+    ()->{
+         var alliance = DriverStation.getAlliance();
               if (alliance.isPresent()) {
                 return alliance.get() == DriverStation.Alliance.Red;
               }
@@ -158,26 +105,18 @@ public class DriveSubsystem extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
     );
-    SmartDashboard.putData("Field", m_field2d);
-  }
-  public ChassisSpeeds getRobotRelativeSpeeds(){
-    return DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
-                                                           m_frontRight.getState(),
-                                                           m_rearLeft.getState(),
-                                                           m_rearRight.getState());
-  }
-  //maybe the conversion was wrong so use this instead for meters 
-  public void driveRobotRelativeMeters(ChassisSpeeds chassisSpeeds){
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, 0, false, true);
-  }
+ }
+    
+
+  
 
   public void driveRobotRelative(ChassisSpeeds chassisSpeeds){
     drive(chassisSpeeds.vxMetersPerSecond,chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, false, true);
   }
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_field2d.setRobotPose(getPose());
     m_odometry.update(
         Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
@@ -196,7 +135,6 @@ public class DriveSubsystem extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
- 
 
   /**
    * Resets the odometry to the specified pose.
@@ -215,9 +153,6 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
-
-
-
   /**
    * Method to drive the robot using joystick info.
    *
@@ -232,11 +167,6 @@ public class DriveSubsystem extends SubsystemBase {
     
     double xSpeedCommanded;
     double ySpeedCommanded;
-
-
-    SmartDashboard.putNumber("XSpeed", xSpeed);
-    SmartDashboard.putNumber("YSpeed", ySpeed);
-    SmartDashboard.putNumber("rotation rate", rot);
 
     if (rateLimit) {
       // Convert XY to polar for rate limiting
@@ -291,12 +221,9 @@ public class DriveSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.6:1.0);
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed*(RobotContainer.slowMode?0.6:1.0);
 
-    SmartDashboard.putNumber("XSpeedDelivered", xSpeedDelivered);
-    SmartDashboard.putNumber("YSpeedDelivered", ySpeedDelivered);
-    SmartDashboard.putNumber("Gyro Value",  Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)).getDegrees());
-    SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0)))
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()* (DriveConstants.kGyroReversed ? -1.0 : 1.0)))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -316,12 +243,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
-  // public void setOdometry(){
-  //    m_frontLeft.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
-  //     m_frontRight.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
-  //      m_rearLeft.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
-  //    m_rearRight.m_drivingEncoder.setPositionConversionFactor(Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
-  // }
+  public ChassisSpeeds getRobotRelativeSpeeds(){
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_rearLeft.getState(),
+      m_rearRight.getState());
+  }
 
   /**
    * Sets the swerve ModuleStates.
@@ -356,10 +284,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-
-    
-   
-    return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()).getDegrees();
+    return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()).getDegrees()* (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   /**
@@ -371,37 +296,232 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  public void driveSpeed(double speed){
-    m_frontLeft.moveMotor(speed);
-    m_frontRight.moveMotor(speed);
-    m_rearLeft.moveMotor(speed);
-    m_rearRight.moveMotor(speed);
+
+
+  //SYSID CODE 
+
+  public void setVoltageDrive(double volts){
+    m_frontLeft.m_drivingSparkMax.setVoltage(volts);
+    m_frontRight.m_drivingSparkMax.setVoltage(volts);
+    m_rearLeft.m_drivingSparkMax.setVoltage(volts);
+    m_rearRight.m_drivingSparkMax.setVoltage(volts);
   }
 
-  public void autoDrive(double xSpeed, double ySpeed, double rot){
-    drive(Math.min(1.0,xSpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), Math.min(1.0,ySpeed/Constants.DriveConstants.kMaxSpeedMetersPerSecond), rot , true, true);
+   public void setVoltageSteer(double volts){
+    m_frontLeft.m_turningSparkMax.setVoltage(volts);
+    m_frontRight.m_turningSparkMax.setVoltage(volts);
+    m_rearLeft.m_turningSparkMax.setVoltage(volts);
+    m_rearRight.m_turningSparkMax.setVoltage(volts);
   }
 
-// SysIdRoutine routine = new SysIdRoutine(
-//   new SysIdRoutine.Config(), 
-//   new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-//   );
+  private final MutableMeasure<Voltage> m_appliedVoltage = MutableMeasure.mutable(Units.Volts.of(0));
+  private final MutableMeasure<Distance> m_distance = MutableMeasure.mutable(Units.Meters.of(0));
+  private final MutableMeasure<Velocity<Distance>> m_velocity = MutableMeasure.mutable(Units.MetersPerSecond.of(0));
 
-// all sysID things to figure out 
-// private final SwerveVoltRequest voltRequest = new SwerveVoltRequest();
+  public SysIdRoutine m_driveSysIdRoutine =
+    new SysIdRoutine(
+      new SysIdRoutine.Config(),
+      new SysIdRoutine.Mechanism(
+        (Measure<Voltage> volts) -> setVoltageDrive(volts.in(Units.Volts)),
+         
+        log -> {
 
-//     private final SysIdRoutine sysIdRoutine = new SysIdRoutine(
-//             new SysIdRoutine.Config(null, null, null, this::logSysIdState),
-//             new SysIdRoutine.Mechanism(
-//                     (Measure<Voltage> volts) -> m_rearLeft.setVoltage(),
-//                     null,
-//                     this));
+          // log motor information, someone please check all the units and their conversions, I'm not quite sure if I did that part right
+          log.motor("drive-front-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontLeft.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontLeft.m_drivingEncoder.getPosition()*m_frontLeft.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontLeft.m_drivingEncoder.getVelocity()*m_frontLeft.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
 
-//     private void logSysIdState(State state) {
-//         SignalLogger.writeString("test-mode", state.toString());
-//     }
+           log.motor("drive-front-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontRight.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontRight.m_drivingEncoder.getPosition()*m_frontRight.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontRight.m_drivingEncoder.getVelocity()*m_frontRight.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
 
-//     {
-//         initSwerve();
-//     }
+             log.motor("drive-rear-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearLeft.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearLeft.m_drivingEncoder.getPosition()*m_rearLeft.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearLeft.m_drivingEncoder.getVelocity()*m_rearLeft.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+             log.motor("drive-rear-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearRight.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearRight.m_drivingEncoder.getPosition()*m_rearRight.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearRight.m_drivingEncoder.getVelocity()*m_rearRight.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+        }, 
+         this));
+
+  public SysIdRoutine m_steerSysIdRoutine = 
+    new SysIdRoutine(
+      new SysIdRoutine.Config(),  
+      new SysIdRoutine.Mechanism(
+        (Measure<Voltage> volts) -> setVoltageSteer(volts.in(Units.Volts)),
+       log -> {
+         log.motor("turn-front-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontLeft.m_turningSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontLeft.m_turningEncoder.getPosition()*m_frontLeft.m_turningEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontLeft.m_turningEncoder.getVelocity()*m_frontLeft.m_turningEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+          log.motor("turn-front-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontRight.m_turningSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontRight.m_turningEncoder.getPosition()*m_frontRight.m_turningEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontRight.m_turningEncoder.getVelocity()*m_frontRight.m_turningEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+             log.motor("drive-rear-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearLeft.m_turningSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearLeft.m_turningEncoder.getPosition()*m_rearLeft.m_turningEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearLeft.m_turningEncoder.getVelocity()*m_rearLeft.m_turningEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+             log.motor("drive-rear-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearRight.m_turningSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearRight.m_turningEncoder.getPosition()*m_rearRight.m_turningEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearRight.m_turningEncoder.getVelocity()*m_rearRight.m_turningEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+       }, 
+        this));
+
+  // someone figure out what this routine does, I'm not qute sure
+  public SysIdRoutine m_slipSysIdRoutine=
+  new SysIdRoutine(
+    new SysIdRoutine.Config(Units.Volts.of(0.25).per(Units.Seconds.of(1)),null,null,null),
+    new SysIdRoutine.Mechanism(
+      (Measure<Voltage> volts) -> setVoltageDrive(volts.in(Units.Volts)),
+        log -> {
+
+          // log motor information, someone please check all the units and their conversions, I'm not quite sure if I did that part right
+          log.motor("drive-front-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontLeft.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontLeft.m_drivingEncoder.getPosition()*m_frontLeft.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontLeft.m_drivingEncoder.getVelocity()*m_frontLeft.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+           log.motor("drive-front-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_frontRight.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_frontRight.m_drivingEncoder.getPosition()*m_frontRight.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_frontRight.m_drivingEncoder.getVelocity()*m_frontRight.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+             log.motor("drive-rear-left")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearLeft.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearLeft.m_drivingEncoder.getPosition()*m_rearLeft.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearLeft.m_drivingEncoder.getVelocity()*m_rearLeft.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+
+             log.motor("drive-rear-right")
+            .voltage(
+              m_appliedVoltage.mut_replace(
+                m_rearRight.m_drivingSparkMax.getBusVoltage(),Units.Volts
+              )
+            )
+            .linearPosition(m_distance.mut_replace(
+              m_rearRight.m_drivingEncoder.getPosition()*m_rearRight.m_drivingEncoder.getPositionConversionFactor(),Units.Meters))
+            .linearVelocity(
+              m_velocity.mut_replace(
+                m_rearRight.m_drivingEncoder.getVelocity()*m_rearRight.m_drivingEncoder.getVelocityConversionFactor(),Units.MetersPerSecond
+            ));
+        },
+       this));
+
+  public Command drive_sysIdQuasistatic(SysIdRoutine.Direction direction){
+    return m_driveSysIdRoutine.quasistatic(direction);
+  }
+
+  public Command steer_sysIdQuasistatic(SysIdRoutine.Direction direction){
+    return m_steerSysIdRoutine.quasistatic(direction);
+  }
+
+  public Command driveSlipTestSysId (SysIdRoutine.Direction direction){
+    return m_slipSysIdRoutine.quasistatic(direction);
+  }
+
+  public Command drive_sysIdDynamic(SysIdRoutine.Direction direction){
+    return m_driveSysIdRoutine.dynamic(direction);
+  }
+
+  public Command steer_sysIdDynamic(SysIdRoutine.Direction direction){
+    return m_steerSysIdRoutine.dynamic(direction);
+  }
+
 }

@@ -90,14 +90,12 @@ public class ArmSubsystem extends SubsystemBase {
     // armEncoder2.setPosition(-position);
     armController1.setReference(position, CANSparkMax.ControlType.kPosition);
     armController2.setReference(-position, CANSparkMax.ControlType.kPosition); 
-    SmartDashboard.putString("Set arm", "Is being called 2");// TODO This may not work check the position
   }
   public void setArmRadians(double position) {
     setArm(position * rotations_per_radians);
   }
 
  public void moveArmUp(){
- // if(getArmPosition()>)
     armMotor1.set(-0.4);
     armMotor2.set(0.4);
  }

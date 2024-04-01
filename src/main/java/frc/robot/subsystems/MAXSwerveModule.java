@@ -24,8 +24,8 @@ public class MAXSwerveModule {
   public final RelativeEncoder m_drivingEncoder;
   public final AbsoluteEncoder m_turningEncoder;
 
-  public final SparkPIDController m_drivingPIDController;
-  public final SparkPIDController m_turningPIDController;
+  private final SparkPIDController m_drivingPIDController;
+  private final SparkPIDController m_turningPIDController;
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
@@ -110,8 +110,6 @@ public class MAXSwerveModule {
     m_drivingEncoder.setPosition(0);
   }
 
-
-
   /**
    * Returns the current state of the module.
    *
@@ -162,10 +160,5 @@ public class MAXSwerveModule {
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
     m_drivingEncoder.setPosition(0);
-  }
-
-
-  public void moveMotor(double speed){
-    m_drivingSparkMax.set(speed);
   }
 }

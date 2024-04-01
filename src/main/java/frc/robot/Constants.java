@@ -2,13 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
-
-import java.util.HashMap;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
@@ -18,27 +12,23 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     
   }
-
-  public static final int RIGHTREAR_MOTOR = 1;
-  public static final int RIGHTFRONT_MOTOR = 2;
-  public static final int LEFTREAR_MOTOR = 3;
-  public static final int LEFTFRONT_MOTOR = 4;
-  // public static final int ELEVATOR_MOTOR = 7;
-  public static final int CONE_TIPPER = 0;
-  // public static final int EFFECTOR_MOTOR = 5;
-  // public static final int ARM_MOTOR = 6;
 
   public static final int ABUTTON = 1; 
   public static final int BBUTTON = 2; 
@@ -50,7 +40,6 @@ public final class Constants {
   public static final int STARTBUTTON = 8; 
   public static final int LEFTSTICKBUTTON = 9; 
   public static final int RIGHTSTICKBUTTON = 10;
-  public static final double SUBWOOFER_SHOT_ANGLE = -1; // TODO figure out
 
   public enum RobotTarget {
     SPEAKER,
@@ -80,13 +69,13 @@ public final class Constants {
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
   };
+
   public static final double[] aprilTagUniqueHeights = { //These are to the bottom of the AprilTag
     Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Source
     Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Speaker
     Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Amp
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Stage
   };
-
 
   public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
   public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10+7/8);
@@ -129,12 +118,12 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeed = Math.PI * 2 *0.75 ; // radians per second
+    public static final double kMaxAngularSpeed = 2 * Math.PI * 0.75; // radians per second
+
     public static final double kDirectionSlewRate = 4; // radians per second
     public static final double kMagnitudeSlewRate = 4; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 4; // percent per second (1 = 100%)
-    // public static final double kIntakeSpeed = 2.0;
-    
+
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
     // Distance between centers of right and left wheels on robot
@@ -145,13 +134,9 @@ public final class Constants {
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-    // public static final double speed_multi = 0.1;
-    // public static final double kp = 0.01;
-    // public static final double min_command = 0.001;
-    
+
     // Angular offsets of the modules relative to the chassis in radians
-    
-    public static final double kFrontLeftChassisAngularOffset = -Math.PI/2;
+    public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
@@ -167,18 +152,19 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 1;
     public static final int kRearRightTurningCanId = 5;
 
-    // CHANGE CAN IDS of the Subsystems pls
-    public static final int kArmCanId1 = 15;
-    public static final int kArmCanId2 = 14;
-    public static final int kShooter1CanId = 11;
-    public static final int kShooter2CanId = 12;
-    public static final int kIntakeIndexCanId = 16;
-    public static final int kIntakeMotorCanId = 13;
-    public static final int kLaserCanID = 17;
+    
+     public static final int kArmCanId1 = 15;
+     public static final int kArmCanId2 = 14;
+     public static final int kShooter1CanId = 11;
+     public static final int kShooter2CanId = 12;
+     public static final int kIntakeIndexCanId = 16;
+     public static final int kIntakeMotorCanId = 13;
+     public static final int kLaserCanID = 17;
+
+     
+ 
 
     public static final boolean kGyroReversed = false;
-
-    public static HashMap<Double,String> armHashMap;
   }
 
   public static final class ModuleConstants {
@@ -233,7 +219,6 @@ public final class Constants {
 
     public static final int kEncoderCPR = 42;
 
-    //Odometry for Autonomous
     public static final double kDriveEncoderDistancePerPulse = (kWheelDiameterMeters*Math.PI) / (double) kEncoderCPR;
 
   }
@@ -251,11 +236,10 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 4; //changed this from 0.01 to 6.0 (might be wrong??)
-    public static final double kPYController = 4; 
+    public static final double kPXController = 4;
+    public static final double kPYController = 4;
     public static final double kPThetaController = 4;
 
-    // TODO the constant for LaserCAN's normal measurement (without a note)
     public static final double normalLaserCAN = 0.20;
 
     // Constraint for the motion profiled robot angle controller
@@ -263,15 +247,7 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
-
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
-
-  public static Object feedforwardConstants;
-
-   //public static final int HOOK_MOTOR = 9; // placeholder
-  // public static final int EFFECTOR_MOTOR = 10;
-  // public static final int INTAKE_MOTOR = 11;
-
 }
