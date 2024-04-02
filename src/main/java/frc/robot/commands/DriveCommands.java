@@ -40,7 +40,7 @@ public class DriveCommands {
 
     public static Command driveToTag(double speed){
         return new FunctionalCommand(() -> {RobotContainer.m_robotDrive.driveSpeed(0);}, 
-       () -> {RobotContainer.m_robotDrive.driveRobotRelative(new ChassisSpeeds(speed, 0, 0));}, interrupted -> RobotContainer.m_robotDrive.driveSpeed(0), () ->Vision.distanceFromTarget(Constants.aprilTagHeights[1])<5, RobotContainer.m_robotDrive);
+       () -> {RobotContainer.m_robotDrive.driveRobotRelative(new ChassisSpeeds(speed, 0, 0));}, interrupted -> RobotContainer.m_robotDrive.driveSpeed(0), () ->Vision.distanceFromTarget(Constants.aprilTagHeights[1])<5 /* TODO change from five */, RobotContainer.m_robotDrive);
     }
 
 
