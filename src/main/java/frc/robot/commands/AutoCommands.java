@@ -244,7 +244,7 @@ public class AutoCommands {
     public static Command dynamicAutoCommand(){
       return Commands.sequence(
         CameraSubsystem.turnToNote(),
-        DriveCommands.driveForewardUntilIntake(2),
+        DriveCommands.driveForewardUntilIntake(-2),
         Vision.turnToTagCommand(),
         DriveCommands.driveToTag(2),
         ShooterCommands.runShooterForwardTimed((long) 0.5)
