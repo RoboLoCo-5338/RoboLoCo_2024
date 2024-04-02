@@ -83,7 +83,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
     public boolean isNote(){
         if (getLaserCanMeasurement() != null && getLaserCanMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-            return getLaserCanMeasurement().distance_mm/1000<Constants.AutoConstants.normalLaserCAN;
+            return getLaserCanMeasurement().distance_mm/1000.0<Constants.AutoConstants.normalLaserCAN;
         }
         return false;
     }

@@ -18,10 +18,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.RobotContainer;
 
 import java.util.List;
@@ -232,6 +235,20 @@ public class AutoCommands {
 
       return AutoBuilder.followPath(posePath);
 
+    }
+
+    /**
+     * A command that should automatically intake and shoot a note. Uses literally every subsystem
+     * @return The sequence of commands
+     */
+    public static Command dynamicAutoCommand(){
+      return Commands.sequence(
+        CameraSubsystem.turnToNote(),
+        DriveCommands.driveForewardUntilIntake(2),
+        Vision.turnToTagCommand(),
+        DriveCommands.driveToTag(2),
+        ShooterCommands.runShooterForwardTimed((long) 0.5)
+      );
     }
 
 }
