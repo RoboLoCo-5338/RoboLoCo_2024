@@ -44,6 +44,7 @@ import java.util.List;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -76,7 +77,9 @@ public static CommandXboxController m_driverController = new CommandXboxControll
 
     m_robotDrive = new DriveSubsystem();
     //put all named commands in a register command
-    NamedCommands.registerCommand("null",null);
+    NamedCommands.registerCommand("shootAuto()",AutoCommands.shootAuto());
+    NamedCommands.registerCommand("IntakeForward()",AutoCommands.IntakeForward());
+    NamedCommands.registerCommand("IntakeOnly()",AutoCommands.IntakeOnly());
     AutoCommands.loadAutos();
 
     autoChooser = AutoBuilder.buildAutoChooser(AutoCommands.defaultAuto);
@@ -162,6 +165,9 @@ public static CommandXboxController m_driverController = new CommandXboxControll
   }
 
   public Command getAutonomousCommand() {
+    Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile("Two Note Auto");
+    
+    m_robotDrive.resetOdometry(startingPose);
     return autoChooser.getSelected();
   }
 }

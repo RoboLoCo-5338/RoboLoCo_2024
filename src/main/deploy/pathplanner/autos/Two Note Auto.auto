@@ -2,7 +2,7 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4259262722800992,
+      "x": 1.43,
       "y": 5.547612425391122
     },
     "rotation": 0
@@ -30,12 +30,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "2_center_straight"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "IntakeForward()"
@@ -45,6 +39,12 @@
           "type": "named",
           "data": {
             "name": "shootAuto()"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2_center_straight"
           }
         }
       ]
