@@ -1,0 +1,21 @@
+{
+  "robotWidth": 0.84,
+  "robotLength": 0.963,
+  "holonomicMode": true,
+  "pathFolders": [
+    "Amp Side",
+    "Fresta Auto",
+    "Center",
+    "Source Side",
+    "Test Side",
+    "Variable Auto",
+    "center_3_note",
+    "center_4_note"
+  ],
+  "autoFolders": [],
+  "defaultMaxVel": 4.8,
+  "defaultMaxAccel": 4.0,
+  "defaultMaxAngVel": 600.0,
+  "defaultMaxAngAccel": 600.0,
+  "maxModuleSpeed": 4.8
+}

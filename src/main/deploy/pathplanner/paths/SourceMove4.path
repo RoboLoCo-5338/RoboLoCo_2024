@@ -1,0 +1,86 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.55,
+        "y": 2.52
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.555524661880678,
+        "y": 1.8375169248200731
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.660996908200712,
+        "y": 1.7975528364849844
+      },
+      "prevControl": {
+        "x": 7.225183319233867,
+        "y": 1.7098050125332798
+      },
+      "nextControl": {
+        "x": 2.7053821807192504,
+        "y": 1.8644750134710422
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.7629427135338847,
+        "y": 4.3386424065009646
+      },
+      "prevControl": {
+        "x": 1.6501707112677895,
+        "y": 3.139422145827665
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "LaserCanIntake()"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 600.0,
+    "maxAngularAcceleration": 600.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -58.10920819815432,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Source Side",
+  "previewStartingState": {
+    "rotation": 1.0230301886677542,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
