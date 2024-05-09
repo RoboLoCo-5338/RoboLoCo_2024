@@ -30,8 +30,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void shooterForward() {
-        shootMotor1.set(0.85);
-        shootMotor2.set(0.85);
+
+        //changed for inspire loudoun
+        shootMotor1.set(0.6);
+        shootMotor2.set(0.6);
     }
 
     public void shooterReverse() {

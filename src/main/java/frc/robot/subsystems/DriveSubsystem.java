@@ -222,6 +222,7 @@ public class DriveSubsystem extends SubsystemBase {
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.6:1.0);
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond*(RobotContainer.slowMode?0.6:1.0);
     double rotDelivered = m_currentRotation * DriveConstants.kMaxAngularSpeed*(RobotContainer.slowMode?0.6:1.0);
+  
 
     if(autoMode){
       xSpeedDelivered=xSpeedCommanded;
