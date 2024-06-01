@@ -69,8 +69,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Rear left speed", RobotContainer.m_robotDrive.m_rearLeft.getState().speedMetersPerSecond);
     SmartDashboard.putNumber("Rear right speed", RobotContainer.m_robotDrive.m_rearRight.getState().speedMetersPerSecond);
 
-    SmartDashboard.putNumber("Encoder ticks", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
-    SmartDashboard.putNumber("Direction", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("Front left distance (meters)", RobotContainer.m_robotDrive.m_frontLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("Front right distance (meters)", RobotContainer.m_robotDrive.m_frontRight.getPosition().distanceMeters);
+    SmartDashboard.putNumber("Rear left distance (meters)", RobotContainer.m_robotDrive.m_rearLeft.getPosition().distanceMeters);
+    SmartDashboard.putNumber("Rear right distance (meters)", RobotContainer.m_robotDrive.m_rearRight.getPosition().distanceMeters);
 
     SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
 
@@ -124,6 +126,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.m_Arm.resetArm();
     RobotContainer.m_Arm.stopArm();
+    RobotContainer.m_robotDrive.drive(0, 0, 0, false, false, false); //added 6/1/24 to straighten wheels upon teleop init for testing
 
   }
 

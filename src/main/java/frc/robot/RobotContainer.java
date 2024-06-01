@@ -210,7 +210,7 @@ public long timeRumble=0;
   }
 
   public Command getAutonomousCommand() {
-    Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile("Two Note");
+    Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile("Straight");
     Pose2d flipped;
     Optional<Alliance> alliance = DriverStation.getAlliance();
       if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
@@ -220,7 +220,7 @@ public long timeRumble=0;
          m_robotDrive.resetOdometry(startingPose);
       }
    
-    return new PathPlannerAuto("Two Note");
+    return new PathPlannerAuto("Straight");
     
    // autoChoose/,mr.getSelected();5
   }

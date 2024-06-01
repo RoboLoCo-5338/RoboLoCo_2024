@@ -39,6 +39,7 @@ public class AutoAimSubsystem {
         double angle_offset_good = angle_bad_offset + Constants.ARM_ANGLE_HORIZONTAL_OFFSET;
         return angle_offset_good;
     }
+    /*
     public static void autoAim() {
         //red 4  blue 7
         Vision.turnToTagCommand();
@@ -48,6 +49,7 @@ public class AutoAimSubsystem {
         double optimalAngle = getOptimalAngleRadians(distance, angle, currentAngle);
         RobotContainer.m_Arm.setArmRadians(optimalAngle);
     }
+    */
   
 
 }
