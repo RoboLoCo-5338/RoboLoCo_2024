@@ -5,10 +5,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
 public class AutoAimCommands {
-    public static Command autoAim() {
-        return new InstantCommand(
-          () -> RobotContainer.m_AutoAim.autoAim(),
-          RobotContainer.m_Arm
-        );
-      }
+  public static Command autoAim() {
+    return new InstantCommand(() -> RobotContainer.m_AutoAim.autoAim(), RobotContainer.m_Arm);
+  }
 }

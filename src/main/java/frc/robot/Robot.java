@@ -6,37 +6,13 @@ package frc.robot;
 
 import java.util.Optional;
 
-import org.photonvision.EstimatedRobotPose;
-// import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonUtils;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
-  import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.Constants.DriveConstants;
+
 import frc.robot.commands.AutoCommands;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.ShooterCommands;
-import frc.robot.subsystems.Auto;
-import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -85,13 +61,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-   // m_robotContainer.m_robotDrive.m_gyro.reset();
+    // m_robotContainer.m_robotDrive.m_gyro.reset();
     // CameraServer.startAutomaticCapture();
-   // Auto.autoChooser();
+    // Auto.autoChooser();
     // RobotContainer.m_Arm.resetArm();
     // RobotContainer.m_Elevator.resetElevator();
     CameraServer.startAutomaticCapture();
-    }
+  }
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -111,9 +87,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Roll", RobotContainer.navX.getRoll());
 
     SmartDashboard.putBoolean("LaserCan is Note", RobotContainer.m_Intake.isNote());
-      SmartDashboard.putNumber("LaserCAN Measurment(Meters)", RobotContainer.m_Intake.getLaserCanMeasurement().distance_mm/1000.0);
-
-
+    SmartDashboard.putNumber("LaserCAN Measurment(Meters)", RobotContainer.m_Intake.getLaserCanMeasurement().distance_mm/1000.0);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -128,18 +102,18 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
 
-    //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
+  //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
 
-   // Auto.autoSelect();
-    //m_autonomousCommand = AutoCommands.shootAuto();
-   // RobotContainer.m_robotDrive.setOdometry();
-    m_autonomousCommand = AutoCommands.getAutonomousCommand();
+  // Auto.autoSelect();
+  //m_autonomousCommand = AutoCommands.shootAuto();
+  // RobotContainer.m_robotDrive.setOdometry();
+  m_autonomousCommand = AutoCommands.getAutonomousCommand();
     
-   // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+  // schedule the autonomous command (example)
+  if (m_autonomousCommand != null) {
+    m_autonomousCommand.schedule();
   }
+}
 
 
   /** This function is called periodically during autonomous. */
@@ -160,7 +134,6 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Pitch", RobotContainer.m_robotDrive.m_gyro.getPitch());
     // SmartDashboard.putNumber("Yaw", RobotContainer.m_robotDrive.m_gyro.getYaw());
     // SmartDashboard.putNumber("Roll", RobotContainer.m_robotDrive.m_gyro.getRoll());
-
   }
 
   @Override
@@ -175,23 +148,17 @@ public class Robot extends TimedRobot {
 
     RobotContainer.m_Arm.resetArm();
     RobotContainer.m_Arm.stopArm();
-
-
   }
 
   /** This function is called periodically during operator control. */
   @Override
-
-
   public void teleopPeriodic() {
-
     SmartDashboard.putNumber("Heading",RobotContainer.m_robotDrive.getHeading());
     SmartDashboard.putString("Pose", RobotContainer.m_robotDrive.getPose().toString());
-  
-    
+
     SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
     SmartDashboard.putNumber("Angle", RobotContainer.m_robotDrive.m_gyro.getAngle());
-   //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
+    //RobotContainer.m_robotDrive.m_frontLeft.m_drivingPIDController
     // SmartDashboard.putString("Dino Rivets ftw","HELLO");
     
     // SmartDashboard.putNumber("Elevator Position Periodic", RobotContainer.m_Elevator.getElevatorPosition());
