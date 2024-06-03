@@ -11,11 +11,9 @@ public class TimedCommand extends Command {
   private Runnable onEnd;
   private Runnable onExecute;
 
-  public TimedCommand(long time,
-                      Runnable onExecute,
-                      Runnable onEnd,
-                      Subsystem... requirements) {
+  public TimedCommand(long time, Runnable onExecute, Runnable onEnd, Subsystem... requirements) {
     super();
+
     this.time = time;
     this.onExecute = onExecute;
     this.onEnd = onEnd;

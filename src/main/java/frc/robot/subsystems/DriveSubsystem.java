@@ -235,8 +235,8 @@ public class DriveSubsystem extends SubsystemBase {
     Rotation2d rotation = Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
 
     ChassisSpeeds speeds = fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, rotation)
-            : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+      ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, rotation)
+      : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
     SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -306,6 +306,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.moveMotor(speed);
     m_rearLeft.moveMotor(speed);
     m_rearRight.moveMotor(speed);
+  }
+
+  public void stop() {
+    driveSpeed(0.0);
   }
 
   public void autoDrive(double xSpeed, double ySpeed, double rot){

@@ -11,6 +11,6 @@ import frc.robot.RobotContainer;
 
 public final class DriveCommands {
   public static Command driveForwardTimed(long time, double speed) {
-    return new TimedCommand(time, () -> RobotContainer.m_robotDrive.driveSpeed(speed), () -> RobotContainer.m_robotDrive.driveSpeed(0.0), RobotContainer.m_robotDrive);
+    return new TimedCommand(time, () -> RobotContainer.m_robotDrive.driveSpeed(speed), RobotContainer.m_robotDrive::stop, RobotContainer.m_robotDrive);
   }
 }

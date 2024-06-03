@@ -59,9 +59,7 @@ public class Auto {
         speeds.vyMetersPerSecond,
         speeds.omegaRadiansPerSecond,
         false, true),
-      () -> {
-        return false;
-      },
+      () -> false,
       RobotContainer.m_robotDrive
     );
 

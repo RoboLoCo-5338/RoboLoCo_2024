@@ -40,18 +40,19 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public final class AutoCommands {
-  static ChoreoTrajectory traj; //1/18/24
-  static Field2d m_field = new Field2d();
-  static DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
+  private static ChoreoTrajectory traj; //1/18/24
+  private static Field2d m_field = new Field2d();
+  private static DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
 
   public static PathPlannerAuto path;
 
   public static Command pathPlannerTest() {
     PathPlannerPath path = PathPlannerPath.fromPathFile("straight_line_3m_middle");
 
-    return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
-      .andThen(new WaitCommand(0.1))
-      .andThen(AutoBuilder.followPath(path));
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path))),
+      new WaitCommand(0.1),
+      AutoBuilder.followPath(path));
   }
 
   public static Pose2d getPathPose(PathPlannerPath pPath) {
@@ -124,10 +125,7 @@ public final class AutoCommands {
                                                    speeds.vyMetersPerSecond,
                                                    speeds.omegaRadiansPerSecond,
                                                    false, true),
-      () -> {
-        return false;
-      }, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
-
+      () -> false, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
       m_robotDrive); // The subsystem(s) to require, typically your drive subsystem only
 
    return Commands.sequence(Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
@@ -209,43 +207,36 @@ public final class AutoCommands {
     return AutoBuilder.followPath(path);
   }
 
-  public static Command center3NoteAuto() {
+  public static SequentialCommandGroup center3NoteAuto() {
     PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
-    return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
-      .andThen(new WaitCommand(0.1))
-      .andThen(shootAuto())
-      .andThen(new ParallelDeadlineGroup(AutoBuilder.followPath(path), IntakeCommands.runIntakeOnlyTimed(6000)))
-      .andThen(new ParallelCommandGroup(new SequentialCommandGroup(getPath("2_center_straight"),
-                                                                   IntakeCommands.runIntakeForwardTimed(1500),
-                                                                   new WaitCommand(0.5)),
-                                        ShooterCommands.runShooterForwardTimed(9000)));
-    // .andThen(
-    //   new ParallelDeadlineGroup(getPath("3_center_straight"), IntakeCommands.runIntakeOnlyTimed(6000))
-    // )
-    // .andThen(
-    //   new ParallelRaceGroup(
-    //     new SequentialCommandGroup(getPath("4_center_straight"), IntakeCommands.runIntakeForwardTimed(1500),new WaitCommand(0.5)),
-    //     ShooterCommands.runShooterForwardTimed(9000)
-    //   )
-    // )
-    // );
+
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path))),
+      new WaitCommand(0.1),
+      new InstantCommand(AutoCommands::shootAuto),
+      new ParallelDeadlineGroup(AutoBuilder.followPath(path), IntakeCommands.runIntakeOnlyTimed(6000)),
+      new ParallelCommandGroup(new SequentialCommandGroup(getPath("2_center_straight"),
+                                                          IntakeCommands.runIntakeForwardTimed(1500),
+                                                          new WaitCommand(0.5)),
+                               ShooterCommands.runShooterForwardTimed(9000)));
   }
 
-  public static Command center4NoteAuto() {
+  public static SequentialCommandGroup center4NoteAuto() {
     PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
-    return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
-      .andThen(shootAuto())
-      .andThen(new ParallelRaceGroup(AutoBuilder.followPath(path), IntakeCommands.runIntakeUntilNote()))
-      .andThen(new ParallelRaceGroup(new SequentialCommandGroup(getPath("2_center_straight"),
-                                                                IntakeCommands.runIntakeForwardTimed(1000)),
-                                     ShooterCommands.runShooterForwardTimed(9000)))
-      .andThen(new ParallelRaceGroup(getPath("3_center_straight"), IntakeCommands.runIntakeUntilNote()))
-      .andThen(new ParallelRaceGroup(new SequentialCommandGroup(getPath("4_center_straight"), IntakeCommands.runIntakeForwardTimed(1000)),
-                                     ShooterCommands.runShooterForwardTimed(9000)))
-      .andThen(new ParallelRaceGroup(getPath("5_center_straight"), IntakeCommands.runIntakeUntilNote()))
-      .andThen(new ParallelRaceGroup(new SequentialCommandGroup(getPath("6_center_straight"),
-                                                                IntakeCommands.runIntakeForwardTimed(1000)),
-                                     ShooterCommands.runShooterForwardTimed(9000)));
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path))),
+      new InstantCommand(AutoCommands::shootAuto),
+      new ParallelRaceGroup(AutoBuilder.followPath(path), IntakeCommands.runIntakeUntilNote()),
+      new ParallelRaceGroup(new SequentialCommandGroup(getPath("2_center_straight"),
+                                                       IntakeCommands.runIntakeForwardTimed(1000)),
+                            ShooterCommands.runShooterForwardTimed(9000)),
+      new ParallelRaceGroup(getPath("3_center_straight"), IntakeCommands.runIntakeUntilNote()),
+      new ParallelRaceGroup(new SequentialCommandGroup(getPath("4_center_straight"), IntakeCommands.runIntakeForwardTimed(1000)),
+                            ShooterCommands.runShooterForwardTimed(9000)),
+      new ParallelRaceGroup(getPath("5_center_straight"), IntakeCommands.runIntakeUntilNote()),
+      new ParallelRaceGroup(new SequentialCommandGroup(getPath("6_center_straight"),
+                                                       IntakeCommands.runIntakeForwardTimed(1000))),
+      new InstantCommand(() -> ShooterCommands.runShooterForwardTimed(9000)));
   }
 
   public static Command getAutonomousCommand() {
