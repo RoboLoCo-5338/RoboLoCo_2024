@@ -41,17 +41,17 @@ public class AutoCommands{
       return new ParallelCommandGroup(
         ShooterCommands.runShooterForwardTimed(1000),
         new SequentialCommandGroup(new WaitCommand(0.75), 
-        IntakeCommands.runIntakeForwardTimed(250))
+        IntakeCommands.runIntakeForwardTimed(750))
       );
     }
 
     public static Command IntakeOnly(){
-        return IntakeCommands.runIntakeOnlyTimed(1000);
+        return IntakeCommands.runIntakeOnlyTimed(2500);
     }
 
     public static Command IntakeForward(){
         return new SequentialCommandGroup(
-            IntakeCommands.runIntakeForwardTimed(1500),
+            IntakeCommands.runIntakeForwardTimed(2500),
             new WaitCommand(0.5)
         );
     }

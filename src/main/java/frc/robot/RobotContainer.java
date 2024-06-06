@@ -210,7 +210,8 @@ public long timeRumble=0;
   }
 
   public Command getAutonomousCommand() {
-    Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile("Straight");
+    String autoName = "Four Note Auto";
+    Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile(autoName);
     Pose2d flipped;
     Optional<Alliance> alliance = DriverStation.getAlliance();
       if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
@@ -220,7 +221,7 @@ public long timeRumble=0;
          m_robotDrive.resetOdometry(startingPose);
       }
    
-    return new PathPlannerAuto("Straight");
+    return new PathPlannerAuto(autoName);
     
    // autoChoose/,mr.getSelected();5
   }

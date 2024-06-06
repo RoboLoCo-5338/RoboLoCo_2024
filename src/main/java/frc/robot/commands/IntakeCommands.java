@@ -103,7 +103,7 @@ public class IntakeCommands  {
   }
 
   public static Command runIntakeUntilNoteSequentialCommand(){
-    return new SequentialCommandGroup(runIntakeUntilNote(),new ParallelCommandGroup(runIndexerOutOnlyTimed(150),ShooterCommands.runShooterBackwardTimed(100)));
+    return new SequentialCommandGroup(runIntakeUntilNote(),new ParallelCommandGroup(runIndexerOutOnlyTimed(550),ShooterCommands.runShooterBackwardTimed(100)));
   }
 
 
