@@ -37,7 +37,6 @@ public class RobotContainer {
   public static final ArmSubsystem m_Arm = new ArmSubsystem();
   public static final ShooterSubsystem m_shooter = new ShooterSubsystem();
   public static final IntakeSubsystem m_Intake = new IntakeSubsystem();
-  public static final AutoAimSubsystem m_AutoAim = new AutoAimSubsystem();
   public static final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // controllers
@@ -45,9 +44,6 @@ public class RobotContainer {
   public static final CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   public static boolean slowMode = false;
-
-  //ChoreoTrajectory traj; // 1/18/24
-  Field2d m_field = new Field2d();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -94,17 +90,18 @@ public class RobotContainer {
     // Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
     // makeRobotSlow.onTrue(makeRobotSlow());
 
-    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
+    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY() > OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
 
-    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY()< -OIConstants.kArmDeadband);
+    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY() < -OIConstants.kArmDeadband);
     moveArmDown.whileTrue(ArmCommands.moveArmDown());
 
-    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
+    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
-    Trigger indexFast = new Trigger(()-> m_operatorController.getRightY()>OIConstants.kArmDeadband);
-    Trigger smallerDistance = new Trigger(() -> m_Intake.getLaserCanMeasurement().distance_mm/1000<5);
+    Trigger indexFast = new Trigger(()-> m_operatorController.getRightY() > OIConstants.kArmDeadband);
+
+    Trigger smallerDistance = new Trigger(() -> m_Intake.getLaserCanMeasurement().distance_mm / 1000 < 5);
     indexFast.and(smallerDistance.negate()).whileTrue(IntakeCommands.moveIndexerInFast());
 
     Trigger ampArm = new Trigger(m_operatorController.y());

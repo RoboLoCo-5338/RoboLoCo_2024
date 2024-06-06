@@ -59,16 +59,16 @@ public final class Constants {
   public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop) / 2;
   
   public static final double[] aprilTagHeights = { //These are to the bottom of the AprilTag
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), //Red Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), //Red Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Red Amp
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Blue Amp
-    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), //Blue Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), //Blue Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), //Red Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Red Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Blue Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), //Blue Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Blue Source
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Blue Source
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
@@ -77,18 +77,18 @@ public final class Constants {
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
   };
   public static final double[] aprilTagUniqueHeights = { //These are to the bottom of the AprilTag
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Source
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Amp
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Source
+    Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), //Speaker
+    Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), //Amp
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Stage
   };
 
 
   public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
-  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10 + 7 / 8);
+  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10 + 7.0 / 8);
   public static final double plasticTagLength = Units.inchesToMeters(10.5);
   public static final double aluminumTagLength = Units.inchesToMeters(9);
-  public static final double aprilTagLength = Units.inchesToMeters(8 + (1 / 8));
+  public static final double aprilTagLength = Units.inchesToMeters(8 + 1.0 / 8);
   
   
   public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
@@ -224,7 +224,7 @@ public final class Constants {
     public static final int kEncoderCPR = 42;
 
     //Odometry for Autonomous
-    public static final double kDriveEncoderDistancePerPulse = (kWheelDiameterMeters*Math.PI) / (double) kEncoderCPR;
+    public static final double kDriveEncoderDistancePerPulse = kWheelDiameterMeters * Math.PI / (double) kEncoderCPR;
 
   }
 
@@ -257,6 +257,4 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
-
-  public static Object feedforwardConstants;
 }

@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.AutoConstants;
 
@@ -17,9 +16,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
-public class Auto {
+public final class Auto {
   private static int autoNum;
-  private static SendableChooser<Integer> m_chooser = new SendableChooser<>();
+  private static final SendableChooser<Integer> m_chooser = new SendableChooser<>();
 
   public static void autoChooser() {
     m_chooser.setDefaultOption("Left", 1);
@@ -28,7 +27,7 @@ public class Auto {
     SmartDashboard.putData("Auto Choices", m_chooser);
   }
 
-  public static void autoSelect(){
+  public static void autoSelect() {
   //   autoNum=m_chooser.getSelected();
   }
 

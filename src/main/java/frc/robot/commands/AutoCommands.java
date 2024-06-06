@@ -31,7 +31,6 @@ import java.util.Optional;
 import com.choreo.lib.Choreo; //1/18/24
 import com.choreo.lib.ChoreoTrajectory;
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -40,11 +39,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public final class AutoCommands {
-  private static ChoreoTrajectory traj; //1/18/24
-  private static Field2d m_field = new Field2d();
-  private static DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
-
-  public static PathPlannerAuto path;
+  private static ChoreoTrajectory trajectory; //1/18/24
+  private static final Field2d m_field = new Field2d();
+  private static final DriveSubsystem m_robotDrive = RobotContainer.m_robotDrive;
 
   public static Command pathPlannerTest() {
     PathPlannerPath path = PathPlannerPath.fromPathFile("straight_line_3m_middle");
@@ -99,18 +96,18 @@ public final class AutoCommands {
   }
 
   public static Command runTrajectory(String name) {
-    traj = Choreo.getTrajectory(name); //1/18/24
+    trajectory = Choreo.getTrajectory(name); //1/18/24
 
-    m_field.getObject("traj").setPoses(traj.getInitialPose(), traj.getFinalPose());
-    m_field.getObject("trajPoses").setPoses(traj.getPoses());
+    m_field.getObject("traj").setPoses(trajectory.getInitialPose(), trajectory.getFinalPose());
+    m_field.getObject("trajPoses").setPoses(trajectory.getPoses());
 
     PIDController thetaController = new PIDController(AutoConstants.kPThetaController, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    m_robotDrive.resetOdometry(traj.getInitialPose());
+    m_robotDrive.resetOdometry(trajectory.getInitialPose());
 
     Command swerveCommand = Choreo.choreoSwerveCommand(
-      traj, // Choreo trajectory from above
+            trajectory, // Choreo trajectory from above
       m_robotDrive::getPose, // A function that returns the current field-relative pose of the robot: your
                              // wheel or vision odometry
       new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // PIDController for field-relative X
@@ -128,7 +125,7 @@ public final class AutoCommands {
       () -> false, // Whether or not to mirror the path based on alliance (CAN ADD LOGIC TO DO THIS AUTOMATICALLY)
       m_robotDrive); // The subsystem(s) to require, typically your drive subsystem only
 
-   return Commands.sequence(Commands.runOnce(() -> m_robotDrive.resetOdometry(traj.getInitialPose())),
+   return Commands.sequence(Commands.runOnce(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
                             swerveCommand,
                             m_robotDrive.run(() -> m_robotDrive.drive(0, 0, 0, false, true)));
   }
@@ -197,7 +194,7 @@ public final class AutoCommands {
     //Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true, false));
   }
-    
+
   public static Command straightlinetest() {
     return new SequentialCommandGroup(runTrajectory("straightline1m"));
   }

@@ -7,9 +7,9 @@ import java.util.Set;
 
 public class TimedCommand extends Command {
   private long startTime = 0;
-  private long time;
-  private Runnable onEnd;
-  private Runnable onExecute;
+  private final long time;
+  private final Runnable onEnd;
+  private final Runnable onExecute;
 
   public TimedCommand(long time, Runnable onExecute, Runnable onEnd, Subsystem... requirements) {
     super();

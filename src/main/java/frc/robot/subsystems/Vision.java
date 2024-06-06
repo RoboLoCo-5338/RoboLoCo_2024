@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 // Speaker id's are 4 (red) 7 (blue)
 import frc.robot.Constants.OIConstants;
@@ -46,7 +45,7 @@ public final class Vision {
   //TODO change PoseStrategy from LOWEST_AMBIGUITY to MULTI_TAG_PNP_ON_COPROCESSOR
   //https://docs.photonvision.org/en/latest/docs/programming/photonlib/robot-pose-estimator.html
   // apparently it improves performance but needs some setup and im not about doing setup rn
-  private static PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
+  private static final PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
 
   public static boolean hasResults() {
     return camera.getLatestResult().hasTargets();
@@ -108,10 +107,10 @@ public final class Vision {
   }
 
   public static double distanceFromTarget(double targetHeight) {
-    if (hasResults()) {
-      return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, targetHeight, Constants.CAMERA_PITCH_RADIANS, getTargetPitch(true));
+    if (!hasResults()) {
+      return Double.POSITIVE_INFINITY;
     }
 
-    return Double.POSITIVE_INFINITY;
+    return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, targetHeight, Constants.CAMERA_PITCH_RADIANS, getTargetPitch(true));
   }
 }

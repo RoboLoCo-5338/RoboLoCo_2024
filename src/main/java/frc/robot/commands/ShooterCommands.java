@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.RobotContainer;
 
-public class ShooterCommands {
+public final class ShooterCommands {
   public static Command shooterReverse() {
     return new InstantCommand(RobotContainer.m_shooter::shooterReverse, RobotContainer.m_shooter);
   }
@@ -23,7 +23,7 @@ public class ShooterCommands {
     return new InstantCommand(RobotContainer.m_shooter::shooterStop, RobotContainer.m_shooter);
   }
 
-  public static Command runShooterForwardTimed(long time){
+  public static Command runShooterForwardTimed(long time) {
     return new TimedCommand(time, RobotContainer.m_shooter::shooterForward, RobotContainer.m_shooter::shooterStop, RobotContainer.m_shooter);
   }
 }

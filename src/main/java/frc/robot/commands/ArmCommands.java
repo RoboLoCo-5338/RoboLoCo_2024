@@ -9,12 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import frc.robot.RobotContainer;
 
-public class ArmCommands  {
-  /** Creates a new ArmCommands. */
-  public ArmCommands() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-
+public final class ArmCommands  {
   public static Command moveArmUp() {
     return new InstantCommand(RobotContainer.m_Arm::moveArmUp, RobotContainer.m_Arm);
   }
@@ -22,7 +17,6 @@ public class ArmCommands  {
   public static Command moveArmDown() {
     return new InstantCommand(RobotContainer.m_Arm::moveArmDown, RobotContainer.m_Arm);
   }
-
 
   public static Command getArmPosition() {
     return new InstantCommand(RobotContainer.m_Arm::getArmPosition, RobotContainer.m_Arm);

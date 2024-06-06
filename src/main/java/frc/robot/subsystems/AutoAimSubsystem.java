@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class AutoAimSubsystem {
+public final class AutoAimSubsystem {
   private static final double SPEAKER_TAG_HEIGHT = Constants.aprilTagUniqueHeights[1] + Constants.plasticTagLength / 2; // meters
   private static final double DISTANCE_TAG_TO_SPEAKER = Constants.SPEAKER_HEIGHT_METERS - SPEAKER_TAG_HEIGHT; // meters
   private static final double DISTANCE_CAMERA_TO_TAG_Y = SPEAKER_TAG_HEIGHT - Constants.CAMERA_HEIGHT_METERS;

@@ -10,11 +10,11 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase{
-  private CANSparkMax shootMotor1;
-  private CANSparkMax shootMotor2;
+  private final CANSparkMax shootMotor1;
+  private final CANSparkMax shootMotor2;
 
-  private RelativeEncoder shootEncoder1;
-  private RelativeEncoder shootEncoder2;
+  private final RelativeEncoder shootEncoder1;
+  private final RelativeEncoder shootEncoder2;
 
   private SparkPIDController shootController1;
   private SparkPIDController shootController2;
@@ -30,24 +30,25 @@ public class ShooterSubsystem extends SubsystemBase{
     shootController2 = shootMotor2.getPIDController();
   }
 
+  public void setShooterSpeed(double speed) {
+    shootMotor1.set(speed);
+    shootMotor2.set(speed);
+  }
+
   public void shooterForward() {
-    shootMotor1.set(0.85);
-    shootMotor2.set(0.85);
+    setShooterSpeed(0.85);
   }
 
   public void shooterReverse() {
-    shootMotor1.set(-0.3);
-    shootMotor2.set(-0.3);
+    setShooterSpeed(-0.3);
   }
 
   public void shooterReverseSlow() {
-    shootMotor1.set(-0.1);
-    shootMotor2.set(-0.1);
+    setShooterSpeed(-0.1);
   }
 
   public void shooterStop() {
-    shootMotor1.set(0);
-    shootMotor2.set(0);
+    setShooterSpeed(0);
   }
 
   public double getEncoderPosition(){

@@ -15,19 +15,19 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private CANSparkMax intakeMotor;
-  private CANSparkMax indexerMotor;
+  private final CANSparkMax intakeMotor;
+  private final CANSparkMax indexerMotor;
   public RelativeEncoder intakeEncoder;
   public RelativeEncoder indexerEncoder;
-  private LaserCan lc;
+  private final LaserCan laserCan;
 
   public IntakeSubsystem() {
-    lc = new LaserCan(DriveConstants.kLaserCanID);
+    laserCan = new LaserCan(DriveConstants.kLaserCanID);
 
     try {
-      lc.setRangingMode(LaserCan.RangingMode.SHORT);
-      lc.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
-      lc.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
+      laserCan.setRangingMode(LaserCan.RangingMode.SHORT);
+      laserCan.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
+      laserCan.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
     }
     catch (ConfigurationFailedException e) {
       System.out.println("Configuration failed! " + e);
@@ -60,7 +60,7 @@ public class IntakeSubsystem extends SubsystemBase {
     indexerMotor.set(-0.18);
   }
 
-  public void indexerInSlow(){
+  public void indexerInSlow() {
     indexerMotor.set(-0.01);
   }
 
@@ -88,7 +88,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public LaserCan.Measurement getLaserCanMeasurement() {
-    return lc.getMeasurement();
+    return laserCan.getMeasurement();
   }
 
   public boolean isNote() {

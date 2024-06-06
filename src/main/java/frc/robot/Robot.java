@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.Optional;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -100,20 +98,16 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
 
-
-  //SysIdRoutine routine = new SysIdRoutine(new SysIdRoutine.Config(), new SysIdRoutine.Mechanism(null, null, RobotContainer.m_robotDrive));
-
-  // Auto.autoSelect();
-  //m_autonomousCommand = AutoCommands.shootAuto();
-  // RobotContainer.m_robotDrive.setOdometry();
-  m_autonomousCommand = AutoCommands.getAutonomousCommand();
+    // Auto.autoSelect();
+    //m_autonomousCommand = AutoCommands.shootAuto();
+    // RobotContainer.m_robotDrive.setOdometry();
+    m_autonomousCommand = AutoCommands.getAutonomousCommand();
     
-  // schedule the autonomous command (example)
-  if (m_autonomousCommand != null) {
+    // schedule the autonomous command (example)
     m_autonomousCommand.schedule();
   }
-}
 
 
   /** This function is called periodically during autonomous. */

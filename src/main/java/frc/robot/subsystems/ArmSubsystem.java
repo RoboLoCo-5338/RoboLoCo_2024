@@ -11,15 +11,14 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private CANSparkMax armMotor1;
-  private CANSparkMax armMotor2;
+  private final CANSparkMax armMotor1;
+  private final CANSparkMax armMotor2;
 
   public RelativeEncoder armEncoder1;
   public RelativeEncoder armEncoder2;
@@ -85,11 +84,6 @@ public class ArmSubsystem extends SubsystemBase {
     return armEncoder1.getPosition();
   }
 
-  public void stopArm() {
-    armMotor1.set(0);
-    armMotor2.set(0);
-  }
-
   public void setArm(double position) {
     armController1.setReference(position, CANSparkMax.ControlType.kPosition);
     armController2.setReference(-position, CANSparkMax.ControlType.kPosition);
@@ -101,13 +95,20 @@ public class ArmSubsystem extends SubsystemBase {
     setArm(position * rotations_per_radians);
   }
 
+  public void moveArm(double speed) {
+    armMotor1.set(-speed);
+    armMotor2.set(speed);
+  }
+
   public void moveArmUp() {
-    armMotor1.set(-0.4);
-    armMotor2.set(0.4);
+    moveArm(0.4);
   }
 
   public void moveArmDown() {
-    armMotor1.set(0.4);
-    armMotor2.set(-0.4);
+    moveArm(-0.4);
+  }
+
+  public void stopArm() {
+    moveArm(0);
   }
 }

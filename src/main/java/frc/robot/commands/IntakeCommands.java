@@ -8,11 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-import java.util.function.Consumer;
-
 import frc.robot.RobotContainer;
 
-public class IntakeCommands {
+public final class IntakeCommands {
   // Creates a new ArmCommands.
   // Move arm to preset height and stop when the height is reached.
   // public static Command setArmAbsolute(double setpoint) {
