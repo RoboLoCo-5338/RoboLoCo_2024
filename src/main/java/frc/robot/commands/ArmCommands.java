@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 
-
-public class ArmCommands  {
+public class ArmCommands {
 
   /** Creates a new ArmCommands. */
   public ArmCommands() {
@@ -18,38 +17,32 @@ public class ArmCommands  {
 
   public static Command moveArmUp() {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.moveArmUp(),
-      RobotContainer.m_Arm
-    );
+        () -> RobotContainer.m_Arm.moveArmUp(),
+        RobotContainer.m_Arm);
   }
 
-    public static Command moveArmDown() {
+  public static Command moveArmDown() {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.moveArmDown(),
-      RobotContainer.m_Arm
-    );
+        () -> RobotContainer.m_Arm.moveArmDown(),
+        RobotContainer.m_Arm);
   }
-
 
   public static Command getArmPosition() {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.getArmPosition(),
-      RobotContainer.m_Arm
-    );
+        () -> RobotContainer.m_Arm.getArmPosition(),
+        RobotContainer.m_Arm);
   }
-  
+
   public static Command setArm(double position) {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.setArm(position),
-      RobotContainer.m_Arm
-    );
+        () -> RobotContainer.m_Arm.setArm(position),
+        RobotContainer.m_Arm);
   }
- 
-    public static Command stopArm() {
+
+  public static Command stopArm() {
     return new InstantCommand(
-      () -> RobotContainer.m_Arm.stopArm(),
-      RobotContainer.m_Arm
-    );
+        () -> RobotContainer.m_Arm.stopArm(),
+        RobotContainer.m_Arm);
   }
 
 }

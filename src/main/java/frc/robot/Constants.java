@@ -27,67 +27,67 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    
+
   }
 
-  public static final int ABUTTON = 1; 
-  public static final int BBUTTON = 2; 
-  public static final int XBUTTON = 3; 
-  public static final int YBUTTON = 4; 
-  public static final int LBBUTTON = 5; 
+  public static final int ABUTTON = 1;
+  public static final int BBUTTON = 2;
+  public static final int XBUTTON = 3;
+  public static final int YBUTTON = 4;
+  public static final int LBBUTTON = 5;
   public static final int RBBUTTON = 6;
-  public static final int BACKBUTTON = 7; 
-  public static final int STARTBUTTON = 8; 
-  public static final int LEFTSTICKBUTTON = 9; 
+  public static final int BACKBUTTON = 7;
+  public static final int STARTBUTTON = 8;
+  public static final int LEFTSTICKBUTTON = 9;
   public static final int RIGHTSTICKBUTTON = 10;
 
   public enum RobotTarget {
     SPEAKER,
     AMP
   }
-  //field information
+
+  // field information
   public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
-  public static final double pocketHeight=Units.feetToMeters(1)+Units.inchesToMeters(6);
-  public static final double ampHeightTop = ampHeightBottom+pocketHeight; 
-  public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop)/2; 
-  
-  public static final double[] aprilTagHeights = { //These are to the bottom of the AprilTag
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Red Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Red Amp
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Amp
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Blue Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Blue Source
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Red Stage
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Blue Stage
+  public static final double pocketHeight = Units.feetToMeters(1) + Units.inchesToMeters(6);
+  public static final double ampHeightTop = ampHeightBottom + pocketHeight;
+  public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop) / 2;
+
+  public static final double[] aprilTagHeights = { // These are to the bottom of the AprilTag
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
+      Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Red Speaker
+      Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Red Speaker
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Red Amp
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Amp
+      Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Blue Speaker
+      Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Blue Speaker
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
   };
 
-  public static final double[] aprilTagUniqueHeights = { //These are to the bottom of the AprilTag
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Source
-    Units.feetToMeters(4) + Units.inchesToMeters(3+7/8), //Speaker
-    Units.feetToMeters(4) + Units.inchesToMeters(1/8), //Amp
-    Units.feetToMeters(3) + Units.inchesToMeters(11.5), //Stage
+  public static final double[] aprilTagUniqueHeights = { // These are to the bottom of the AprilTag
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Source
+      Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Speaker
+      Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Amp
+      Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Stage
   };
 
   public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
-  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10+7/8);
+  public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10 + 7 / 8);
   public static final double plasticTagLength = Units.inchesToMeters(10.5);
   public static final double aluminumTagLength = Units.inchesToMeters(9);
-  public static final double aprilTagLength = Units.inchesToMeters(8+(1/8));
-  
-  
-  public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
-  public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
-  public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; //TODO THIS IS NOT MEASURED YET
-  public static final double ARM_LENGTH = 1.0; //TODO ALSO NOT MEASURED
+  public static final double aprilTagLength = Units.inchesToMeters(8 + (1 / 8));
+
+  public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+  public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+  public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+  public static final double ARM_LENGTH = 1.0; // TODO ALSO NOT MEASURED
   // Constants such as camera and target height stored. Change per robot and goal!
   public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
   public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
@@ -95,8 +95,7 @@ public final class Constants {
   public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
   public static final double ARM_ANGLE_HORIZONTAL_OFFSET = Math.toRadians(21);
   // How far from the target we want to be
-  // public static final double GOAL_RANGE_METERS = Units.feetToMeters(3);
-  
+
   public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
 
   // Height presets.
@@ -107,22 +106,25 @@ public final class Constants {
   public static final int height4 = 4;
   public static final int height5 = 5;
 
-  //speed_multi
+  // speed_multi
   public static final double speed_multi = 0.1;
   public static final double kp = 0.01;
   public static final double min_command = 0.001;
 
-
-
   public static final class DriveConstants {
+
+
+    public static final double kPZeroLock=0.001;
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 4; // changed for inspire loudoun
-    public static final double kMaxAngularSpeed = 2 * Math.PI * 0.80; // radians per second changed for inspire loudoun
+    public static final double kMaxSpeedMetersPerSecond = 4.8; // changed for inspire loudoun
+    public static final double kMaxAngularSpeed = 2 * Math.PI * 1; // set the last number back to 1 for normal speed
 
-    public static final double kDirectionSlewRate = 4.5; // radians per second
+    public static final double kDirectionSlewRate = 4.3; // radians per second
     public static final double kMagnitudeSlewRate = 4.5; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 4.5; // percent per second (1 = 100%)
+
+    public static final double VISION_TURN_kP = 0.01;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
@@ -152,28 +154,27 @@ public final class Constants {
     public static final int kFrontRightTurningCanId = 1;
     public static final int kRearRightTurningCanId = 5;
 
-    
-     public static final int kArmCanId1 = 15;
-     public static final int kArmCanId2 = 14;
-     public static final int kShooter1CanId = 11;
-     public static final int kShooter2CanId = 12;
-     public static final int kIntakeIndexCanId = 16;
-     public static final int kIntakeMotorCanId = 13;
-     public static final int kLaserCanID = 17;
-
-     
- 
+    public static final int kArmCanId1 = 15;
+    public static final int kArmCanId2 = 14;
+    public static final int kShooter1CanId = 11;
+    public static final int kShooter2CanId = 12;
+    public static final int kIntakeIndexCanId = 16;
+    public static final int kIntakeMotorCanId = 13;
+    public static final int kLaserCanID = 17;
 
     public static final boolean kGyroReversed = false;
   }
 
   public static final class ModuleConstants {
-    // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
-    // This changes the drive speed of the module (a pinion gear with more teeth will result in a
+    // The MAXSwerve module can be configured with one of three pinion gears: 12T,
+    // 13T, or 14T.
+    // This changes the drive speed of the module (a pinion gear with more teeth
+    // will result in a
     // robot that drives faster).
     public static final int kDrivingMotorPinionTeeth = 14;
 
-    // Invert the turning encoder, since the output shaft rotates in the opposite direction of
+    // Invert the turning encoder, since the output shaft rotates in the opposite
+    // direction of
     // the steering motor in the MAXSwerve Module.
     public static final boolean kTurningEncoderInverted = true;
 
@@ -181,7 +182,8 @@ public final class Constants {
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
     public static final double kWheelDiameterMeters = 0.0762;
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
+    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+    // teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
@@ -216,10 +218,10 @@ public final class Constants {
 
     public static final int kDrivingMotorCurrentLimit = 40; // amps //changed from 50 -> 40 on 4/5
     public static final int kTurningMotorCurrentLimit = 20; // amps
- 
+
     public static final int kEncoderCPR = 42;
 
-    public static final double kDriveEncoderDistancePerPulse = (kWheelDiameterMeters*Math.PI) / (double) kEncoderCPR;
+    public static final double kDriveEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
   }
 

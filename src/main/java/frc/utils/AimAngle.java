@@ -15,7 +15,6 @@ public class AimAngle {
         double dx = 0.1;
         double dv = 0.1;
 
-
         System.out.println("Speaker Height: " + height);
         System.out.println("Gravity: " + gravity);
         System.out.println("Distance Precision: " + dx);
@@ -25,12 +24,12 @@ public class AimAngle {
         List<String> velocities = new LinkedList<>();
         List<String> angles = new LinkedList<>();
 
-//        System.out.println("Distance\t\tVelocity\tAngle");
+        // System.out.println("Distance\t\tVelocity\tAngle");
         for (double x = 0; x < 100; x += dx) {
-            for (double v = 0; v < 20; v+= dv) {
+            for (double v = 0; v < 20; v += dv) {
                 double optimalAngle = getOptimalAngle(v, x, height);
                 if (optimalAngle > 0) {
-//                    System.out.println(formatDouble(x)+"\t\t\t"+formatDouble(v)+"\t\t"+formatDouble(optimalAngle));
+                    // System.out.println(formatDouble(x)+"\t\t\t"+formatDouble(v)+"\t\t"+formatDouble(optimalAngle));
                     distances.add(formatDouble(x));
                     velocities.add(formatDouble(v));
                     angles.add(formatDouble(optimalAngle));
@@ -43,7 +42,7 @@ public class AimAngle {
         outputFile.createNewFile();
         BufferedWriter br = new BufferedWriter(new FileWriter(outputFile));
         br.write("Distance,Velocity,Angle");
-        for(int i = 0; i<distances.size(); i++){
+        for (int i = 0; i < distances.size(); i++) {
             br.newLine();
             br.write(distances.get(i) + "," + velocities.get(i) + "," + angles.get(i));
         }
@@ -60,11 +59,11 @@ public class AimAngle {
         double velocitySquared = Math.pow(shooterVelocity, 2);
         double xDistanceSquared = Math.pow(xDistance, 2);
         double stub = (2 * velocitySquared) / (gravity * xDistance);
-        double calc1 = Math.pow(stub,2);
-        double calc2 = 4*( (((2*velocitySquared)/(gravity*xDistanceSquared))*yHeight) + 1 );
+        double calc1 = Math.pow(stub, 2);
+        double calc2 = 4 * ((((2 * velocitySquared) / (gravity * xDistanceSquared)) * yHeight) + 1);
         double calc3 = Math.sqrt(calc1 - calc2);
         double calc4 = stub - calc3;
-        double calc5 = calc4/2;
+        double calc5 = calc4 / 2;
         double result = Math.atan(calc5);
         return Math.toDegrees(result);
     }

@@ -9,15 +9,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder;
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
 
@@ -27,10 +20,10 @@ public class ArmSubsystem extends SubsystemBase {
   public SparkPIDController armController1;
   public RelativeEncoder armEncoder2;
   private static final double radians_per_rotation = 2 * Math.PI;
-  private static final double rotations_per_radians = 1/radians_per_rotation;
+  private static final double rotations_per_radians = 1 / radians_per_rotation;
   public SparkPIDController armController2;
 
-  public static double armP = 0.03;
+  public static double armP = 0.035;
   public static double armI = 0.0;
   public static double armD = 0.0;
   public static double armFeed_Forward = 0.0;
@@ -43,13 +36,12 @@ public class ArmSubsystem extends SubsystemBase {
     armController1 = armMotor1.getPIDController();
     armEncoder2 = armMotor2.getEncoder();
     armController2 = armMotor2.getPIDController();
-   armMotor1.setSmartCurrentLimit(40);
+    armMotor1.setSmartCurrentLimit(40);
     armMotor2.setSmartCurrentLimit(40);
     armMotor1.enableSoftLimit(SoftLimitDirection.kForward, true);
-   armMotor1.setSoftLimit(SoftLimitDirection.kForward, 65);
-     armMotor2.enableSoftLimit(SoftLimitDirection.kReverse, true);
-   armMotor2.setSoftLimit(SoftLimitDirection.kReverse, -65);   
-   
+    armMotor1.setSoftLimit(SoftLimitDirection.kForward, 65);
+    armMotor2.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    armMotor2.setSoftLimit(SoftLimitDirection.kReverse, -65);
 
     configController();
   }
@@ -71,7 +63,7 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void resetArm(){
+  public void resetArm() {
     armEncoder1.setPosition(0);
     armEncoder2.setPosition(0);
   }
@@ -89,21 +81,21 @@ public class ArmSubsystem extends SubsystemBase {
     // armEncoder1.setPosition(position);
     // armEncoder2.setPosition(-position);
     armController1.setReference(position, CANSparkMax.ControlType.kPosition);
-    armController2.setReference(-position, CANSparkMax.ControlType.kPosition); 
+    armController2.setReference(-position, CANSparkMax.ControlType.kPosition);
   }
+
   public void setArmRadians(double position) {
     setArm(position * rotations_per_radians);
   }
 
- public void moveArmUp(){
+  public void moveArmUp() {
     armMotor1.set(-0.4);
     armMotor2.set(0.4);
- }
+  }
 
-  public void moveArmDown(){
+  public void moveArmDown() {
     armMotor1.set(0.4);
     armMotor2.set(-0.4);
- }
-  
-  
+  }
+
 }

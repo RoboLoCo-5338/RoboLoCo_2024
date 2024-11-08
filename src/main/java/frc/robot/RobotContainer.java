@@ -5,24 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.AutoCommands;
@@ -37,16 +27,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import java.util.List;
+import java.io.File;
 import java.util.Optional;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.GeometryUtil;
@@ -59,61 +50,56 @@ import com.pathplanner.lib.util.GeometryUtil;
  */
 public class RobotContainer {
   // The robot's subsystems
-  public static  DriveSubsystem m_robotDrive;
-  public final SendableChooser<Command> autoChooser = null;
+  public static DriveSubsystem m_robotDrive;
+  // public final SendableChooser<Command> autoChooser;
 
   public static ShooterSubsystem m_shooter = new ShooterSubsystem();
   public static IntakeSubsystem m_Intake = new IntakeSubsystem();
   public static ArmSubsystem m_Arm = new ArmSubsystem();
   public static AutoAimSubsystem m_AutoAim = new AutoAimSubsystem();
-  
-public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-public static CommandXboxController m_operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
-   public static boolean slowMode = false;
+  public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  public static CommandXboxController m_operatorController = new CommandXboxController(
+      OIConstants.kOperatorControllerPort);
 
-public long timeRumble=0;
+  public static boolean slowMode = false;
 
+  public long timeRumble = 0;
 
+  public Trigger zeroLock;
 
+  public static PhotonCamera camera = new PhotonCamera("photonvision");
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    
-    //Needs to happen in this order for pathplanner
+    // Needs to happen in this order for pathplanner
 
     m_robotDrive = new DriveSubsystem();
-    //put all named commands in a register command
-    NamedCommands.registerCommand("shootAuto()",AutoCommands.shootAuto());
-    NamedCommands.registerCommand("IntakeForward()",AutoCommands.IntakeForward());
-    NamedCommands.registerCommand("IntakeOnly()",AutoCommands.IntakeOnly());
+    // put all named commands in a register command
+    NamedCommands.registerCommand("shootAuto()", AutoCommands.shootAuto());
+    NamedCommands.registerCommand("IntakeForward()", AutoCommands.IntakeForward());
+    NamedCommands.registerCommand("IntakeOnly()", AutoCommands.IntakeOnly());
     NamedCommands.registerCommand("LaserCanIntake()", IntakeCommands.runIntakeUntilNoteSequentialCommand());
     NamedCommands.registerCommand("ShooterForward()", ShooterCommands.runShooterForwardTimed(1500));
     AutoCommands.loadAutos();
 
+    // autoChooser = AutoBuilder.buildAutoChooser();
 
-  //   public static Command pathPlannerStart(){
-  //     PathPlannerPath path = PathPlannerPath.fromPathFile("start_center_straight");
-  //      return new InstantCommand(() -> m_robotDrive.resetOdometry(getPathPose(path)))
-  //     .andThen(new WaitCommand(0.1)
-  //     );
-  // }
+    // File folder = new File("src/main/deploy/pathplanner/autos");
+    // for (File f : folder.listFiles()) {
+    //   autoChooser.addOption(f.getName(), getPathPlannerAuto(f.getName().substring(0, f.getName().length() - 5)));
+    // }
 
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
-  // autoChooser = AutoBuilder.buildAutoChooser();
-   ////autoChooser.addOption("Two Note", AutoCommands.autos[0]);
-   // SmartDashboard.putData("Auto Chooser", autoChooser);
-    // Configure the button bindings
     configureButtonBindings();
 
+    DataLogManager.start();
 
-     DataLogManager.start();
-
-  // Record both DS control and joystick data
-  DriverStation.startDataLog(DataLogManager.getLog());
-
+    // Record both DS control and joystick data
+    DriverStation.startDataLog(DataLogManager.getLog());
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -124,38 +110,36 @@ public long timeRumble=0;
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true,false),
+                true, true, false,zeroLock.getAsBoolean()),
             m_robotDrive));
   }
 
-   public Command makeRobotSlow(){
-    return new InstantCommand(() -> { slowMode= !slowMode;});
+  public Command makeRobotSlow() {
+    return new InstantCommand(() -> {
+      slowMode = !slowMode;
+    });
   }
 
-  public Command resetGyroTeleop(){
-    return new InstantCommand(() -> {RobotContainer.m_robotDrive.m_gyro.reset();});
+  public Command resetGyroTeleop() {
+    return new InstantCommand(() -> {
+      RobotContainer.m_robotDrive.m_gyro.reset();
+    });
   }
 
-  public Command rumbleGamePad(long time){
-    return new FunctionalCommand(()->{timeRumble=System.currentTimeMillis();  SmartDashboard.putNumber("TimeRumble", timeRumble);},
-    ()->{ m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
-    SmartDashboard.putNumber("Time", System.currentTimeMillis());},
-      interrupted ->{ m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);}, 
-      ()-> System.currentTimeMillis()-time>timeRumble,m_robotDrive);
+  public Command rumbleGamePad(long time) {
+    return new FunctionalCommand(() -> {
+      timeRumble = System.currentTimeMillis();
+      SmartDashboard.putNumber("TimeRumble", timeRumble);
+    },
+        () -> {
+          m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+          SmartDashboard.putNumber("Time", System.currentTimeMillis());
+        },
+        interrupted -> {
+          m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+        },
+        () -> System.currentTimeMillis() - time > timeRumble, m_robotDrive);
   }
-
-  // public static Command rumbleGamePad(long time){
-  //   return new FunctionalCommand(() -> {
-  //     RobotContainer.m_Intake.stopIntakeIndexer();
-  //     startTime = System.currentTimeMillis();
-  //   },() -> RobotContainer.m_Intake.inIntakeIndexer(),
-  //   interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(),
-  //    () -> System.currentTimeMillis()-time>startTime,
-  //     RobotContainer.m_Intake);
-  // }
-
-
-  
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -174,14 +158,14 @@ public long timeRumble=0;
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
 
-     Trigger makeRobotSlow = new Trigger(m_driverController.rightTrigger());
-     makeRobotSlow.onTrue(makeRobotSlow());
+    Trigger makeRobotSlow = new Trigger(m_driverController.a());
+    makeRobotSlow.onTrue(makeRobotSlow());
 
-    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY()> OIConstants.kArmDeadband);
+    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY() > OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
-    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY()< -OIConstants.kArmDeadband);
+    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY() < -OIConstants.kArmDeadband);
     moveArmDown.whileTrue(ArmCommands.moveArmDown());
-    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY())<OIConstants.kArmDeadband);
+    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
@@ -200,12 +184,12 @@ public long timeRumble=0;
     shootIn.whileTrue(ShooterCommands.shooterReverse());
     shootIn.onFalse(ShooterCommands.shooterStop());
 
-    // reset gyro button binding 
+    // reset gyro button binding
     Trigger resetGyro = new Trigger(m_driverController.x());
     resetGyro.onTrue(resetGyroTeleop());
 
-
-   
+    zeroLock = new Trigger(m_driverController.rightTrigger());
+  
 
   }
 
@@ -214,23 +198,20 @@ public long timeRumble=0;
     Pose2d startingPose = PathPlannerAuto.getStaringPoseFromAutoFile(autoName);
     Pose2d flipped;
     Optional<Alliance> alliance = DriverStation.getAlliance();
-      if(alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-        flipped=GeometryUtil.flipFieldPose(startingPose);
-         m_robotDrive.resetOdometry(flipped);
-      }else{
-         m_robotDrive.resetOdometry(startingPose);
-      }
-   
+
+    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+      flipped = GeometryUtil.flipFieldPose(startingPose);
+      m_robotDrive.resetOdometry(flipped);
+    } else {
+      m_robotDrive.resetOdometry(startingPose);
+    }
+
     return new PathPlannerAuto(autoName);
-    
-   // autoChoose/,mr.getSelected();5
+    // return autoChooser.getSelected();
   }
 }
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-// public Command getAutonomousCommands(){
-//   //
-// }
+/**
+ * Use this to pass the autonomous command to the main {@link Robot} class.
+ *
+ * @return the command to run in autonomous
+ */
