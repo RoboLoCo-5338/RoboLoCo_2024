@@ -4,15 +4,24 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.util.GeometryUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmCommands;
 import frc.robot.commands.AutoCommands;
@@ -23,24 +32,8 @@ import frc.robot.subsystems.AutoAimSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
-import java.io.File;
 import java.util.Optional;
-
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonUtils;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.util.GeometryUtil;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -58,9 +51,10 @@ public class RobotContainer {
   public static ArmSubsystem m_Arm = new ArmSubsystem();
   public static AutoAimSubsystem m_AutoAim = new AutoAimSubsystem();
 
-  public static CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  public static CommandXboxController m_operatorController = new CommandXboxController(
-      OIConstants.kOperatorControllerPort);
+  public static CommandXboxController m_driverController =
+      new CommandXboxController(OIConstants.kDriverControllerPort);
+  public static CommandXboxController m_operatorController =
+      new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   public static boolean slowMode = false;
 
@@ -69,9 +63,8 @@ public class RobotContainer {
   public Trigger zeroLock;
 
   public static PhotonCamera camera = new PhotonCamera("photonvision");
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     // Needs to happen in this order for pathplanner
@@ -81,7 +74,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("shootAuto()", AutoCommands.shootAuto());
     NamedCommands.registerCommand("IntakeForward()", AutoCommands.IntakeForward());
     NamedCommands.registerCommand("IntakeOnly()", AutoCommands.IntakeOnly());
-    NamedCommands.registerCommand("LaserCanIntake()", IntakeCommands.runIntakeUntilNoteSequentialCommand());
+    NamedCommands.registerCommand(
+        "LaserCanIntake()", IntakeCommands.runIntakeUntilNoteSequentialCommand());
     NamedCommands.registerCommand("ShooterForward()", ShooterCommands.runShooterForwardTimed(1500));
     AutoCommands.loadAutos();
 
@@ -89,7 +83,8 @@ public class RobotContainer {
 
     // File folder = new File("src/main/deploy/pathplanner/autos");
     // for (File f : folder.listFiles()) {
-    //   autoChooser.addOption(f.getName(), getPathPlannerAuto(f.getName().substring(0, f.getName().length() - 5)));
+    //   autoChooser.addOption(f.getName(), getPathPlannerAuto(f.getName().substring(0,
+    // f.getName().length() - 5)));
     // }
 
     // SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -106,31 +101,41 @@ public class RobotContainer {
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
-            () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true, false,zeroLock.getAsBoolean()),
+            () ->
+                m_robotDrive.drive(
+                    -MathUtil.applyDeadband(
+                        m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(
+                        m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                    -MathUtil.applyDeadband(
+                        m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                    true,
+                    true,
+                    false,
+                    zeroLock.getAsBoolean()),
             m_robotDrive));
   }
 
   public Command makeRobotSlow() {
-    return new InstantCommand(() -> {
-      slowMode = !slowMode;
-    });
+    return new InstantCommand(
+        () -> {
+          slowMode = !slowMode;
+        });
   }
 
   public Command resetGyroTeleop() {
-    return new InstantCommand(() -> {
-      RobotContainer.m_robotDrive.m_gyro.reset();
-    });
+    return new InstantCommand(
+        () -> {
+          RobotContainer.m_robotDrive.m_gyro.reset();
+        });
   }
 
   public Command rumbleGamePad(long time) {
-    return new FunctionalCommand(() -> {
-      timeRumble = System.currentTimeMillis();
-      SmartDashboard.putNumber("TimeRumble", timeRumble);
-    },
+    return new FunctionalCommand(
+        () -> {
+          timeRumble = System.currentTimeMillis();
+          SmartDashboard.putNumber("TimeRumble", timeRumble);
+        },
         () -> {
           m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
           SmartDashboard.putNumber("Time", System.currentTimeMillis());
@@ -138,16 +143,14 @@ public class RobotContainer {
         interrupted -> {
           m_driverController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
         },
-        () -> System.currentTimeMillis() - time > timeRumble, m_robotDrive);
+        () -> System.currentTimeMillis() - time > timeRumble,
+        m_robotDrive);
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
@@ -161,11 +164,14 @@ public class RobotContainer {
     Trigger makeRobotSlow = new Trigger(m_driverController.a());
     makeRobotSlow.onTrue(makeRobotSlow());
 
-    Trigger moveArmUp = new Trigger(() -> m_operatorController.getLeftY() > OIConstants.kArmDeadband);
+    Trigger moveArmUp =
+        new Trigger(() -> m_operatorController.getLeftY() > OIConstants.kArmDeadband);
     moveArmUp.whileTrue(ArmCommands.moveArmUp());
-    Trigger moveArmDown = new Trigger(() -> m_operatorController.getLeftY() < -OIConstants.kArmDeadband);
+    Trigger moveArmDown =
+        new Trigger(() -> m_operatorController.getLeftY() < -OIConstants.kArmDeadband);
     moveArmDown.whileTrue(ArmCommands.moveArmDown());
-    Trigger stopArm = new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
+    Trigger stopArm =
+        new Trigger(() -> Math.abs(m_operatorController.getLeftY()) < OIConstants.kArmDeadband);
     stopArm.whileTrue(ArmCommands.stopArm());
 
     Trigger intakeIn = new Trigger(m_operatorController.rightTrigger());
@@ -189,8 +195,6 @@ public class RobotContainer {
     resetGyro.onTrue(resetGyroTeleop());
 
     zeroLock = new Trigger(m_driverController.rightTrigger());
-  
-
   }
 
   public Command getAutonomousCommand() {

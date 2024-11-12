@@ -1,6 +1,6 @@
 // package frc.robot.commands;
 
-//er WPILib contributors.
+// er WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -30,40 +30,39 @@ public class IntakeCommands {
   // }
 
   private static long startTime;
+
   private static long intakestartTime;
   private static long indexerstartTime;
 
   // command to set speed for arm
   public static Command moveIntakeIn() {
     return new InstantCommand(
-        () -> RobotContainer.m_Intake.inIntakeIndexer(),
-        RobotContainer.m_Intake);
+        () -> RobotContainer.m_Intake.inIntakeIndexer(), RobotContainer.m_Intake);
   }
 
   public static Command moveIndexerInFast() {
     return new InstantCommand(
-        () -> RobotContainer.m_Intake.indexerInFast(),
-        RobotContainer.m_Intake);
+        () -> RobotContainer.m_Intake.indexerInFast(), RobotContainer.m_Intake);
   }
 
   // Command bindings for arm and elevator methods.
   public static Command moveIntakeOut() {
     return new InstantCommand(
-        () -> RobotContainer.m_Intake.outIntakeIndexer(),
-        RobotContainer.m_Intake);
+        () -> RobotContainer.m_Intake.outIntakeIndexer(), RobotContainer.m_Intake);
   }
 
   public static Command stopIntake() {
     return new InstantCommand(
-        () -> RobotContainer.m_Intake.stopIntakeIndexer(),
-        RobotContainer.m_Intake);
+        () -> RobotContainer.m_Intake.stopIntakeIndexer(), RobotContainer.m_Intake);
   }
 
   public static Command runIntakeForwardTimed(long time) {
-    return new FunctionalCommand(() -> {
-      RobotContainer.m_Intake.stopIntakeIndexer();
-      startTime = System.currentTimeMillis();
-    }, () -> RobotContainer.m_Intake.inIntakeIndexer(),
+    return new FunctionalCommand(
+        () -> {
+          RobotContainer.m_Intake.stopIntakeIndexer();
+          startTime = System.currentTimeMillis();
+        },
+        () -> RobotContainer.m_Intake.inIntakeIndexer(),
         interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(),
         () -> System.currentTimeMillis() - time > startTime,
         RobotContainer.m_Intake);
@@ -71,41 +70,55 @@ public class IntakeCommands {
 
   public static Command runIntakeOnlyTimed(long time) {
 
-    return new FunctionalCommand(() -> {
-      RobotContainer.m_Intake.stopIntake();
-      intakestartTime = System.currentTimeMillis();
-    }, () -> RobotContainer.m_Intake.intakeIn(), interrupted -> RobotContainer.m_Intake.stopIntake(),
-        () -> System.currentTimeMillis() - time > intakestartTime, RobotContainer.m_Intake);
+    return new FunctionalCommand(
+        () -> {
+          RobotContainer.m_Intake.stopIntake();
+          intakestartTime = System.currentTimeMillis();
+        },
+        () -> RobotContainer.m_Intake.intakeIn(),
+        interrupted -> RobotContainer.m_Intake.stopIntake(),
+        () -> System.currentTimeMillis() - time > intakestartTime,
+        RobotContainer.m_Intake);
   }
 
   public static Command runIndexerOnlyTimed(long time) {
 
-    return new FunctionalCommand(() -> {
-      RobotContainer.m_Intake.stopIndexer();
-      indexerstartTime = System.currentTimeMillis();
-    }, () -> RobotContainer.m_Intake.indexerInFast(), interrupted -> RobotContainer.m_Intake.stopIndexer(),
-        () -> System.currentTimeMillis() - time > indexerstartTime, RobotContainer.m_Intake);
+    return new FunctionalCommand(
+        () -> {
+          RobotContainer.m_Intake.stopIndexer();
+          indexerstartTime = System.currentTimeMillis();
+        },
+        () -> RobotContainer.m_Intake.indexerInFast(),
+        interrupted -> RobotContainer.m_Intake.stopIndexer(),
+        () -> System.currentTimeMillis() - time > indexerstartTime,
+        RobotContainer.m_Intake);
   }
 
   public static Command runIndexerOutOnlyTimed(long time) {
 
-    return new FunctionalCommand(() -> {
-      RobotContainer.m_Intake.stopIndexer();
-      indexerstartTime = System.currentTimeMillis();
-    }, () -> RobotContainer.m_Intake.indexerOut(), interrupted -> RobotContainer.m_Intake.stopIndexer(),
-        () -> System.currentTimeMillis() - time > indexerstartTime, RobotContainer.m_Intake);
+    return new FunctionalCommand(
+        () -> {
+          RobotContainer.m_Intake.stopIndexer();
+          indexerstartTime = System.currentTimeMillis();
+        },
+        () -> RobotContainer.m_Intake.indexerOut(),
+        interrupted -> RobotContainer.m_Intake.stopIndexer(),
+        () -> System.currentTimeMillis() - time > indexerstartTime,
+        RobotContainer.m_Intake);
   }
 
   public static Command runIntakeUntilNote() {
-    return new FunctionalCommand(() -> {
-      RobotContainer.m_Intake.stopIntakeIndexer();
-    },
-        () -> RobotContainer.m_Intake.inIntakeIndexer(), interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(),
-        () -> RobotContainer.m_Intake.isNote(), RobotContainer.m_Intake);
+    return new FunctionalCommand(
+        () -> {
+          RobotContainer.m_Intake.stopIntakeIndexer();
+        },
+        () -> RobotContainer.m_Intake.inIntakeIndexer(),
+        interrupted -> RobotContainer.m_Intake.stopIntakeIndexer(),
+        () -> RobotContainer.m_Intake.isNote(),
+        RobotContainer.m_Intake);
   }
 
   public static Command runIntakeUntilNoteSequentialCommand() {
     return new ParallelCommandGroup(runIntakeUntilNote(), ShooterCommands.shooterReverseSlow());
   }
-
 }

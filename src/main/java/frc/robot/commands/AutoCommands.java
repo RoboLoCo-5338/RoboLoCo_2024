@@ -1,10 +1,7 @@
 package frc.robot.commands;
 
-import java.util.Optional;
-
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -13,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import java.util.Optional;
 
 public class AutoCommands {
 
@@ -38,12 +36,14 @@ public class AutoCommands {
   // }
   public static Command shootAuto() {
     return new SequentialCommandGroup(
-        new ParallelRaceGroup(ShooterCommands.runShooterBackwardTimed(100), IntakeCommands.runIndexerOutOnlyTimed(100)),
+        new ParallelRaceGroup(
+            ShooterCommands.runShooterBackwardTimed(100),
+            IntakeCommands.runIndexerOutOnlyTimed(100)),
         new WaitCommand(0.25),
         new ParallelCommandGroup(
             ShooterCommands.runShooterForwardTimed(1000),
-            new SequentialCommandGroup(new WaitCommand(0.75),
-                IntakeCommands.runIntakeForwardTimed(750))));
+            new SequentialCommandGroup(
+                new WaitCommand(0.75), IntakeCommands.runIntakeForwardTimed(750))));
   }
 
   public static Command IntakeOnly() {
@@ -52,8 +52,6 @@ public class AutoCommands {
 
   public static Command IntakeForward() {
     return new SequentialCommandGroup(
-        IntakeCommands.runIntakeForwardTimed(2500),
-        new WaitCommand(0.5));
+        IntakeCommands.runIntakeForwardTimed(2500), new WaitCommand(0.5));
   }
-
 }
