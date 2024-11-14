@@ -1,3 +1,4 @@
+name: Spotless
 on: push
 permissions:
   contents: write
@@ -25,6 +26,6 @@ jobs:
         run: |
           ./gradlew spotlessApply
           git config --global user.name 'Actions Bot'
-          git config --global user.email 'actions-bot@users.noreply.github.com'
+          git config --global user.email 'team5338@gmail.com'
           git commit -am "Automated Spotless Apply"
           git push
