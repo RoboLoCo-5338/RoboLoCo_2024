@@ -1,10 +1,12 @@
-on: push
-permissions:
-  contents: write
+on: [push]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   spotless:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -12,17 +14,4 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 17
-      - name: Check Spotless
-        id: spotlessCheck
-        continue-on-error: true
-        run: ./gradlew spotlessChecky
-      - name: Apply and Commit Linted File
-        if: ${{ steps.spotlessCheck.outcome == 'failure' }}
-        run: |
-          ./gradlew spotlessApply
-          git config --global user.name 'Actions Bot'
-          git config --global user.email 'actions-bot@users.noreply.github.com'
-          git commit -am "Automated Spotless Apply"
-          git push
-
-      
+      - run: ./gradlew spotlessCheck
