@@ -32,8 +32,6 @@ import frc.robot.subsystems.AutoAimSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.Vision;
-
 import java.util.Optional;
 import org.photonvision.PhotonCamera;
 
