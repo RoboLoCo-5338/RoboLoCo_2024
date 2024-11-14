@@ -8,7 +8,7 @@ import frc.robot.subsystems.Vision;
 
 public class VisionCommands {
   public static PIDController turnController =
-      new PIDController(0, 0, 0); // TODO: Update these values
+      new PIDController(0.1, 0, 0); // TODO: Update these values
 
   public static Command turnToTag() {
     turnController.enableContinuousInput(-180, 180);
