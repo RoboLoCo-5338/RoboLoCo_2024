@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    // CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
     // Run a warmup to to warm up the relevant libraries
     FollowPathCommand.warmupCommand().schedule();
   }

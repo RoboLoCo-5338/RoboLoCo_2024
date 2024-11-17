@@ -10,7 +10,7 @@ public class VisionCommands {
   public static PIDController turnController =
       new PIDController(0.1, 0, 0); // TODO: Update these values
 
-  public static Command turnToTag() {
+  public static Command turnToTarget() {
     turnController.enableContinuousInput(-180, 180);
     return new PIDCommand(
         turnController,
@@ -18,7 +18,7 @@ public class VisionCommands {
         RobotContainer.m_robotDrive.getHeading() + Vision.getTargetYaw(),
         (rotationalSpeed) ->
             RobotContainer.m_robotDrive.drive(
-                0, 0, rotationalSpeed, false, true, true, true), // TODO: Update these values
+                0, 0, rotationalSpeed, false, true, true, false), // TODO: Update these values
         RobotContainer.m_robotDrive);
   }
 }

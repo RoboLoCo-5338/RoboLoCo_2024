@@ -27,6 +27,7 @@ import frc.robot.commands.ArmCommands;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
+import frc.robot.commands.VisionCommands;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.AutoAimSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -160,6 +161,7 @@ public class RobotContainer {
     podiumPreset.onTrue(ArmCommands.setArm(16));
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
+    new Trigger(m_operatorController.x()).onTrue(VisionCommands.turnToTarget());
 
     Trigger makeRobotSlow = new Trigger(m_driverController.a());
     makeRobotSlow.onTrue(makeRobotSlow());
