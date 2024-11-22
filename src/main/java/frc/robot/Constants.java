@@ -117,8 +117,8 @@ public final class Constants {
     public static final double kPZeroLock=0.001;
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 1.0; // changed for inspire loudoun
-    public static final double kMaxAngularSpeed = 2 * Math.PI * 1; // set the last number back to 1 for normal speed
+    public static final double kMaxSpeedMetersPerSecond = 1; // changed for inspire loudoun
+    public static final double kMaxAngularSpeed = 2 * Math.PI * 0.75; // set the last number back to 1 for normal speed
 
     public static final double kDirectionSlewRate = 4.3; // radians per second
     public static final double kMagnitudeSlewRate = 4.5; // percent per second (1 = 100%)

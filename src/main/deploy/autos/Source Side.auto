@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.71,
+      "y": 4.36
+    },
+    "rotation": -58.17112821647741
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shootAuto()"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceSideMove1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceSideMove2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootAuto()"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceSideMove3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceMove4"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
