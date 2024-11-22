@@ -10,17 +10,17 @@ public class Vision {
   public static boolean hasResults() {
     return camera.getLatestResult().hasTargets();
   }
+
   public static double getTargetYaw() {
-    if (hasResults())
-      return camera.getLatestResult().getBestTarget().getYaw();
+    if (hasResults()) return camera.getLatestResult().getBestTarget().getYaw();
     return Double.POSITIVE_INFINITY;
   }
 
   public static double getTargetPitch() {
-    if (hasResults())
-      return camera.getLatestResult().getBestTarget().getPitch();
+    if (hasResults()) return camera.getLatestResult().getBestTarget().getPitch();
     return Double.POSITIVE_INFINITY;
   }
+
   public static double getDistanceToTarget(double targetHeight) {
     if (hasResults()) {
       return PhotonUtils.calculateDistanceToTargetMeters(
