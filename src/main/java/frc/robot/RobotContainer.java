@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -56,14 +58,14 @@ public class RobotContainer {
       new CommandXboxController(OIConstants.kDriverControllerPort);
   public static CommandXboxController m_operatorController =
       new CommandXboxController(OIConstants.kOperatorControllerPort);
-
+  
   public static boolean slowMode = false;
 
   public long timeRumble = 0;
 
   public Trigger zeroLock;
 
-  public static PhotonCamera camera = new PhotonCamera("photonvision");
+  // public static PhotonCamera camera = new PhotonCamera("photonvision");
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -161,7 +163,9 @@ public class RobotContainer {
     podiumPreset.onTrue(ArmCommands.setArm(16));
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
-    new Trigger(m_operatorController.x()).onTrue(VisionCommands.turnToTarget());
+    Trigger turnToTag = new Trigger(m_operatorController.x());
+    turnToTag.onTrue(VisionCommands.turnToTarget());
+    turnToTag.onFalse(Commands.runOnce(() -> VisionCommands.turnToTarget().cancel()));
 
     Trigger makeRobotSlow = new Trigger(m_driverController.a());
     makeRobotSlow.onTrue(makeRobotSlow());

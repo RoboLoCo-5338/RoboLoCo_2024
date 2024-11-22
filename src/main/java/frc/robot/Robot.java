@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -143,21 +145,21 @@ public class Robot extends TimedRobot {
     boolean targetVisible = false;
     double targetYaw = 0.0;
 
-    PhotonPipelineResult result = RobotContainer.camera.getLatestResult();
-    if (result != null) {
-      // Camera processed a new frame since last
-      // Get the last one in the list.
-      if (result.hasTargets()) {
-        // At least one AprilTag was seen by the camera
-        for (var target : result.getTargets()) {
-          if (target.getFiducialId() == 7) {
-            // Found Tag 7, record its information
-            targetYaw = target.getYaw();
-            targetVisible = true;
-          }
-        }
-      }
-    }
+    // PhotonPipelineResult result = RobotContainer.camera.getLatestResult();
+    // if (result != null) {
+    //   // Camera processed a new frame since last
+    //   // Get the last one in the list.
+    //   if (result.hasTargets()) {
+    //     // At least one AprilTag was seen by the camera
+    //     for (var target : result.getTargets()) {
+    //       if (target.getFiducialId() == 7) {
+    //         // Found Tag 7, record its information
+    //         targetYaw = target.getYaw();
+    //         targetVisible = true;
+    //       }
+    //     }
+    //   }
+    // }
 
     // Auto-align when requested
     if (RobotContainer.m_driverController.a().getAsBoolean() && targetVisible) {

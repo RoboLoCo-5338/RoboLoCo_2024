@@ -5,22 +5,24 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
 public class Vision {
-  private static PhotonCamera camera = new PhotonCamera("Rock n' Rivets");
+  private static PhotonCamera camera = new PhotonCamera("Rock n Rivets");
 
+  public static boolean hasResults() {
+    return camera.getLatestResult().hasTargets();
+  }
   public static double getTargetYaw() {
-    if (camera.getLatestResult().hasTargets())
+    if (hasResults())
       return camera.getLatestResult().getBestTarget().getYaw();
     return Double.POSITIVE_INFINITY;
   }
 
   public static double getTargetPitch() {
-    if (camera.getLatestResult().hasTargets())
+    if (hasResults())
       return camera.getLatestResult().getBestTarget().getPitch();
     return Double.POSITIVE_INFINITY;
   }
-
   public static double getDistanceToTarget(double targetHeight) {
-    if (camera.getLatestResult().hasTargets()) {
+    if (hasResults()) {
       return PhotonUtils.calculateDistanceToTargetMeters(
           Constants.CAMERA_HEIGHT_METERS,
           targetHeight,
