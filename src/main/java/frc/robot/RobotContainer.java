@@ -162,8 +162,9 @@ public class RobotContainer {
     Trigger restPreset = new Trigger(m_operatorController.a());
     restPreset.onTrue(ArmCommands.setArm(0));
     Trigger turnToTag = new Trigger(m_operatorController.x());
-    turnToTag.onTrue(VisionCommands.turnToTarget());
-    turnToTag.onFalse(Commands.runOnce(() -> VisionCommands.turnToTarget().cancel()));
+    Command c = VisionCommands.turnToTarget();
+    turnToTag.onTrue(c);
+    turnToTag.onFalse(Commands.runOnce(() -> c.cancel()));
 
     Trigger makeRobotSlow = new Trigger(m_driverController.a());
     makeRobotSlow.onTrue(makeRobotSlow());

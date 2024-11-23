@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
+
+import edu.wpi.first.math.geometry.Transform3d;
 
 public class Vision {
   private static PhotonCamera camera = new PhotonCamera("Rock");
@@ -13,12 +16,12 @@ public class Vision {
 
   public static double getTargetYaw() {
     if (hasResults()) return camera.getLatestResult().getBestTarget().getYaw();
-    return Double.POSITIVE_INFINITY;
+    return 0;
   }
 
   public static double getTargetPitch() {
     if (hasResults()) return camera.getLatestResult().getBestTarget().getPitch();
-    return Double.POSITIVE_INFINITY;
+    return 0;
   }
 
   public static double getDistanceToTarget(double targetHeight) {
@@ -30,6 +33,20 @@ public class Vision {
           getTargetPitch());
     }
     return -1;
+  }
+  
+  public static int getBestTargetID(){
+    if (hasResults()) return camera.getLatestResult().getBestTarget().getFiducialId();
+    return -1;
+  }
+
+  public static Transform3d getPose() {
+    PhotonPipelineResult result = camera.getLatestResult();
+    if (result.getMultiTagResult().estimatedPose.isPresent) {
+      return result.getMultiTagResult().estimatedPose.best;
+    }
+
+    return null;
   }
 }
 // #region

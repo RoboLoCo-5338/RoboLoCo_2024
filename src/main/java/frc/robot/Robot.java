@@ -5,11 +5,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
     // Run a warmup to to warm up the relevant libraries
     FollowPathCommand.warmupCommand().schedule();
   }
@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     //     RobotContainer.m_robotDrive.m_rearRight.getPosition().distanceMeters);
 
     SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
+    SmartDashboard.putNumber("Vision Yaw", Vision.getTargetYaw());
 
     CommandScheduler.getInstance().run();
   }
@@ -140,7 +141,7 @@ public class Robot extends TimedRobot {
         -RobotContainer.m_driverController.getRightX() * Constants.DriveConstants.kMaxAngularSpeed;
 
     // Read in relevant data from the Camera
-    boolean targetVisible = false;
+    boolean targetVisible = Vision.hasResults();
     double targetYaw = 0.0;
 
     // PhotonPipelineResult result = RobotContainer.camera.getLatestResult();
