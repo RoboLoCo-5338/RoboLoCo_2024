@@ -5,7 +5,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 
 public class Vision {
-  private static PhotonCamera camera = new PhotonCamera("Rock n Rivets");
+  private static PhotonCamera camera = new PhotonCamera("Rock");
 
   public static boolean hasResults() {
     return camera.getLatestResult().hasTargets();
