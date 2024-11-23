@@ -1,11 +1,10 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
-
-import edu.wpi.first.math.geometry.Transform3d;
 
 public class Vision {
   private static PhotonCamera camera = new PhotonCamera("Rock");
@@ -34,8 +33,8 @@ public class Vision {
     }
     return -1;
   }
-  
-  public static int getBestTargetID(){
+
+  public static int getBestTargetID() {
     if (hasResults()) return camera.getLatestResult().getBestTarget().getFiducialId();
     return -1;
   }

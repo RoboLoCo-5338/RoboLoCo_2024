@@ -14,15 +14,15 @@ public class VisionCommands {
 
   public static Command turnToTarget() {
     turnController.enableContinuousInput(-180, 180);
-    
+
     return new PIDCommand(
         turnController,
         () -> RobotContainer.m_robotDrive.getHeading(),
         // RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw() ,
         () -> {
-            if(Vision.getTargetYaw() == Double.POSITIVE_INFINITY)
-                return RobotContainer.m_robotDrive.getHeading();
-            return RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw();
+          if (Vision.getTargetYaw() == Double.POSITIVE_INFINITY)
+            return RobotContainer.m_robotDrive.getHeading();
+          return RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw();
         },
         (rotationalSpeed) ->
             RobotContainer.m_robotDrive.drive(
