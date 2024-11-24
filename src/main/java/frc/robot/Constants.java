@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -72,6 +75,8 @@ public final class Constants {
     Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Amp
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Stage
   };
+  public static final AprilTagFieldLayout kTagLayout =
+                AprilTagFields.kDefaultField.loadAprilTagLayoutField();
 
   public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
   public static final double speakerHeightTop =
