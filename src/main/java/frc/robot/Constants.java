@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -76,7 +75,7 @@ public final class Constants {
     Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Stage
   };
   public static final AprilTagFieldLayout kTagLayout =
-                AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+      AprilTagFields.kDefaultField.loadAprilTagLayoutField();
 
   public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
   public static final double speakerHeightTop =
