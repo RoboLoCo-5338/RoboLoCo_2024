@@ -1,15 +1,13 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-
-import java.util.HashSet;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision {
   private static PhotonCamera camera = new PhotonCamera("Rock");
@@ -44,7 +42,7 @@ public class Vision {
     tag.ifPresent(target -> target.getPitch());
     return 0;
   }
-  
+
   public static double getDistanceToTarget(double targetHeight) {
     if (hasResults()) {
       return PhotonUtils.calculateDistanceToTargetMeters(
@@ -61,8 +59,10 @@ public class Vision {
     return -1;
   }
 
-  public static Optional<PhotonTrackedTarget> getTagTarget(int tag){
-    if(hasResults()) for(PhotonTrackedTarget target: camera.getLatestResult().getTargets()) if(target.getFiducialId()==tag) return Optional.of(target);
+  public static Optional<PhotonTrackedTarget> getTagTarget(int tag) {
+    if (hasResults())
+      for (PhotonTrackedTarget target : camera.getLatestResult().getTargets())
+        if (target.getFiducialId() == tag) return Optional.of(target);
     return Optional.empty();
   }
 
