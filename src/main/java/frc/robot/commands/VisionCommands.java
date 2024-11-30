@@ -65,22 +65,23 @@ public class VisionCommands {
 	public static double getOptimalAngleRadians(double distanceToTag, double angleToTag, double angleCurrent) {
 		// double resultDegree;
 		// double numerator = VisionConstants.DISTANCE_CAMERA_TO_TAG_Y
-		// 		- (VisionConstants.ARM_LENGTH * Math.sin(angleCurrent)) + VisionConstants.DISTANCE_TAG_TO_SPEAKER;
+		// - (VisionConstants.ARM_LENGTH * Math.sin(angleCurrent)) +
+		// VisionConstants.DISTANCE_TAG_TO_SPEAKER;
 		// double xDistance = distanceToTag * Math.cos(angleToTag);
 		// double denominator = xDistance + VisionConstants.X_OFFSET_CAMERA_TO_PIVOT
-		// 		+ (VisionConstants.ARM_LENGTH * Math.cos(angleCurrent));
+		// + (VisionConstants.ARM_LENGTH * Math.cos(angleCurrent));
 		// double fraction = numerator / denominator;
 		// double offsetRadians = VisionConstants.OFFSET_ANGLE_DEGREES;
 		// resultDegree = offsetRadians - Math.atan(fraction);
 		// return resultDegree;
 
-		//man what type of PYCHOPATH would write that code, couldnt be me
+		// man what type of PYCHOPATH would write that code, couldnt be me
 
 		double numerator = distanceToTag * Math.sin(angleToTag) + VisionConstants.heightAboveTarget;
 		double denominator = distanceToTag * Math.cos(angleToTag);
-		//we are now assuming that gravity doesn't exist. 
-		
-		return Math.atan(numerator/denominator) + VisionConstants.ARM_ANGLE_OFFSET;
+		// we are now assuming that gravity doesn't exist.
+
+		return Math.atan(numerator / denominator) + VisionConstants.ARM_ANGLE_OFFSET;
 	}
 
 	// public static double getOptimalAngleDegrees(double distanceToTag, double
