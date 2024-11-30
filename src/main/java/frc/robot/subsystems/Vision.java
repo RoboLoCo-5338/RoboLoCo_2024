@@ -54,13 +54,13 @@ public class Vision {
 		return -1;
 	}
 
-  public static double getDistanceToTarget(int aprilTag){
-    if (getTagTarget(aprilTag).isPresent()) {
-			return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, Constants.aprilTagHeights[aprilTag],
-					Constants.CAMERA_PITCH_RADIANS, getTargetPitch(aprilTag));
+	public static double getDistanceToTarget(int aprilTag) {
+		if (getTagTarget(aprilTag).isPresent()) {
+			return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS,
+					Constants.aprilTagHeights[aprilTag], Constants.CAMERA_PITCH_RADIANS, getTargetPitch(aprilTag));
 		}
 		return -1;
-  }
+	}
 
 	public static int getBestTargetID() {
 		if (hasResults())

@@ -55,8 +55,11 @@ public class VisionCommands {
 	}
 
 	public static Command autoAim() {
-    int tag = DriverStation.getAlliance().isPresent()&& DriverStation.getAlliance().get()==Alliance.Blue?7: 4;
-    if(Vision.getTagTarget(tag).isPresent()) return turnToTarget(tag).andThen(ArmCommands.setArmRadians(getOptimalAngleRadians(Vision.getDistanceToTarget(tag), Vision.getTargetYaw(tag), getCurrentAngle())));
+		int tag = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
+		if (Vision.getTagTarget(tag).isPresent())
+			return turnToTarget(tag)
+					.andThen(ArmCommands.setArmRadians(getOptimalAngleRadians(Vision.getDistanceToTarget(tag),
+							Vision.getTargetYaw(tag), getCurrentAngle())));
 		return Commands.none();
 	}
 
@@ -72,18 +75,19 @@ public class VisionCommands {
 		return resultDegree;
 	}
 
-	// public static double getOptimalAngleDegrees(double distanceToTag, double angleToTag, double angleCurrent) {
-	// 	double resultDegree;
-	// 	double numerator = AutoAimConstants.DISTANCE_CAMERA_TO_TAG_Y
-	// 			- (Constants.ARM_LENGTH * Math.sin(Math.toRadians(angleCurrent)))
-	// 			+ AutoAimConstants.DISTANCE_TAG_TO_SPEAKER;
-	// 	double xDistance = distanceToTag * Math.cos(Math.toRadians(angleToTag));
-	// 	double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT
-	// 			+ (Constants.ARM_LENGTH * Math.cos(Math.toRadians(angleCurrent)));
-	// 	double fraction = numerator / denominator;
-	// 	double offsetRadians = AutoAimConstants.OFFSET_ANGLE_DEGREES;
-	// 	resultDegree = offsetRadians - Math.atan(fraction);
-	// 	return Math.toDegrees(resultDegree);
+	// public static double getOptimalAngleDegrees(double distanceToTag, double
+	// angleToTag, double angleCurrent) {
+	// double resultDegree;
+	// double numerator = AutoAimConstants.DISTANCE_CAMERA_TO_TAG_Y
+	// - (Constants.ARM_LENGTH * Math.sin(Math.toRadians(angleCurrent)))
+	// + AutoAimConstants.DISTANCE_TAG_TO_SPEAKER;
+	// double xDistance = distanceToTag * Math.cos(Math.toRadians(angleToTag));
+	// double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT
+	// + (Constants.ARM_LENGTH * Math.cos(Math.toRadians(angleCurrent)));
+	// double fraction = numerator / denominator;
+	// double offsetRadians = AutoAimConstants.OFFSET_ANGLE_DEGREES;
+	// resultDegree = offsetRadians - Math.atan(fraction);
+	// return Math.toDegrees(resultDegree);
 	// }
 
 	public static double getCurrentAngle() {
