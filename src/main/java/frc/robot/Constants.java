@@ -83,7 +83,8 @@ public final class Constants {
 		public static final double pocketHeight = Units.feetToMeters(1) + Units.inchesToMeters(6);
 		public static final double ampHeightTop = ampHeightBottom + pocketHeight;
 		public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop) / 2;
-
+		public static final double heightAboveTarget = 0.762; // meters (measured value)
+		public static final double ARM_ANGLE_OFFSET = Math.toRadians(21); // radians
 		public static final double[] aprilTagHeights = { // These are to the bottom of the AprilTag
 				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
 				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
