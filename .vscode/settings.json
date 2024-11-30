@@ -26,5 +26,6 @@
     },
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
-  "workbench.settings.openDefaultKeybindings": true
+  "workbench.settings.openDefaultKeybindings": true,
+  "docwriter.style": "Javadoc"
 }

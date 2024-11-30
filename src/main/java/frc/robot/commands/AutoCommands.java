@@ -14,44 +14,39 @@ import java.util.Optional;
 
 public class AutoCommands {
 
-  public static PathPlannerAuto[] autos;
-  public static String defaultAuto = "Four Note Auto";
+	public static PathPlannerAuto[] autos;
+	public static String defaultAuto = "Four Note Auto";
 
-  public static void loadAutos() {
-    // Load all autos here in this file
-    autos = new PathPlannerAuto[1];
-    autos[0] = new PathPlannerAuto("Four Note Auto");
-  }
+	public static void loadAutos() {
+		// Load all autos here in this file
+		autos = new PathPlannerAuto[1];
+		autos[0] = new PathPlannerAuto("Four Note Auto");
+	}
 
-  public static Pose2d getPathPose(PathPlannerPath pPath) {
-    Optional<Alliance> alliance = DriverStation.getAlliance();
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-      return pPath.flipPath().getPreviewStartingHolonomicPose();
-    }
-    return pPath.getPreviewStartingHolonomicPose();
-  }
+	public static Pose2d getPathPose(PathPlannerPath pPath) {
+		Optional<Alliance> alliance = DriverStation.getAlliance();
+		if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+			return pPath.flipPath().getPreviewStartingHolonomicPose();
+		}
+		return pPath.getPreviewStartingHolonomicPose();
+	}
 
-  // public static Pose2d startPose(){
-  // return getPathPose("2_center_straight");
-  // }
-  public static Command shootAuto() {
-    return new SequentialCommandGroup(
-        new ParallelRaceGroup(
-            ShooterCommands.runShooterBackwardTimed(100),
-            IntakeCommands.runIndexerOutOnlyTimed(100)),
-        new WaitCommand(0.25),
-        new ParallelCommandGroup(
-            ShooterCommands.runShooterForwardTimed(1000),
-            new SequentialCommandGroup(
-                new WaitCommand(0.75), IntakeCommands.runIntakeForwardTimed(750))));
-  }
+	// public static Pose2d startPose(){
+	// return getPathPose("2_center_straight");
+	// }
+	public static Command shootAuto() {
+		return new SequentialCommandGroup(
+				new ParallelRaceGroup(ShooterCommands.runShooterBackwardTimed(100),
+						IntakeCommands.runIndexerOutOnlyTimed(100)),
+				new WaitCommand(0.25), new ParallelCommandGroup(ShooterCommands.runShooterForwardTimed(1000),
+						new SequentialCommandGroup(new WaitCommand(0.75), IntakeCommands.runIntakeForwardTimed(750))));
+	}
 
-  public static Command IntakeOnly() {
-    return IntakeCommands.runIntakeOnlyTimed(2500);
-  }
+	public static Command IntakeOnly() {
+		return IntakeCommands.runIntakeOnlyTimed(2500);
+	}
 
-  public static Command IntakeForward() {
-    return new SequentialCommandGroup(
-        IntakeCommands.runIntakeForwardTimed(2500), new WaitCommand(0.5));
-  }
+	public static Command IntakeForward() {
+		return new SequentialCommandGroup(IntakeCommands.runIntakeForwardTimed(2500), new WaitCommand(0.5));
+	}
 }
