@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Transform3d;
-import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 
 import java.util.Optional;
@@ -59,7 +58,8 @@ public class Vision {
 	public static double getDistanceToTarget(int aprilTag) {
 		if (getTagTarget(aprilTag).isPresent()) {
 			return PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
-					VisionConstants.aprilTagHeights[aprilTag], VisionConstants.CAMERA_PITCH_RADIANS, getTargetPitch(aprilTag));
+					VisionConstants.aprilTagHeights[aprilTag], VisionConstants.CAMERA_PITCH_RADIANS,
+					getTargetPitch(aprilTag));
 		}
 		return -1;
 	}

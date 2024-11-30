@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.RobotContainer;
@@ -65,10 +64,11 @@ public class VisionCommands {
 
 	public static double getOptimalAngleRadians(double distanceToTag, double angleToTag, double angleCurrent) {
 		double resultDegree;
-		double numerator = VisionConstants.DISTANCE_CAMERA_TO_TAG_Y - (VisionConstants.ARM_LENGTH * Math.sin(angleCurrent))
-				+ VisionConstants.DISTANCE_TAG_TO_SPEAKER;
+		double numerator = VisionConstants.DISTANCE_CAMERA_TO_TAG_Y
+				- (VisionConstants.ARM_LENGTH * Math.sin(angleCurrent)) + VisionConstants.DISTANCE_TAG_TO_SPEAKER;
 		double xDistance = distanceToTag * Math.cos(angleToTag);
-		double denominator = xDistance + VisionConstants.X_OFFSET_CAMERA_TO_PIVOT + (VisionConstants.ARM_LENGTH * angleCurrent);
+		double denominator = xDistance + VisionConstants.X_OFFSET_CAMERA_TO_PIVOT
+				+ (VisionConstants.ARM_LENGTH * angleCurrent);
 		double fraction = numerator / denominator;
 		double offsetRadians = VisionConstants.OFFSET_ANGLE_DEGREES;
 		resultDegree = offsetRadians - Math.atan(fraction);

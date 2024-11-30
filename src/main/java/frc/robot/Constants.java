@@ -129,8 +129,7 @@ public final class Constants {
 		public static final double ARM_ANGLE_HORIZONTAL_OFFSET = Math.toRadians(21);
 		// How far from the target we want to be
 		public static final double OFFSET_ANGLE_DEGREES = Math.toRadians(40); // radians
-		public static final double SPEAKER_TAG_HEIGHT = aprilTagUniqueHeights[1]
-				+ plasticTagLength / 2; // meters
+		public static final double SPEAKER_TAG_HEIGHT = aprilTagUniqueHeights[1] + plasticTagLength / 2; // meters
 		public static final double DISTANCE_TAG_TO_SPEAKER = SPEAKER_HEIGHT_METERS - SPEAKER_TAG_HEIGHT; // meters
 		public static final double radians_per_rotation = 2 * Math.PI;
 		public static final double rotations_per_radians = 1 / radians_per_rotation;
