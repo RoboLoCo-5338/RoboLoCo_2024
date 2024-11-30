@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,91 +24,6 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-	public static class OperatorConstants {
-		public static final int kDriverControllerPort = 0;
-	}
-
-	public static final int ABUTTON = 1;
-	public static final int BBUTTON = 2;
-	public static final int XBUTTON = 3;
-	public static final int YBUTTON = 4;
-	public static final int LBBUTTON = 5;
-	public static final int RBBUTTON = 6;
-	public static final int BACKBUTTON = 7;
-	public static final int STARTBUTTON = 8;
-	public static final int LEFTSTICKBUTTON = 9;
-	public static final int RIGHTSTICKBUTTON = 10;
-
-	public enum RobotTarget {
-		SPEAKER, AMP
-	}
-
-	// field information
-	public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
-	public static final double pocketHeight = Units.feetToMeters(1) + Units.inchesToMeters(6);
-	public static final double ampHeightTop = ampHeightBottom + pocketHeight;
-	public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop) / 2;
-
-	public static final double[] aprilTagHeights = { // These are to the bottom of the AprilTag
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
-			Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Red Speaker
-			Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Red Speaker
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Red Amp
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Amp
-			Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Blue Speaker
-			Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Blue Speaker
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Blue Source
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
-	};
-
-	public static final double[] aprilTagUniqueHeights = { // These are to the bottom of the AprilTag
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Source
-			Units.feetToMeters(4) + Units.inchesToMeters(3 + 7 / 8), // Speaker
-			Units.feetToMeters(4) + Units.inchesToMeters(1 / 8), // Amp
-			Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Stage
-	};
-	public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
-
-	public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
-	public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10 + 7 / 8);
-	public static final double plasticTagLength = Units.inchesToMeters(10.5);
-	public static final double aluminumTagLength = Units.inchesToMeters(9);
-	public static final double aprilTagLength = Units.inchesToMeters(8 + (1 / 8));
-
-	public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
-	public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
-	public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
-	public static final double ARM_LENGTH = 1.0; // TODO ALSO NOT MEASURED
-	// Constants such as camera and target height stored. Change per robot and goal!
-	public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
-	public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
-	// Angle between horizontal and the camera.
-	public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-	public static final double ARM_ANGLE_HORIZONTAL_OFFSET = Math.toRadians(21);
-	// How far from the target we want to be
-
-	public static final double speakerHeightAverage = (speakerHeightBottom + speakerHeightTop) / 2.0;
-
-	// Height presets.
-	public static final int Height = 3;
-	public static final int height1 = 1;
-	public static final int height2 = 2;
-	public static final int height3 = 3;
-	public static final int height4 = 4;
-	public static final int height5 = 5;
-
-	// speed_multi
-	public static final double speed_multi = 0.1;
-	public static final double kp = 0.01;
-	public static final double min_command = 0.001;
 
 	public static final class DriveConstants {
 
@@ -161,14 +77,64 @@ public final class Constants {
 		public static final boolean kGyroReversed = false;
 	}
 
-	public static final class AutoAimConstants {
+	public static final class VisionConstants {
+		// field information
+		public static final double ampHeightBottom = Units.feetToMeters(2) + Units.inchesToMeters(2); // in meters
+		public static final double pocketHeight = Units.feetToMeters(1) + Units.inchesToMeters(6);
+		public static final double ampHeightTop = ampHeightBottom + pocketHeight;
+		public static final double AMP_HEIGHT_CENTER = (ampHeightBottom + ampHeightTop) / 2;
+
+		public static final double[] aprilTagHeights = { // These are to the bottom of the AprilTag
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
+				Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), // Red Speaker
+				Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), // Red Speaker
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Red Amp
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Amp
+				Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), // Blue Speaker
+				Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), // Blue Speaker
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Blue Source
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Red Stage
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Blue Stage
+		};
+
+		public static final double[] aprilTagUniqueHeights = { // These are to the bottom of the AprilTag
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Source
+				Units.feetToMeters(4) + Units.inchesToMeters(3 + 7.0 / 8), // Speaker
+				Units.feetToMeters(4) + Units.inchesToMeters(1.0 / 8), // Amp
+				Units.feetToMeters(3) + Units.inchesToMeters(11.5), // Stage
+		};
+		public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+
+		public static final double speakerHeightBottom = Units.feetToMeters(6) + Units.inchesToMeters(6);
+		public static final double speakerHeightTop = Units.feetToMeters(6) + Units.inchesToMeters(10 + 7 / 8);
+		public static final double plasticTagLength = Units.inchesToMeters(10.5);
+		public static final double aluminumTagLength = Units.inchesToMeters(9);
+		public static final double aprilTagLength = Units.inchesToMeters(8 + (1 / 8));
+
+		public static final double X_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+		public static final double Y_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+		public static final double Z_OFFSET_CAMERA_TO_PIVOT = 1.0; // TODO THIS IS NOT MEASURED YET
+		public static final double ARM_LENGTH = 1.0; // TODO ALSO NOT MEASURED
+		// Constants such as camera and target height stored. Change per robot and goal!
+		public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(42);
+		public static final double SPEAKER_HEIGHT_METERS = Units.feetToMeters(2.66);
+		// Angle between horizontal and the camera.
+		public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+		public static final double ARM_ANGLE_HORIZONTAL_OFFSET = Math.toRadians(21);
+		// How far from the target we want to be
 		public static final double OFFSET_ANGLE_DEGREES = Math.toRadians(40); // radians
-		public static final double SPEAKER_TAG_HEIGHT = Constants.aprilTagUniqueHeights[1]
-				+ Constants.plasticTagLength / 2; // meters
-		public static final double DISTANCE_TAG_TO_SPEAKER = Constants.SPEAKER_HEIGHT_METERS - SPEAKER_TAG_HEIGHT; // meters
+		public static final double SPEAKER_TAG_HEIGHT = aprilTagUniqueHeights[1]
+				+ plasticTagLength / 2; // meters
+		public static final double DISTANCE_TAG_TO_SPEAKER = SPEAKER_HEIGHT_METERS - SPEAKER_TAG_HEIGHT; // meters
 		public static final double radians_per_rotation = 2 * Math.PI;
 		public static final double rotations_per_radians = 1 / radians_per_rotation;
-		public static final double DISTANCE_CAMERA_TO_TAG_Y = SPEAKER_TAG_HEIGHT - Constants.CAMERA_HEIGHT_METERS;
+		public static final double DISTANCE_CAMERA_TO_TAG_Y = SPEAKER_TAG_HEIGHT - CAMERA_HEIGHT_METERS;
 	}
 
 	public static final class ModuleConstants {

@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.Constants;
+import frc.robot.Constants.VisionConstants;
+
 import java.util.Optional;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -12,7 +14,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision {
 	private static PhotonCamera camera = new PhotonCamera("Rock");
-	private static final PhotonPoseEstimator photonEstimator = new PhotonPoseEstimator(Constants.kTagLayout,
+	private static final PhotonPoseEstimator photonEstimator = new PhotonPoseEstimator(VisionConstants.kTagLayout,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, null); // TODO: Replace with the transform of the robot to the
 																// camera
 
@@ -48,16 +50,16 @@ public class Vision {
 
 	public static double getDistanceToTarget(double targetHeight) {
 		if (hasResults()) {
-			return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS, targetHeight,
-					Constants.CAMERA_PITCH_RADIANS, getTargetPitch());
+			return PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS, targetHeight,
+					VisionConstants.CAMERA_PITCH_RADIANS, getTargetPitch());
 		}
 		return -1;
 	}
 
 	public static double getDistanceToTarget(int aprilTag) {
 		if (getTagTarget(aprilTag).isPresent()) {
-			return PhotonUtils.calculateDistanceToTargetMeters(Constants.CAMERA_HEIGHT_METERS,
-					Constants.aprilTagHeights[aprilTag], Constants.CAMERA_PITCH_RADIANS, getTargetPitch(aprilTag));
+			return PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
+					VisionConstants.aprilTagHeights[aprilTag], VisionConstants.CAMERA_PITCH_RADIANS, getTargetPitch(aprilTag));
 		}
 		return -1;
 	}

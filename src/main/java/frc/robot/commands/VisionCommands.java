@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
-import frc.robot.Constants.AutoAimConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Vision;
@@ -65,12 +65,12 @@ public class VisionCommands {
 
 	public static double getOptimalAngleRadians(double distanceToTag, double angleToTag, double angleCurrent) {
 		double resultDegree;
-		double numerator = AutoAimConstants.DISTANCE_CAMERA_TO_TAG_Y - (Constants.ARM_LENGTH * Math.sin(angleCurrent))
-				+ AutoAimConstants.DISTANCE_TAG_TO_SPEAKER;
+		double numerator = VisionConstants.DISTANCE_CAMERA_TO_TAG_Y - (VisionConstants.ARM_LENGTH * Math.sin(angleCurrent))
+				+ VisionConstants.DISTANCE_TAG_TO_SPEAKER;
 		double xDistance = distanceToTag * Math.cos(angleToTag);
-		double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT + (Constants.ARM_LENGTH * angleCurrent);
+		double denominator = xDistance + VisionConstants.X_OFFSET_CAMERA_TO_PIVOT + (VisionConstants.ARM_LENGTH * angleCurrent);
 		double fraction = numerator / denominator;
-		double offsetRadians = AutoAimConstants.OFFSET_ANGLE_DEGREES;
+		double offsetRadians = VisionConstants.OFFSET_ANGLE_DEGREES;
 		resultDegree = offsetRadians - Math.atan(fraction);
 		return resultDegree;
 	}
@@ -78,22 +78,22 @@ public class VisionCommands {
 	// public static double getOptimalAngleDegrees(double distanceToTag, double
 	// angleToTag, double angleCurrent) {
 	// double resultDegree;
-	// double numerator = AutoAimConstants.DISTANCE_CAMERA_TO_TAG_Y
+	// double numerator = VisionConstants.DISTANCE_CAMERA_TO_TAG_Y
 	// - (Constants.ARM_LENGTH * Math.sin(Math.toRadians(angleCurrent)))
-	// + AutoAimConstants.DISTANCE_TAG_TO_SPEAKER;
+	// + VisionConstants.DISTANCE_TAG_TO_SPEAKER;
 	// double xDistance = distanceToTag * Math.cos(Math.toRadians(angleToTag));
 	// double denominator = xDistance + Constants.X_OFFSET_CAMERA_TO_PIVOT
 	// + (Constants.ARM_LENGTH * Math.cos(Math.toRadians(angleCurrent)));
 	// double fraction = numerator / denominator;
-	// double offsetRadians = AutoAimConstants.OFFSET_ANGLE_DEGREES;
+	// double offsetRadians = VisionConstants.OFFSET_ANGLE_DEGREES;
 	// resultDegree = offsetRadians - Math.atan(fraction);
 	// return Math.toDegrees(resultDegree);
 	// }
 
 	public static double getCurrentAngle() {
 		double rotations = RobotContainer.m_Arm.getArmPosition(); // only gets motor 1 but it doesnt matter
-		double angle_bad_offset = rotations * AutoAimConstants.radians_per_rotation;
-		double angle_offset_good = angle_bad_offset + Constants.ARM_ANGLE_HORIZONTAL_OFFSET;
+		double angle_bad_offset = rotations * VisionConstants.radians_per_rotation;
+		double angle_offset_good = angle_bad_offset + VisionConstants.ARM_ANGLE_HORIZONTAL_OFFSET;
 		return angle_offset_good;
 	}
 }
