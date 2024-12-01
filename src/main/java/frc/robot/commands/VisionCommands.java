@@ -19,11 +19,11 @@ public class VisionCommands {
 		turnController.enableContinuousInput(-180, 180);
 
 		return new PIDCommand(turnController, () -> RobotContainer.m_robotDrive.getHeading(),
-				// RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw() ,
+				// RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw() ,
 				() -> {
-					if (Vision.getTargetYaw() == Double.POSITIVE_INFINITY)
+					if (RobotContainer.m_vision.getTargetYaw() == Double.POSITIVE_INFINITY)
 						return RobotContainer.m_robotDrive.getHeading();
-					return RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw();
+					return RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw();
 				},
 				(rotationalSpeed) -> RobotContainer.m_robotDrive.drive(
 						-MathUtil.applyDeadband(RobotContainer.m_driverController.getLeftY(),
@@ -38,11 +38,11 @@ public class VisionCommands {
 		turnController.enableContinuousInput(-180, 180);
 
 		return new PIDCommand(turnController, () -> RobotContainer.m_robotDrive.getHeading(),
-				// RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw() ,
+				// RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw() ,
 				() -> {
-					if (Vision.getTargetYaw() == Double.POSITIVE_INFINITY)
+					if (RobotContainer.m_vision.getTargetYaw() == Double.POSITIVE_INFINITY)
 						return RobotContainer.m_robotDrive.getHeading();
-					return RobotContainer.m_robotDrive.getHeading() - Vision.getTargetYaw(tagId);
+					return RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw(tagId);
 				},
 				(rotationalSpeed) -> RobotContainer.m_robotDrive.drive(
 						-MathUtil.applyDeadband(RobotContainer.m_driverController.getLeftY(),
@@ -55,10 +55,10 @@ public class VisionCommands {
 
 	public static Command autoAim() {
 		int tag = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
-		if (Vision.getTagTarget(tag).isPresent())
+		if (RobotContainer.m_vision.getTagTarget(tag).isPresent())
 			return turnToTarget(tag)
-					.andThen(ArmCommands.setArmRadians(getOptimalAngleRadians(Vision.getDistanceToTarget(tag),
-							Vision.getTargetYaw(tag), getCurrentAngle())));
+					.andThen(ArmCommands.setArmRadians(getOptimalAngleRadians(RobotContainer.m_vision.getDistanceToTarget(tag),
+							RobotContainer.m_vision.getTargetYaw(tag), getCurrentAngle())));
 		return Commands.none();
 	}
 

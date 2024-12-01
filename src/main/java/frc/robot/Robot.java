@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
 		// RobotContainer.m_robotDrive.m_rearRight.getPosition().distanceMeters);
 
 		SmartDashboard.putNumber("Arm Encoder Value", RobotContainer.m_Arm.getArmPosition());
-		SmartDashboard.putNumber("Vision Yaw", Vision.getTargetYaw());
+		SmartDashboard.putNumber("Vision Yaw", RobotContainer.m_vision.getTargetYaw());
 
 		CommandScheduler.getInstance().run();
 	}
@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
 		double turn = -RobotContainer.m_driverController.getRightX() * Constants.DriveConstants.kMaxAngularSpeed;
 
 		// Read in relevant data from the Camera
-		boolean targetVisible = Vision.hasResults();
+		boolean targetVisible = RobotContainer.m_vision.hasResults();
 		double targetYaw = 0.0;
 
 		// PhotonPipelineResult result = RobotContainer.camera.getLatestResult();

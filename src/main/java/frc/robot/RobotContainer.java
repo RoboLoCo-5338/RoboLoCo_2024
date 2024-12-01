@@ -33,6 +33,8 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.Vision;
+
 import java.util.Optional;
 
 /*
@@ -49,6 +51,7 @@ public class RobotContainer {
 	public static ShooterSubsystem m_shooter = new ShooterSubsystem();
 	public static IntakeSubsystem m_Intake = new IntakeSubsystem();
 	public static ArmSubsystem m_Arm = new ArmSubsystem();
+	public static Vision m_vision = new Vision("Rock");
 
 	public static CommandXboxController m_driverController = new CommandXboxController(
 			OIConstants.kDriverControllerPort);

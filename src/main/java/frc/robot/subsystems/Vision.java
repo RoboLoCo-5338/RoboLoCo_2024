@@ -12,42 +12,42 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision {
-	private static PhotonCamera camera = new PhotonCamera("Rock");
-	private static final PhotonPoseEstimator photonEstimator = new PhotonPoseEstimator(VisionConstants.kTagLayout,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, null); // TODO: Replace with the transform of the robot to the
-																// camera
+	private PhotonCamera camera;
+	public Vision(String cameraName){
+		camera = new PhotonCamera("Rock");
+	}
 
-	public static boolean hasResults() {
+	public boolean hasResults() {
 		return camera.getLatestResult().hasTargets();
 	}
 
-	public static double getTargetYaw() {
+	public double getTargetYaw() {
 		if (hasResults())
 			return camera.getLatestResult().getBestTarget().getYaw();
 		return 0;
 	}
 
-	public static double getTargetPitch() {
+	public double getTargetPitch() {
 		if (hasResults())
 			return camera.getLatestResult().getBestTarget().getPitch();
 		return 0;
 	}
 
-	public static double getTargetYaw(int aprilTag) {
+	public double getTargetYaw(int aprilTag) {
 		Optional<PhotonTrackedTarget> tag = getTagTarget(aprilTag);
 		if (tag.isPresent())
 			return tag.get().getYaw();
 		return 0;
 	}
 
-	public static double getTargetPitch(int aprilTag) {
+	public double getTargetPitch(int aprilTag) {
 		Optional<PhotonTrackedTarget> tag = getTagTarget(aprilTag);
 		if (tag.isPresent())
 			return tag.get().getYaw();
 		return 0;
 	}
 
-	public static double getDistanceToTarget(double targetHeight) {
+	public double getDistanceToTarget(double targetHeight) {
 		if (hasResults()) {
 			return PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS, targetHeight,
 					VisionConstants.CAMERA_PITCH_RADIANS, getTargetPitch());
@@ -55,7 +55,7 @@ public class Vision {
 		return -1;
 	}
 
-	public static double getDistanceToTarget(int aprilTag) {
+	public double getDistanceToTarget(int aprilTag) {
 		if (getTagTarget(aprilTag).isPresent()) {
 			return PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
 					VisionConstants.aprilTagHeights[aprilTag], VisionConstants.CAMERA_PITCH_RADIANS,
@@ -64,13 +64,13 @@ public class Vision {
 		return -1;
 	}
 
-	public static int getBestTargetID() {
+	public int getBestTargetID() {
 		if (hasResults())
 			return camera.getLatestResult().getBestTarget().getFiducialId();
 		return -1;
 	}
 
-	public static Optional<PhotonTrackedTarget> getTagTarget(int tag) {
+	public Optional<PhotonTrackedTarget> getTagTarget(int tag) {
 		if (hasResults())
 			for (PhotonTrackedTarget target : camera.getLatestResult().getTargets())
 				if (target.getFiducialId() == tag)
@@ -78,7 +78,7 @@ public class Vision {
 		return Optional.empty();
 	}
 
-	public static Transform3d getPose() {
+	public Transform3d getPose() {
 		PhotonPipelineResult result = camera.getLatestResult();
 		if (result.getMultiTagResult().estimatedPose.isPresent) {
 			return result.getMultiTagResult().estimatedPose.best;
