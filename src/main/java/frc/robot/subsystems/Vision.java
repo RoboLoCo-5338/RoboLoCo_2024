@@ -5,15 +5,13 @@ import frc.robot.Constants.VisionConstants;
 
 import java.util.Optional;
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision {
 	private PhotonCamera camera;
-	public Vision(String cameraName){
+	public Vision(String cameraName) {
 		camera = new PhotonCamera("Rock");
 	}
 

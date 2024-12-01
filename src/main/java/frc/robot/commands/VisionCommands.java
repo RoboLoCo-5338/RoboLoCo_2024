@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Vision;
 
 public class VisionCommands {
 	public static PIDController turnController = new PIDController(0.1, 0, 0); // TODO: Update these values
@@ -19,7 +18,8 @@ public class VisionCommands {
 		turnController.enableContinuousInput(-180, 180);
 
 		return new PIDCommand(turnController, () -> RobotContainer.m_robotDrive.getHeading(),
-				// RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw() ,
+				// RobotContainer.m_robotDrive.getHeading() -
+				// RobotContainer.m_vision.getTargetYaw() ,
 				() -> {
 					if (RobotContainer.m_vision.getTargetYaw() == Double.POSITIVE_INFINITY)
 						return RobotContainer.m_robotDrive.getHeading();
@@ -38,7 +38,8 @@ public class VisionCommands {
 		turnController.enableContinuousInput(-180, 180);
 
 		return new PIDCommand(turnController, () -> RobotContainer.m_robotDrive.getHeading(),
-				// RobotContainer.m_robotDrive.getHeading() - RobotContainer.m_vision.getTargetYaw() ,
+				// RobotContainer.m_robotDrive.getHeading() -
+				// RobotContainer.m_vision.getTargetYaw() ,
 				() -> {
 					if (RobotContainer.m_vision.getTargetYaw() == Double.POSITIVE_INFINITY)
 						return RobotContainer.m_robotDrive.getHeading();
@@ -56,8 +57,8 @@ public class VisionCommands {
 	public static Command autoAim() {
 		int tag = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
 		if (RobotContainer.m_vision.getTagTarget(tag).isPresent())
-			return turnToTarget(tag)
-					.andThen(ArmCommands.setArmRadians(getOptimalAngleRadians(RobotContainer.m_vision.getDistanceToTarget(tag),
+			return turnToTarget(tag).andThen(
+					ArmCommands.setArmRadians(getOptimalAngleRadians(RobotContainer.m_vision.getDistanceToTarget(tag),
 							RobotContainer.m_vision.getTargetYaw(tag), getCurrentAngle())));
 		return Commands.none();
 	}
