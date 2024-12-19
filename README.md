@@ -4,4 +4,4 @@
 - Vision based turning
 - Swerve Drive
 - Arm shooter with ground intake
-- Hook for climb system
+- Hook for climb
